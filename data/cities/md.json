@@ -1,0 +1,470 @@
+{
+  "country": "md",
+  "cities": [
+    {
+      "slug": "balti",
+      "name": "Бельцы",
+      "region": "Бельцы мун.",
+      "priority": true,
+      "refs": {
+        "999md": 14247
+      },
+      "aliases": [
+        "бельцы",
+        "belcy"
+      ]
+    },
+    {
+      "slug": "bender",
+      "name": "Бендеры",
+      "region": "Бендеры мун.",
+      "priority": true,
+      "refs": {
+        "999md": 13498
+      },
+      "aliases": [
+        "бендеры"
+      ]
+    },
+    {
+      "slug": "edinet",
+      "name": "Единец",
+      "region": "Единцы",
+      "priority": true,
+      "refs": {
+        "999md": 14186
+      },
+      "aliases": [
+        "единец"
+      ]
+    },
+    {
+      "slug": "chisinau",
+      "name": "Кишинёв",
+      "region": "Кишинёв мун.",
+      "priority": true,
+      "refs": {
+        "999md": 13859
+      },
+      "aliases": [
+        "кишинёв",
+        "kishinev"
+      ]
+    },
+    {
+      "slug": "comrat",
+      "name": "Комрат",
+      "region": "Комрат",
+      "priority": true,
+      "refs": {
+        "999md": 13359
+      },
+      "aliases": [
+        "комрат",
+        "komrat"
+      ]
+    },
+    {
+      "slug": "orhei",
+      "name": "Оргеев",
+      "region": "Оргеев",
+      "priority": true,
+      "refs": {
+        "999md": 14027
+      },
+      "aliases": [
+        "оргеев",
+        "orgeev"
+      ]
+    },
+    {
+      "slug": "soroca",
+      "name": "Сороки",
+      "region": "Сороки",
+      "priority": true,
+      "refs": {
+        "999md": 12938
+      },
+      "aliases": [
+        "сороки",
+        "soroki"
+      ]
+    },
+    {
+      "slug": "tiraspol",
+      "name": "Тирасполь",
+      "region": "Тирасполь мун.",
+      "priority": true,
+      "refs": {
+        "999md": 13495
+      },
+      "aliases": [
+        "тирасполь"
+      ]
+    },
+    {
+      "slug": "ungheni",
+      "name": "Унгень",
+      "region": "Унгены",
+      "priority": true,
+      "refs": {
+        "999md": 14407
+      },
+      "aliases": [
+        "унгень",
+        "ungen"
+      ]
+    },
+    {
+      "slug": "bachoi",
+      "name": "Бачой",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 14401
+      },
+      "aliases": [
+        "бачой",
+        "bachoi"
+      ]
+    },
+    {
+      "slug": "bessarabka",
+      "name": "Бессарабка",
+      "region": "Бессарабка",
+      "priority": false,
+      "refs": {
+        "999md": 13451
+      },
+      "aliases": [
+        "бессарабка",
+        "bessarabka"
+      ]
+    },
+    {
+      "slug": "bubuech",
+      "name": "Бубуечь",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 14402
+      },
+      "aliases": [
+        "бубуечь",
+        "bubuech"
+      ]
+    },
+    {
+      "slug": "gerbovec",
+      "name": "Гербовец",
+      "region": "Калараш",
+      "priority": false,
+      "refs": {
+        "999md": 13796
+      },
+      "aliases": [
+        "гербовец",
+        "gerbovec"
+      ]
+    },
+    {
+      "slug": "dancheny",
+      "name": "Данчены",
+      "region": "Яловены",
+      "priority": false,
+      "refs": {
+        "999md": 13708
+      },
+      "aliases": [
+        "данчены",
+        "dancheny"
+      ]
+    },
+    {
+      "slug": "draslicheny",
+      "name": "Драсличены",
+      "region": "Криуляны",
+      "priority": false,
+      "refs": {
+        "999md": 13983
+      },
+      "aliases": [
+        "драсличены",
+        "draslicheny"
+      ]
+    },
+    {
+      "slug": "dumbrava",
+      "name": "Думбрава",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 13933
+      },
+      "aliases": [
+        "думбрава",
+        "dumbrava"
+      ]
+    },
+    {
+      "slug": "durleshty",
+      "name": "Дурлешты",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 13917
+      },
+      "aliases": [
+        "дурлешты",
+        "durleshty"
+      ]
+    },
+    {
+      "slug": "ivancha",
+      "name": "Иванча",
+      "region": "Оргеев",
+      "priority": false,
+      "refs": {
+        "999md": 12979
+      },
+      "aliases": [
+        "иванча",
+        "ivancha"
+      ]
+    },
+    {
+      "slug": "kamenka",
+      "name": "Каменка",
+      "region": "Каменка",
+      "priority": false,
+      "refs": {
+        "999md": 13011
+      },
+      "aliases": [
+        "каменка",
+        "kamenka"
+      ]
+    },
+    {
+      "slug": "kaushany",
+      "name": "Каушаны",
+      "region": "Каушаны",
+      "priority": false,
+      "refs": {
+        "999md": 13215
+      },
+      "aliases": [
+        "каушаны",
+        "kaushany"
+      ]
+    },
+    {
+      "slug": "ketrosu",
+      "name": "Кетросу",
+      "region": "Новые Анены",
+      "priority": false,
+      "refs": {
+        "999md": 42876
+      },
+      "aliases": [
+        "кетросу",
+        "ketrosu"
+      ]
+    },
+    {
+      "slug": "kozhushna",
+      "name": "Кожушна",
+      "region": "Страшены",
+      "priority": false,
+      "refs": {
+        "999md": 12999
+      },
+      "aliases": [
+        "кожушна",
+        "kozhushna"
+      ]
+    },
+    {
+      "slug": "koshnica",
+      "name": "Кошница",
+      "region": "Дубоссары",
+      "priority": false,
+      "refs": {
+        "999md": 14003
+      },
+      "aliases": [
+        "кошница",
+        "koshnica"
+      ]
+    },
+    {
+      "slug": "lukacheny",
+      "name": "Лукачены",
+      "region": "Фалешты",
+      "priority": false,
+      "refs": {
+        "999md": 13587
+      },
+      "aliases": [
+        "лукачены",
+        "lukacheny"
+      ]
+    },
+    {
+      "slug": "maksimovka",
+      "name": "Максимовка",
+      "region": "Новые Анены",
+      "priority": false,
+      "refs": {
+        "999md": 13923
+      },
+      "aliases": [
+        "максимовка",
+        "maksimovka"
+      ]
+    },
+    {
+      "slug": "negreshty",
+      "name": "Негрешты",
+      "region": "Страшены",
+      "priority": false,
+      "refs": {
+        "999md": 14414
+      },
+      "aliases": [
+        "негрешты",
+        "negreshty"
+      ]
+    },
+    {
+      "slug": "novye-selishty",
+      "name": "Новые Селишты",
+      "region": "Калараш",
+      "priority": false,
+      "refs": {
+        "999md": 13562
+      },
+      "aliases": [
+        "новые селишты",
+        "novye-selishty"
+      ]
+    },
+    {
+      "slug": "onickany",
+      "name": "Оницканы",
+      "region": "Криуляны",
+      "priority": false,
+      "refs": {
+        "999md": 13995
+      },
+      "aliases": [
+        "оницканы",
+        "onickany"
+      ]
+    },
+    {
+      "slug": "pitushka",
+      "name": "Питушка",
+      "region": "Калараш",
+      "priority": false,
+      "refs": {
+        "999md": 13807
+      },
+      "aliases": [
+        "питушка",
+        "pitushka"
+      ]
+    },
+    {
+      "slug": "pyryta",
+      "name": "Пырыта",
+      "region": "Дубоссары",
+      "priority": false,
+      "refs": {
+        "999md": 12966
+      },
+      "aliases": [
+        "пырыта",
+        "pyryta"
+      ]
+    },
+    {
+      "slug": "stavcheny",
+      "name": "Ставчены",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 12926
+      },
+      "aliases": [
+        "ставчены",
+        "stavcheny"
+      ]
+    },
+    {
+      "slug": "synzhera",
+      "name": "Сынжера",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 14398
+      },
+      "aliases": [
+        "сынжера",
+        "synzhera"
+      ]
+    },
+    {
+      "slug": "trusheny",
+      "name": "Трушены",
+      "region": "Кишинёв мун.",
+      "priority": false,
+      "refs": {
+        "999md": 12952
+      },
+      "aliases": [
+        "трушены",
+        "trusheny"
+      ]
+    },
+    {
+      "slug": "ulmu",
+      "name": "Улму",
+      "region": "Яловены",
+      "priority": false,
+      "refs": {
+        "999md": 13078
+      },
+      "aliases": [
+        "улму",
+        "ulmu"
+      ]
+    },
+    {
+      "slug": "chadyr-lunga",
+      "name": "Чадыр-Лунга",
+      "region": "Чадыр-Лунга",
+      "priority": false,
+      "refs": {
+        "999md": 13361
+      },
+      "aliases": [
+        "чадыр-лунга",
+        "chadyr-lunga"
+      ]
+    },
+    {
+      "slug": "yaloveny",
+      "name": "Яловены",
+      "region": "Яловены",
+      "priority": false,
+      "refs": {
+        "999md": 13932
+      },
+      "aliases": [
+        "яловены",
+        "yaloveny"
+      ]
+    }
+  ]
+}

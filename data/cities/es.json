@@ -1,0 +1,4437 @@
+{
+  "country": "es",
+  "cities": [
+    {
+      "slug": "albacete",
+      "name": "Albacete",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "albacete",
+        "pisos": "albacete",
+        "spotahome": "albacete"
+      }
+    },
+    {
+      "slug": "alcobendas",
+      "name": "Alcobendas",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "alcobendas",
+        "pisos": "alcobendas",
+        "spotahome": "alcobendas"
+      }
+    },
+    {
+      "slug": "alcorcon",
+      "name": "Alcorcón",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "alcorcon",
+        "pisos": "alcorcon",
+        "spotahome": "alcorcon"
+      }
+    },
+    {
+      "slug": "algeciras",
+      "name": "Algeciras",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "algeciras",
+        "pisos": "algeciras",
+        "spotahome": "algeciras"
+      }
+    },
+    {
+      "slug": "alicante",
+      "name": "Alicante",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "alicante",
+        "pisos": "alicante",
+        "spotahome": "alicante"
+      }
+    },
+    {
+      "slug": "almeria",
+      "name": "Almería",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "almeria",
+        "pisos": "almeria",
+        "spotahome": "almeria"
+      }
+    },
+    {
+      "slug": "badajoz",
+      "name": "Badajoz",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "badajoz",
+        "pisos": "badajoz",
+        "spotahome": "badajoz"
+      }
+    },
+    {
+      "slug": "badalona",
+      "name": "Badalona",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "badalona",
+        "pisos": "badalona",
+        "spotahome": "badalona"
+      }
+    },
+    {
+      "slug": "barakaldo",
+      "name": "Barakaldo",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "barakaldo",
+        "pisos": "barakaldo"
+      }
+    },
+    {
+      "slug": "barcelona",
+      "name": "Barcelona",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "barcelona",
+        "pisos": "barcelona",
+        "spotahome": "barcelona"
+      }
+    },
+    {
+      "slug": "bilbao",
+      "name": "Bilbao",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "bilbao",
+        "pisos": "bilbao",
+        "spotahome": "bilbao"
+      }
+    },
+    {
+      "slug": "burgos",
+      "name": "Burgos",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "burgos",
+        "pisos": "burgos",
+        "spotahome": "burgos"
+      }
+    },
+    {
+      "slug": "cadiz",
+      "name": "Cadiz",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "cadiz",
+        "pisos": "cadiz",
+        "spotahome": "cadiz"
+      }
+    },
+    {
+      "slug": "cartagena",
+      "name": "Cartagena",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "cartagena",
+        "pisos": "cartagena",
+        "spotahome": "cartagena"
+      }
+    },
+    {
+      "slug": "cordoba",
+      "name": "Córdoba",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "cordoba",
+        "pisos": "cordoba",
+        "spotahome": "cordoba"
+      }
+    },
+    {
+      "slug": "fuenlabrada",
+      "name": "Fuenlabrada",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "fuenlabrada",
+        "pisos": "fuenlabrada",
+        "spotahome": "fuenlabrada"
+      }
+    },
+    {
+      "slug": "getafe",
+      "name": "Getafe",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "getafe",
+        "pisos": "getafe",
+        "spotahome": "getafe"
+      }
+    },
+    {
+      "slug": "gijon",
+      "name": "Gijón",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "gijon",
+        "pisos": "gijon_concejo_xixon_conceyu_gijon",
+        "spotahome": "gijon"
+      }
+    },
+    {
+      "slug": "girona",
+      "name": "Girona",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "girona",
+        "pisos": "girona"
+      }
+    },
+    {
+      "slug": "huelva",
+      "name": "Huelva",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "huelva",
+        "pisos": "huelva_capital",
+        "spotahome": "huelva"
+      }
+    },
+    {
+      "slug": "jaen",
+      "name": "Jaén",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "jaen",
+        "pisos": "jaen",
+        "spotahome": "jaen"
+      }
+    },
+    {
+      "slug": "leganes",
+      "name": "Leganés",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "leganes",
+        "pisos": "leganes",
+        "spotahome": "leganes"
+      }
+    },
+    {
+      "slug": "leon",
+      "name": "León",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "leon",
+        "pisos": "leon",
+        "spotahome": "leon"
+      }
+    },
+    {
+      "slug": "lleida",
+      "name": "Lleida",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "lleida",
+        "pisos": "lleida"
+      }
+    },
+    {
+      "slug": "logrono",
+      "name": "Logroño",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "logrono",
+        "pisos": "logrono",
+        "spotahome": "logrono"
+      }
+    },
+    {
+      "slug": "madrid",
+      "name": "Madrid",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "madrid",
+        "pisos": "madrid_capital_zona_urbana",
+        "spotahome": "madrid"
+      }
+    },
+    {
+      "slug": "marbella",
+      "name": "Marbella",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "marbella",
+        "spotahome": "marbella"
+      }
+    },
+    {
+      "slug": "mataro",
+      "name": "Mataró",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "mataro",
+        "pisos": "mataro",
+        "spotahome": "mataro"
+      }
+    },
+    {
+      "slug": "murcia",
+      "name": "Murcia",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "murcia",
+        "pisos": "murcia",
+        "spotahome": "murcia"
+      }
+    },
+    {
+      "slug": "malaga",
+      "name": "Málaga",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "malaga",
+        "pisos": "malaga",
+        "spotahome": "malaga"
+      }
+    },
+    {
+      "slug": "mostoles",
+      "name": "Móstoles",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "mostoles",
+        "pisos": "mostoles",
+        "spotahome": "mostoles"
+      }
+    },
+    {
+      "slug": "orihuela",
+      "name": "Orihuela",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "orihuela"
+      }
+    },
+    {
+      "slug": "ourense",
+      "name": "Ourense",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "ourense"
+      }
+    },
+    {
+      "slug": "oviedo",
+      "name": "Oviedo",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "oviedo",
+        "pisos": "oviedo",
+        "spotahome": "oviedo"
+      }
+    },
+    {
+      "slug": "parla",
+      "name": "Parla",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "parla",
+        "pisos": "parla",
+        "spotahome": "parla"
+      }
+    },
+    {
+      "slug": "reus",
+      "name": "Reus",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "reus",
+        "pisos": "reus",
+        "spotahome": "reus"
+      }
+    },
+    {
+      "slug": "sabadell",
+      "name": "Sabadell",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "sabadell",
+        "spotahome": "sabadell"
+      }
+    },
+    {
+      "slug": "salamanca",
+      "name": "Salamanca",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "salamanca",
+        "pisos": "salamanca",
+        "spotahome": "salamanca"
+      }
+    },
+    {
+      "slug": "santander",
+      "name": "Santander",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "santander",
+        "pisos": "santander",
+        "spotahome": "santander"
+      }
+    },
+    {
+      "slug": "sevilla",
+      "name": "Sevilla",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "sevilla",
+        "pisos": "sevilla"
+      }
+    },
+    {
+      "slug": "tarragona",
+      "name": "Tarragona",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "tarragona",
+        "pisos": "tarragona_capital",
+        "spotahome": "tarragona"
+      }
+    },
+    {
+      "slug": "telde",
+      "name": "Telde",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "telde",
+        "pisos": "telde",
+        "spotahome": "telde"
+      }
+    },
+    {
+      "slug": "terrassa",
+      "name": "Terrassa",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "terrassa",
+        "pisos": "terrassa",
+        "spotahome": "terrassa"
+      }
+    },
+    {
+      "slug": "valencia",
+      "name": "Valencia",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "valencia",
+        "pisos": "valencia_capital_zona_urbana",
+        "spotahome": "valencia"
+      }
+    },
+    {
+      "slug": "valladolid",
+      "name": "Valladolid",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "valladolid",
+        "pisos": "valladolid",
+        "spotahome": "valladolid"
+      }
+    },
+    {
+      "slug": "vigo",
+      "name": "Vigo",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "vigo",
+        "spotahome": "vigo"
+      }
+    },
+    {
+      "slug": "zaragoza",
+      "name": "Zaragoza",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "habitaclia": "zaragoza",
+        "pisos": "zaragoza",
+        "spotahome": "zaragoza"
+      }
+    },
+    {
+      "slug": "abrera",
+      "name": "Abrera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "abrera",
+        "pisos": "abrera"
+      }
+    },
+    {
+      "slug": "adeje",
+      "name": "Adeje",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "adeje",
+        "pisos": "adeje"
+      }
+    },
+    {
+      "slug": "adra",
+      "name": "Adra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "adra",
+        "pisos": "adra"
+      }
+    },
+    {
+      "slug": "aguimes",
+      "name": "Agüimes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aguimes",
+        "pisos": "aguimes"
+      }
+    },
+    {
+      "slug": "alaior",
+      "name": "Alaior",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alaior",
+        "pisos": "alaior"
+      }
+    },
+    {
+      "slug": "alaquas",
+      "name": "Alaquàs",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alaquas",
+        "pisos": "alaquas"
+      }
+    },
+    {
+      "slug": "albal",
+      "name": "Albal",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "albal",
+        "pisos": "albal"
+      }
+    },
+    {
+      "slug": "albatera",
+      "name": "Albatera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "albatera",
+        "pisos": "albatera"
+      }
+    },
+    {
+      "slug": "alberic",
+      "name": "Alberic",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alberic",
+        "pisos": "alberic"
+      }
+    },
+    {
+      "slug": "alboraya",
+      "name": "Alboraya",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alboraya",
+        "pisos": "alboraya"
+      }
+    },
+    {
+      "slug": "albox",
+      "name": "Albox",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "albox",
+        "pisos": "albox"
+      }
+    },
+    {
+      "slug": "alcanar",
+      "name": "Alcanar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alcanar",
+        "pisos": "alcanar"
+      }
+    },
+    {
+      "slug": "alcantarilla",
+      "name": "Alcantarilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alcantarilla",
+        "pisos": "alcantarilla",
+        "spotahome": "alcantarilla"
+      }
+    },
+    {
+      "slug": "alcaudete",
+      "name": "Alcaudete",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alcaudete",
+        "pisos": "alcaudete"
+      }
+    },
+    {
+      "slug": "alcaniz",
+      "name": "Alcañiz",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alcaniz",
+        "pisos": "alcaniz"
+      }
+    },
+    {
+      "slug": "alcudia",
+      "name": "Alcúdia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alcudia",
+        "pisos": "alcudia"
+      }
+    },
+    {
+      "slug": "aldaia",
+      "name": "Aldaia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aldaia",
+        "pisos": "aldaia"
+      }
+    },
+    {
+      "slug": "alella",
+      "name": "Alella",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alella",
+        "pisos": "alella"
+      }
+    },
+    {
+      "slug": "alfafar",
+      "name": "Alfafar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alfafar",
+        "pisos": "alfafar"
+      }
+    },
+    {
+      "slug": "algemesi",
+      "name": "Algemesí",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "algemesi",
+        "pisos": "algemesi"
+      }
+    },
+    {
+      "slug": "algete",
+      "name": "Algete",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "algete",
+        "pisos": "algete"
+      }
+    },
+    {
+      "slug": "alginet",
+      "name": "Alginet",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alginet",
+        "pisos": "alginet"
+      }
+    },
+    {
+      "slug": "aljaraque",
+      "name": "Aljaraque",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aljaraque",
+        "pisos": "aljaraque"
+      }
+    },
+    {
+      "slug": "almagro",
+      "name": "Almagro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almagro",
+        "pisos": "almagro"
+      }
+    },
+    {
+      "slug": "almansa",
+      "name": "Almansa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almansa",
+        "pisos": "almansa"
+      }
+    },
+    {
+      "slug": "almendralejo",
+      "name": "Almendralejo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almendralejo",
+        "pisos": "almendralejo"
+      }
+    },
+    {
+      "slug": "almonte",
+      "name": "Almonte",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almonte",
+        "pisos": "almonte"
+      }
+    },
+    {
+      "slug": "almoradi",
+      "name": "Almoradí",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almoradi",
+        "pisos": "almoradi"
+      }
+    },
+    {
+      "slug": "almussafes",
+      "name": "Almussafes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almussafes",
+        "pisos": "almussafes"
+      }
+    },
+    {
+      "slug": "almunecar",
+      "name": "Almuñécar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "almunecar",
+        "pisos": "almunecar"
+      }
+    },
+    {
+      "slug": "alora",
+      "name": "Alora",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alora",
+        "pisos": "alora"
+      }
+    },
+    {
+      "slug": "alovera",
+      "name": "Alovera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alovera",
+        "pisos": "alovera"
+      }
+    },
+    {
+      "slug": "alpedrete",
+      "name": "Alpedrete",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alpedrete",
+        "pisos": "alpedrete"
+      }
+    },
+    {
+      "slug": "altea",
+      "name": "Altea",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "altea",
+        "pisos": "altea"
+      }
+    },
+    {
+      "slug": "alzira",
+      "name": "Alzira",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "alzira",
+        "pisos": "alzira"
+      }
+    },
+    {
+      "slug": "amurrio",
+      "name": "Amurrio",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "amurrio"
+      }
+    },
+    {
+      "slug": "andoain",
+      "name": "Andoain",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "andoain",
+        "pisos": "andoain"
+      }
+    },
+    {
+      "slug": "andratx",
+      "name": "Andratx",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "andratx",
+        "pisos": "andratx"
+      }
+    },
+    {
+      "slug": "andujar",
+      "name": "Andújar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "andujar",
+        "pisos": "andujar"
+      }
+    },
+    {
+      "slug": "antequera",
+      "name": "Antequera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "antequera",
+        "pisos": "antequera",
+        "spotahome": "antequera"
+      }
+    },
+    {
+      "slug": "aracena",
+      "name": "Aracena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aracena",
+        "pisos": "aracena"
+      }
+    },
+    {
+      "slug": "aranjuez",
+      "name": "Aranjuez",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aranjuez",
+        "pisos": "aranjuez",
+        "spotahome": "aranjuez"
+      }
+    },
+    {
+      "slug": "archena",
+      "name": "Archena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "archena",
+        "pisos": "archena"
+      }
+    },
+    {
+      "slug": "archidona",
+      "name": "Archidona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "archidona",
+        "pisos": "archidona"
+      }
+    },
+    {
+      "slug": "argentona",
+      "name": "Argentona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "argentona",
+        "pisos": "argentona"
+      }
+    },
+    {
+      "slug": "arges",
+      "name": "Argés",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "arges",
+        "pisos": "arges"
+      }
+    },
+    {
+      "slug": "armilla",
+      "name": "Armilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "armilla",
+        "pisos": "armilla"
+      }
+    },
+    {
+      "slug": "arnedo",
+      "name": "Arnedo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "arnedo",
+        "pisos": "arnedo"
+      }
+    },
+    {
+      "slug": "arona",
+      "name": "Arona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "arona",
+        "pisos": "arona",
+        "spotahome": "arona"
+      }
+    },
+    {
+      "slug": "arrecife",
+      "name": "Arrecife",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "arrecife",
+        "pisos": "arrecife",
+        "spotahome": "arrecife"
+      }
+    },
+    {
+      "slug": "arroyomolinos",
+      "name": "Arroyomolinos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "arroyomolinos",
+        "spotahome": "arroyomolinos"
+      }
+    },
+    {
+      "slug": "arteixo",
+      "name": "Arteixo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "arteixo",
+        "pisos": "arteixo"
+      }
+    },
+    {
+      "slug": "aspe",
+      "name": "Aspe",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aspe",
+        "pisos": "aspe"
+      }
+    },
+    {
+      "slug": "astorga",
+      "name": "Astorga",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "astorga",
+        "pisos": "astorga"
+      }
+    },
+    {
+      "slug": "atarfe",
+      "name": "Atarfe",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "atarfe",
+        "pisos": "atarfe"
+      }
+    },
+    {
+      "slug": "aviles",
+      "name": "Avilés",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aviles",
+        "pisos": "aviles",
+        "spotahome": "aviles"
+      }
+    },
+    {
+      "slug": "ayamonte",
+      "name": "Ayamonte",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ayamonte"
+      }
+    },
+    {
+      "slug": "azuaga",
+      "name": "Azuaga",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "azuaga",
+        "pisos": "azuaga"
+      }
+    },
+    {
+      "slug": "baena",
+      "name": "Baena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "baena",
+        "pisos": "baena"
+      }
+    },
+    {
+      "slug": "baeza",
+      "name": "Baeza",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "baeza",
+        "pisos": "baeza"
+      }
+    },
+    {
+      "slug": "bailen",
+      "name": "Bailén",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bailen",
+        "pisos": "bailen"
+      }
+    },
+    {
+      "slug": "baiona",
+      "name": "Baiona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "baiona",
+        "pisos": "baiona"
+      }
+    },
+    {
+      "slug": "baranain",
+      "name": "Barañáin",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "baranain",
+        "pisos": "baranain"
+      }
+    },
+    {
+      "slug": "barbate",
+      "name": "Barbate",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "barbate",
+        "pisos": "barbate"
+      }
+    },
+    {
+      "slug": "bargas",
+      "name": "Bargas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bargas",
+        "pisos": "bargas"
+      }
+    },
+    {
+      "slug": "baza",
+      "name": "Baza",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "baza",
+        "pisos": "baza"
+      }
+    },
+    {
+      "slug": "bembibre",
+      "name": "Bembibre",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bembibre",
+        "pisos": "bembibre"
+      }
+    },
+    {
+      "slug": "benaguasil",
+      "name": "Benaguasil",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benaguasil",
+        "pisos": "benaguasil"
+      }
+    },
+    {
+      "slug": "benalmadena",
+      "name": "Benalmádena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benalmadena",
+        "pisos": "benalmadena",
+        "spotahome": "benalmadena"
+      }
+    },
+    {
+      "slug": "benetusser",
+      "name": "Benetússer",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benetusser",
+        "pisos": "benetusser"
+      }
+    },
+    {
+      "slug": "benicarlo",
+      "name": "Benicarló",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benicarlo",
+        "pisos": "benicarlo"
+      }
+    },
+    {
+      "slug": "benidorm",
+      "name": "Benidorm",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benidorm",
+        "pisos": "benidorm",
+        "spotahome": "benidorm"
+      }
+    },
+    {
+      "slug": "benifaio",
+      "name": "Benifaió",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benifaio",
+        "pisos": "benifaio"
+      }
+    },
+    {
+      "slug": "benissa",
+      "name": "Benissa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "benissa",
+        "pisos": "benissa"
+      }
+    },
+    {
+      "slug": "berja",
+      "name": "Berja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "berja",
+        "pisos": "berja"
+      }
+    },
+    {
+      "slug": "binissalem",
+      "name": "Binissalem",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "binissalem",
+        "pisos": "binissalem"
+      }
+    },
+    {
+      "slug": "blanes",
+      "name": "Blanes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "blanes",
+        "pisos": "blanes",
+        "spotahome": "blanes"
+      }
+    },
+    {
+      "slug": "boiro",
+      "name": "Boiro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "boiro"
+      }
+    },
+    {
+      "slug": "bormujos",
+      "name": "Bormujos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bormujos",
+        "pisos": "bormujos"
+      }
+    },
+    {
+      "slug": "brenes",
+      "name": "Brenes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "brenes",
+        "pisos": "brenes"
+      }
+    },
+    {
+      "slug": "briviesca",
+      "name": "Briviesca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "briviesca"
+      }
+    },
+    {
+      "slug": "brunete",
+      "name": "Brunete",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "brunete",
+        "pisos": "brunete"
+      }
+    },
+    {
+      "slug": "bueu",
+      "name": "Bueu",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bueu",
+        "pisos": "bueu"
+      }
+    },
+    {
+      "slug": "burjassot",
+      "name": "Burjassot",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "burjassot",
+        "pisos": "burjassot"
+      }
+    },
+    {
+      "slug": "burriana",
+      "name": "Burriana",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "burriana",
+        "pisos": "burriana"
+      }
+    },
+    {
+      "slug": "bunol",
+      "name": "Buñol",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bunol",
+        "pisos": "bunol"
+      }
+    },
+    {
+      "slug": "bejar",
+      "name": "Béjar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "bejar",
+        "pisos": "bejar"
+      }
+    },
+    {
+      "slug": "betera",
+      "name": "Bétera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "betera",
+        "pisos": "betera"
+      }
+    },
+    {
+      "slug": "cabra",
+      "name": "Cabra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cabra",
+        "pisos": "cabra"
+      }
+    },
+    {
+      "slug": "cabrils",
+      "name": "Cabrils",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cabrils",
+        "pisos": "cabrils"
+      }
+    },
+    {
+      "slug": "calafell",
+      "name": "Calafell",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "calafell",
+        "spotahome": "calafell"
+      }
+    },
+    {
+      "slug": "calatayud",
+      "name": "Calatayud",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "calatayud",
+        "pisos": "calatayud"
+      }
+    },
+    {
+      "slug": "calella",
+      "name": "Calella",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "calella",
+        "pisos": "calella"
+      }
+    },
+    {
+      "slug": "calonge",
+      "name": "Calonge",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "calonge",
+        "pisos": "calonge"
+      }
+    },
+    {
+      "slug": "calp",
+      "name": "Calp",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "calp",
+        "pisos": "calp"
+      }
+    },
+    {
+      "slug": "calvia",
+      "name": "Calvià",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "calvia",
+        "pisos": "calvia"
+      }
+    },
+    {
+      "slug": "camargo",
+      "name": "Camargo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "camargo",
+        "pisos": "camargo"
+      }
+    },
+    {
+      "slug": "camas",
+      "name": "Camas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "camas",
+        "pisos": "camas"
+      }
+    },
+    {
+      "slug": "cambados",
+      "name": "Cambados",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cambados",
+        "pisos": "cambados"
+      }
+    },
+    {
+      "slug": "cambre",
+      "name": "Cambre",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cambre",
+        "pisos": "cambre"
+      }
+    },
+    {
+      "slug": "cambrils",
+      "name": "Cambrils",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cambrils",
+        "pisos": "cambrils",
+        "spotahome": "cambrils"
+      }
+    },
+    {
+      "slug": "campos",
+      "name": "Campos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "campos",
+        "pisos": "campos"
+      }
+    },
+    {
+      "slug": "candelaria",
+      "name": "Candelaria",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "candelaria",
+        "pisos": "candelaria"
+      }
+    },
+    {
+      "slug": "cantillana",
+      "name": "Cantillana",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cantillana",
+        "pisos": "cantillana"
+      }
+    },
+    {
+      "slug": "capdepera",
+      "name": "Capdepera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "capdepera",
+        "pisos": "capdepera"
+      }
+    },
+    {
+      "slug": "carballo",
+      "name": "Carballo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "carballo",
+        "pisos": "carballo"
+      }
+    },
+    {
+      "slug": "carboneras",
+      "name": "Carboneras",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "carboneras",
+        "pisos": "carboneras"
+      }
+    },
+    {
+      "slug": "carcaixent",
+      "name": "Carcaixent",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "carcaixent",
+        "pisos": "carcaixent"
+      }
+    },
+    {
+      "slug": "cardedeu",
+      "name": "Cardedeu",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cardedeu",
+        "pisos": "cardedeu"
+      }
+    },
+    {
+      "slug": "carlet",
+      "name": "Carlet",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "carlet",
+        "pisos": "carlet"
+      }
+    },
+    {
+      "slug": "carmona",
+      "name": "Carmona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "carmona",
+        "pisos": "carmona"
+      }
+    },
+    {
+      "slug": "castalla",
+      "name": "Castalla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "castalla",
+        "pisos": "castalla"
+      }
+    },
+    {
+      "slug": "castelldefels",
+      "name": "Castelldefels",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "castelldefels",
+        "pisos": "castelldefels",
+        "spotahome": "castelldefels"
+      }
+    },
+    {
+      "slug": "catarroja",
+      "name": "Catarroja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "catarroja",
+        "pisos": "catarroja"
+      }
+    },
+    {
+      "slug": "cedeira",
+      "name": "Cedeira",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cedeira",
+        "pisos": "cedeira"
+      }
+    },
+    {
+      "slug": "cee",
+      "name": "Cee",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cee",
+        "pisos": "cee"
+      }
+    },
+    {
+      "slug": "cehegin",
+      "name": "Cehegín",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cehegin",
+        "pisos": "cehegin"
+      }
+    },
+    {
+      "slug": "cercedilla",
+      "name": "Cercedilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cercedilla",
+        "pisos": "cercedilla"
+      }
+    },
+    {
+      "slug": "ceuta",
+      "name": "Ceuta",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ceuta",
+        "pisos": "ceuta",
+        "spotahome": "ceuta"
+      }
+    },
+    {
+      "slug": "cheste",
+      "name": "Cheste",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cheste",
+        "pisos": "cheste"
+      }
+    },
+    {
+      "slug": "chipiona",
+      "name": "Chipiona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "chipiona",
+        "pisos": "chipiona"
+      }
+    },
+    {
+      "slug": "chiva",
+      "name": "Chiva",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "chiva",
+        "pisos": "chiva"
+      }
+    },
+    {
+      "slug": "ciempozuelos",
+      "name": "Ciempozuelos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ciempozuelos",
+        "pisos": "ciempozuelos"
+      }
+    },
+    {
+      "slug": "cocentaina",
+      "name": "Cocentaina",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cocentaina",
+        "pisos": "cocentaina"
+      }
+    },
+    {
+      "slug": "colindres",
+      "name": "Colindres",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "colindres",
+        "pisos": "colindres"
+      }
+    },
+    {
+      "slug": "colmenarejo",
+      "name": "Colmenarejo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "colmenarejo",
+        "pisos": "colmenarejo"
+      }
+    },
+    {
+      "slug": "consuegra",
+      "name": "Consuegra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "consuegra",
+        "pisos": "consuegra"
+      }
+    },
+    {
+      "slug": "coristanco",
+      "name": "Coristanco",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "coristanco",
+        "pisos": "coristanco"
+      }
+    },
+    {
+      "slug": "coslada",
+      "name": "Coslada",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "coslada",
+        "pisos": "coslada",
+        "spotahome": "coslada"
+      }
+    },
+    {
+      "slug": "coin",
+      "name": "Coín",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "coin"
+      }
+    },
+    {
+      "slug": "crevillente",
+      "name": "Crevillente",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "crevillente",
+        "pisos": "crevillente"
+      }
+    },
+    {
+      "slug": "cubelles",
+      "name": "Cubelles",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cubelles",
+        "pisos": "cubelles"
+      }
+    },
+    {
+      "slug": "cuenca",
+      "name": "Cuenca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cuenca",
+        "pisos": "cuenca",
+        "spotahome": "cuenca"
+      }
+    },
+    {
+      "slug": "cullera",
+      "name": "Cullera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cullera"
+      }
+    },
+    {
+      "slug": "culleredo",
+      "name": "Culleredo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "culleredo",
+        "pisos": "culleredo"
+      }
+    },
+    {
+      "slug": "cunit",
+      "name": "Cunit",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cunit",
+        "pisos": "cunit"
+      }
+    },
+    {
+      "slug": "caceres",
+      "name": "Cáceres",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "caceres",
+        "pisos": "caceres",
+        "spotahome": "caceres"
+      }
+    },
+    {
+      "slug": "cartama",
+      "name": "Cártama",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "cartama",
+        "pisos": "cartama"
+      }
+    },
+    {
+      "slug": "deltebre",
+      "name": "Deltebre",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "deltebre",
+        "pisos": "deltebre"
+      }
+    },
+    {
+      "slug": "denia",
+      "name": "Denia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "denia",
+        "pisos": "denia",
+        "spotahome": "denia"
+      }
+    },
+    {
+      "slug": "dolores",
+      "name": "Dolores",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "dolores",
+        "pisos": "dolores"
+      }
+    },
+    {
+      "slug": "eibar",
+      "name": "Eibar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "eibar",
+        "pisos": "eibar"
+      }
+    },
+    {
+      "slug": "elda",
+      "name": "Elda",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "elda",
+        "pisos": "elda",
+        "spotahome": "elda"
+      }
+    },
+    {
+      "slug": "empuriabrava",
+      "name": "Empuriabrava",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "empuriabrava",
+        "pisos": "empuriabrava"
+      }
+    },
+    {
+      "slug": "erandio",
+      "name": "Erandio",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "erandio",
+        "pisos": "erandio"
+      }
+    },
+    {
+      "slug": "esparreguera",
+      "name": "Esparreguera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "esparreguera",
+        "pisos": "esparreguera"
+      }
+    },
+    {
+      "slug": "espartinas",
+      "name": "Espartinas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "espartinas",
+        "pisos": "espartinas"
+      }
+    },
+    {
+      "slug": "estepona",
+      "name": "Estepona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "estepona",
+        "pisos": "estepona",
+        "spotahome": "estepona"
+      }
+    },
+    {
+      "slug": "felanitx",
+      "name": "Felanitx",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "felanitx",
+        "pisos": "felanitx"
+      }
+    },
+    {
+      "slug": "fene",
+      "name": "Fene",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "fene",
+        "pisos": "fene"
+      }
+    },
+    {
+      "slug": "ferrol",
+      "name": "Ferrol",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ferrol",
+        "pisos": "ferrol",
+        "spotahome": "ferrol"
+      }
+    },
+    {
+      "slug": "figueres",
+      "name": "Figueres",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "figueres",
+        "pisos": "figueres"
+      }
+    },
+    {
+      "slug": "firgas",
+      "name": "Firgas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "firgas",
+        "pisos": "firgas"
+      }
+    },
+    {
+      "slug": "foz",
+      "name": "Foz",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "foz",
+        "pisos": "foz"
+      }
+    },
+    {
+      "slug": "fraga",
+      "name": "Fraga",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "fraga"
+      }
+    },
+    {
+      "slug": "fuengirola",
+      "name": "Fuengirola",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "fuengirola",
+        "spotahome": "fuengirola"
+      }
+    },
+    {
+      "slug": "fuensalida",
+      "name": "Fuensalida",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "fuensalida",
+        "pisos": "fuensalida"
+      }
+    },
+    {
+      "slug": "galapagar",
+      "name": "Galapagar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "galapagar",
+        "pisos": "galapagar",
+        "spotahome": "galapagar"
+      }
+    },
+    {
+      "slug": "gandia",
+      "name": "Gandia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "gandia",
+        "pisos": "gandia",
+        "spotahome": "gandia"
+      }
+    },
+    {
+      "slug": "garrucha",
+      "name": "Garrucha",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "garrucha",
+        "pisos": "garrucha"
+      }
+    },
+    {
+      "slug": "gava",
+      "name": "Gavà",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "gava",
+        "pisos": "gava",
+        "spotahome": "gava"
+      }
+    },
+    {
+      "slug": "gelves",
+      "name": "Gelves",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "gelves",
+        "pisos": "gelves"
+      }
+    },
+    {
+      "slug": "getxo",
+      "name": "Getxo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "getxo",
+        "pisos": "getxo"
+      }
+    },
+    {
+      "slug": "gines",
+      "name": "Gines",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "gines",
+        "pisos": "gines"
+      }
+    },
+    {
+      "slug": "godella",
+      "name": "Godella",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "godella",
+        "pisos": "godella"
+      }
+    },
+    {
+      "slug": "gondomar",
+      "name": "Gondomar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "gondomar",
+        "pisos": "gondomar",
+        "spotahome": "gondomar"
+      }
+    },
+    {
+      "slug": "grado",
+      "name": "Grado",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "grado",
+        "pisos": "grado"
+      }
+    },
+    {
+      "slug": "granollers",
+      "name": "Granollers",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "granollers",
+        "pisos": "granollers",
+        "spotahome": "granollers"
+      }
+    },
+    {
+      "slug": "grinon",
+      "name": "Griñón",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "grinon",
+        "pisos": "grinon"
+      }
+    },
+    {
+      "slug": "guadalajara",
+      "name": "Guadalajara",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "guadalajara",
+        "pisos": "guadalajara",
+        "spotahome": "guadalajara"
+      }
+    },
+    {
+      "slug": "guadarrama",
+      "name": "Guadarrama",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "guadarrama",
+        "pisos": "guadarrama"
+      }
+    },
+    {
+      "slug": "guadix",
+      "name": "Guadix",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "guadix",
+        "pisos": "guadix"
+      }
+    },
+    {
+      "slug": "guillena",
+      "name": "Guillena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "guillena",
+        "pisos": "guillena"
+      }
+    },
+    {
+      "slug": "galdar",
+      "name": "Gáldar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "galdar",
+        "pisos": "galdar"
+      }
+    },
+    {
+      "slug": "guimar",
+      "name": "Güimar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "guimar",
+        "pisos": "guimar"
+      }
+    },
+    {
+      "slug": "haro",
+      "name": "Haro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "haro",
+        "pisos": "haro"
+      }
+    },
+    {
+      "slug": "herencia",
+      "name": "Herencia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "herencia",
+        "pisos": "herencia"
+      }
+    },
+    {
+      "slug": "hondarribia",
+      "name": "Hondarribia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "hondarribia",
+        "pisos": "hondarribia"
+      }
+    },
+    {
+      "slug": "huesca",
+      "name": "Huesca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "huesca",
+        "pisos": "huesca",
+        "spotahome": "huesca"
+      }
+    },
+    {
+      "slug": "ibi",
+      "name": "Ibi",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ibi",
+        "pisos": "ibi"
+      }
+    },
+    {
+      "slug": "igualada",
+      "name": "Igualada",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "igualada",
+        "pisos": "igualada",
+        "spotahome": "igualada"
+      }
+    },
+    {
+      "slug": "illescas",
+      "name": "Illescas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "illescas",
+        "pisos": "illescas"
+      }
+    },
+    {
+      "slug": "illora",
+      "name": "Illora",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "illora",
+        "pisos": "illora"
+      }
+    },
+    {
+      "slug": "inca",
+      "name": "Inca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "inca"
+      }
+    },
+    {
+      "slug": "ingenio",
+      "name": "Ingenio",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ingenio",
+        "pisos": "ingenio"
+      }
+    },
+    {
+      "slug": "jaca",
+      "name": "Jaca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "jaca",
+        "pisos": "jaca",
+        "spotahome": "jaca"
+      }
+    },
+    {
+      "slug": "jumilla",
+      "name": "Jumilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "jumilla",
+        "pisos": "jumilla"
+      }
+    },
+    {
+      "slug": "lalin",
+      "name": "Lalín",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "lalin",
+        "pisos": "lalin"
+      }
+    },
+    {
+      "slug": "laracha",
+      "name": "Laracha",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "laracha"
+      }
+    },
+    {
+      "slug": "laredo",
+      "name": "Laredo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "laredo",
+        "pisos": "laredo"
+      }
+    },
+    {
+      "slug": "leioa",
+      "name": "Leioa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "leioa",
+        "pisos": "leioa"
+      }
+    },
+    {
+      "slug": "lepe",
+      "name": "Lepe",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "lepe",
+        "pisos": "lepe"
+      }
+    },
+    {
+      "slug": "linares",
+      "name": "Linares",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "linares",
+        "pisos": "linares"
+      }
+    },
+    {
+      "slug": "llagostera",
+      "name": "Llagostera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "llagostera",
+        "pisos": "llagostera"
+      }
+    },
+    {
+      "slug": "llanes",
+      "name": "Llanes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "llanes",
+        "pisos": "llanes",
+        "spotahome": "llanes"
+      }
+    },
+    {
+      "slug": "llucmajor",
+      "name": "Llucmajor",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "llucmajor"
+      }
+    },
+    {
+      "slug": "lliria",
+      "name": "Llíria",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "lliria",
+        "pisos": "lliria"
+      }
+    },
+    {
+      "slug": "loja",
+      "name": "Loja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "loja",
+        "pisos": "loja"
+      }
+    },
+    {
+      "slug": "lorca",
+      "name": "Lorca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "lorca",
+        "pisos": "lorca"
+      }
+    },
+    {
+      "slug": "lucena",
+      "name": "Lucena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "lucena",
+        "pisos": "lucena"
+      }
+    },
+    {
+      "slug": "lugo",
+      "name": "Lugo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "lugo",
+        "pisos": "lugo",
+        "spotahome": "lugo"
+      }
+    },
+    {
+      "slug": "madridejos",
+      "name": "Madridejos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "madridejos"
+      }
+    },
+    {
+      "slug": "majadahonda",
+      "name": "Majadahonda",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "majadahonda",
+        "pisos": "majadahonda",
+        "spotahome": "majadahonda"
+      }
+    },
+    {
+      "slug": "manacor",
+      "name": "Manacor",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "manacor",
+        "pisos": "manacor"
+      }
+    },
+    {
+      "slug": "manilva",
+      "name": "Manilva",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "manilva"
+      }
+    },
+    {
+      "slug": "manises",
+      "name": "Manises",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "manises",
+        "pisos": "manises",
+        "spotahome": "manises"
+      }
+    },
+    {
+      "slug": "manresa",
+      "name": "Manresa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "manresa",
+        "pisos": "manresa",
+        "spotahome": "manresa"
+      }
+    },
+    {
+      "slug": "maracena",
+      "name": "Maracena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "maracena",
+        "pisos": "maracena"
+      }
+    },
+    {
+      "slug": "marmolejo",
+      "name": "Marmolejo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "marmolejo",
+        "pisos": "marmolejo"
+      }
+    },
+    {
+      "slug": "marratxi",
+      "name": "Marratxí",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "marratxi",
+        "pisos": "marratxi"
+      }
+    },
+    {
+      "slug": "martorell",
+      "name": "Martorell",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "martorell",
+        "pisos": "martorell"
+      }
+    },
+    {
+      "slug": "martos",
+      "name": "Martos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "martos",
+        "pisos": "martos"
+      }
+    },
+    {
+      "slug": "marin",
+      "name": "Marín",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "marin",
+        "pisos": "marin"
+      }
+    },
+    {
+      "slug": "massamagrell",
+      "name": "Massamagrell",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "massamagrell",
+        "pisos": "massamagrell"
+      }
+    },
+    {
+      "slug": "matadepera",
+      "name": "Matadepera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "matadepera",
+        "pisos": "matadepera"
+      }
+    },
+    {
+      "slug": "mazarron",
+      "name": "Mazarrón",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mazarron",
+        "pisos": "mazarron"
+      }
+    },
+    {
+      "slug": "mao",
+      "name": "Maó",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mao"
+      }
+    },
+    {
+      "slug": "meco",
+      "name": "Meco",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "meco",
+        "pisos": "meco"
+      }
+    },
+    {
+      "slug": "meliana",
+      "name": "Meliana",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "meliana",
+        "pisos": "meliana"
+      }
+    },
+    {
+      "slug": "melilla",
+      "name": "Melilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "melilla",
+        "pisos": "melilla",
+        "spotahome": "melilla"
+      }
+    },
+    {
+      "slug": "miguelturra",
+      "name": "Miguelturra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "miguelturra",
+        "pisos": "miguelturra"
+      }
+    },
+    {
+      "slug": "mijas",
+      "name": "Mijas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mijas",
+        "pisos": "mijas"
+      }
+    },
+    {
+      "slug": "mislata",
+      "name": "Mislata",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mislata",
+        "spotahome": "mislata"
+      }
+    },
+    {
+      "slug": "moana",
+      "name": "Moaña",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "moana",
+        "pisos": "moana"
+      }
+    },
+    {
+      "slug": "moguer",
+      "name": "Moguer",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "moguer",
+        "pisos": "moguer"
+      }
+    },
+    {
+      "slug": "mogan",
+      "name": "Mogán",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mogan",
+        "pisos": "mogan"
+      }
+    },
+    {
+      "slug": "mollerussa",
+      "name": "Mollerussa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mollerussa",
+        "pisos": "mollerussa"
+      }
+    },
+    {
+      "slug": "moncada",
+      "name": "Moncada",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "moncada",
+        "pisos": "moncada",
+        "spotahome": "moncada"
+      }
+    },
+    {
+      "slug": "monserrat",
+      "name": "Monserrat",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "monserrat",
+        "pisos": "monserrat"
+      }
+    },
+    {
+      "slug": "montellano",
+      "name": "Montellano",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "montellano"
+      }
+    },
+    {
+      "slug": "montgat",
+      "name": "Montgat",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "montgat",
+        "pisos": "montgat"
+      }
+    },
+    {
+      "slug": "montilla",
+      "name": "Montilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "montilla"
+      }
+    },
+    {
+      "slug": "moraleja",
+      "name": "Moraleja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "moraleja",
+        "pisos": "moraleja"
+      }
+    },
+    {
+      "slug": "moralzarzal",
+      "name": "Moralzarzal",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "moralzarzal",
+        "pisos": "moralzarzal"
+      }
+    },
+    {
+      "slug": "moratalla",
+      "name": "Moratalla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "moratalla"
+      }
+    },
+    {
+      "slug": "mos",
+      "name": "Mos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mos",
+        "pisos": "mos"
+      }
+    },
+    {
+      "slug": "motril",
+      "name": "Motril",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "motril",
+        "pisos": "motril"
+      }
+    },
+    {
+      "slug": "mutxamel",
+      "name": "Mutxamel",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "mutxamel",
+        "pisos": "mutxamel"
+      }
+    },
+    {
+      "slug": "merida",
+      "name": "Mérida",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "merida",
+        "pisos": "merida",
+        "spotahome": "merida"
+      }
+    },
+    {
+      "slug": "naron",
+      "name": "Narón",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "naron",
+        "pisos": "naron"
+      }
+    },
+    {
+      "slug": "navalcarnero",
+      "name": "Navalcarnero",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "navalcarnero",
+        "pisos": "navalcarnero"
+      }
+    },
+    {
+      "slug": "navia",
+      "name": "Navia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "navia",
+        "pisos": "navia"
+      }
+    },
+    {
+      "slug": "nerja",
+      "name": "Nerja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "nerja",
+        "pisos": "nerja",
+        "spotahome": "nerja"
+      }
+    },
+    {
+      "slug": "nigran",
+      "name": "Nigrán",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "nigran",
+        "pisos": "nigran"
+      }
+    },
+    {
+      "slug": "nules",
+      "name": "Nules",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "nules",
+        "pisos": "nules"
+      }
+    },
+    {
+      "slug": "nijar",
+      "name": "Níjar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "nijar",
+        "pisos": "nijar",
+        "spotahome": "nijar"
+      }
+    },
+    {
+      "slug": "ocana",
+      "name": "Ocaña",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ocana",
+        "pisos": "ocana"
+      }
+    },
+    {
+      "slug": "ogijares",
+      "name": "Ogíjares",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ogijares",
+        "pisos": "ogijares"
+      }
+    },
+    {
+      "slug": "oleiros",
+      "name": "Oleiros",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "oleiros",
+        "pisos": "oleiros"
+      }
+    },
+    {
+      "slug": "oliva",
+      "name": "Oliva",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "oliva",
+        "pisos": "oliva"
+      }
+    },
+    {
+      "slug": "olot",
+      "name": "Olot",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "olot",
+        "pisos": "olot",
+        "spotahome": "olot"
+      }
+    },
+    {
+      "slug": "onda",
+      "name": "Onda",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "onda",
+        "pisos": "onda"
+      }
+    },
+    {
+      "slug": "onil",
+      "name": "Onil",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "onil",
+        "pisos": "onil"
+      }
+    },
+    {
+      "slug": "ontinyent",
+      "name": "Ontinyent",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ontinyent",
+        "pisos": "ontinyent"
+      }
+    },
+    {
+      "slug": "ordes",
+      "name": "Ordes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ordes"
+      }
+    },
+    {
+      "slug": "ortuella",
+      "name": "Ortuella",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ortuella",
+        "pisos": "ortuella"
+      }
+    },
+    {
+      "slug": "osuna",
+      "name": "Osuna",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "osuna",
+        "pisos": "osuna"
+      }
+    },
+    {
+      "slug": "outes",
+      "name": "Outes",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "outes",
+        "pisos": "outes"
+      }
+    },
+    {
+      "slug": "padron",
+      "name": "Padrón",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "padron",
+        "pisos": "padron"
+      }
+    },
+    {
+      "slug": "padul",
+      "name": "Padul",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "padul",
+        "pisos": "padul"
+      }
+    },
+    {
+      "slug": "paiporta",
+      "name": "Paiporta",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "paiporta",
+        "pisos": "paiporta"
+      }
+    },
+    {
+      "slug": "palafrugell",
+      "name": "Palafrugell",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "palafrugell",
+        "pisos": "palafrugell"
+      }
+    },
+    {
+      "slug": "palamos",
+      "name": "Palamós",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "palamos",
+        "pisos": "palamos"
+      }
+    },
+    {
+      "slug": "palencia",
+      "name": "Palencia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "palencia",
+        "pisos": "palencia",
+        "spotahome": "palencia"
+      }
+    },
+    {
+      "slug": "pasaia",
+      "name": "Pasaia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pasaia",
+        "pisos": "pasaia"
+      }
+    },
+    {
+      "slug": "paterna",
+      "name": "Paterna",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "paterna",
+        "pisos": "paterna",
+        "spotahome": "paterna"
+      }
+    },
+    {
+      "slug": "peligros",
+      "name": "Peligros",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "peligros",
+        "pisos": "peligros"
+      }
+    },
+    {
+      "slug": "peniscola",
+      "name": "Peníscola",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "peniscola",
+        "pisos": "peniscola",
+        "spotahome": "peniscola"
+      }
+    },
+    {
+      "slug": "picanya",
+      "name": "Picanya",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "picanya",
+        "pisos": "picanya"
+      }
+    },
+    {
+      "slug": "picassent",
+      "name": "Picassent",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "picassent",
+        "pisos": "picassent"
+      }
+    },
+    {
+      "slug": "piera",
+      "name": "Piera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "piera",
+        "pisos": "piera"
+      }
+    },
+    {
+      "slug": "pinoso",
+      "name": "Pinoso",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pinoso"
+      }
+    },
+    {
+      "slug": "pinto",
+      "name": "Pinto",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pinto",
+        "pisos": "pinto",
+        "spotahome": "pinto"
+      }
+    },
+    {
+      "slug": "pizarra",
+      "name": "Pizarra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pizarra",
+        "pisos": "pizarra"
+      }
+    },
+    {
+      "slug": "plasencia",
+      "name": "Plasencia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "plasencia",
+        "pisos": "plasencia",
+        "spotahome": "plasencia"
+      }
+    },
+    {
+      "slug": "poio",
+      "name": "Poio",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "poio",
+        "pisos": "poio"
+      }
+    },
+    {
+      "slug": "ponferrada",
+      "name": "Ponferrada",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ponferrada",
+        "pisos": "ponferrada",
+        "spotahome": "ponferrada"
+      }
+    },
+    {
+      "slug": "ponteareas",
+      "name": "Ponteareas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ponteareas",
+        "pisos": "ponteareas"
+      }
+    },
+    {
+      "slug": "pontevedra",
+      "name": "Pontevedra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pontevedra",
+        "pisos": "pontevedra"
+      }
+    },
+    {
+      "slug": "porrino",
+      "name": "Porriño",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "porrino",
+        "pisos": "porrino"
+      }
+    },
+    {
+      "slug": "portugalete",
+      "name": "Portugalete",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "portugalete",
+        "pisos": "portugalete",
+        "spotahome": "portugalete"
+      }
+    },
+    {
+      "slug": "posadas",
+      "name": "Posadas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "posadas",
+        "pisos": "posadas"
+      }
+    },
+    {
+      "slug": "pozoblanco",
+      "name": "Pozoblanco",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pozoblanco"
+      }
+    },
+    {
+      "slug": "puertollano",
+      "name": "Puertollano",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "puertollano",
+        "pisos": "puertollano"
+      }
+    },
+    {
+      "slug": "puigcerda",
+      "name": "Puigcerdà",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "puigcerda",
+        "pisos": "puigcerda"
+      }
+    },
+    {
+      "slug": "pulpi",
+      "name": "Pulpí",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pulpi",
+        "pisos": "pulpi"
+      }
+    },
+    {
+      "slug": "pajara",
+      "name": "Pájara",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "pajara",
+        "pisos": "pajara"
+      }
+    },
+    {
+      "slug": "redondela",
+      "name": "Redondela",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "redondela",
+        "pisos": "redondela"
+      }
+    },
+    {
+      "slug": "reinosa",
+      "name": "Reinosa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "reinosa",
+        "pisos": "reinosa"
+      }
+    },
+    {
+      "slug": "reocin",
+      "name": "Reocín",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "reocin",
+        "pisos": "reocin"
+      }
+    },
+    {
+      "slug": "rianxo",
+      "name": "Rianxo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "rianxo",
+        "pisos": "rianxo"
+      }
+    },
+    {
+      "slug": "ribadeo",
+      "name": "Ribadeo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ribadeo",
+        "pisos": "ribadeo",
+        "spotahome": "ribadeo"
+      }
+    },
+    {
+      "slug": "ribeira",
+      "name": "Ribeira",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ribeira",
+        "pisos": "ribeira"
+      }
+    },
+    {
+      "slug": "ripollet",
+      "name": "Ripollet",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ripollet",
+        "pisos": "ripollet",
+        "spotahome": "ripollet"
+      }
+    },
+    {
+      "slug": "rojales",
+      "name": "Rojales",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "rojales"
+      }
+    },
+    {
+      "slug": "ronda",
+      "name": "Ronda",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ronda",
+        "pisos": "ronda",
+        "spotahome": "ronda"
+      }
+    },
+    {
+      "slug": "roses",
+      "name": "Roses",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "roses",
+        "pisos": "roses"
+      }
+    },
+    {
+      "slug": "rota",
+      "name": "Rota",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "rota",
+        "pisos": "rota"
+      }
+    },
+    {
+      "slug": "rubi",
+      "name": "Rubí",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "rubi",
+        "pisos": "rubi",
+        "spotahome": "rubi"
+      }
+    },
+    {
+      "slug": "salobrena",
+      "name": "Salobreña",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "salobrena",
+        "pisos": "salobrena"
+      }
+    },
+    {
+      "slug": "salou",
+      "name": "Salou",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "salou",
+        "pisos": "salou",
+        "spotahome": "salou"
+      }
+    },
+    {
+      "slug": "salt",
+      "name": "Salt",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "salt",
+        "pisos": "salt",
+        "spotahome": "salt"
+      }
+    },
+    {
+      "slug": "santanyi",
+      "name": "Santanyí",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "santanyi"
+      }
+    },
+    {
+      "slug": "santomera",
+      "name": "Santomera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "santomera",
+        "pisos": "santomera"
+      }
+    },
+    {
+      "slug": "santona",
+      "name": "Santoña",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "santona",
+        "pisos": "santona"
+      }
+    },
+    {
+      "slug": "santurtzi",
+      "name": "Santurtzi",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "santurtzi",
+        "pisos": "santurtzi"
+      }
+    },
+    {
+      "slug": "sanxenxo",
+      "name": "Sanxenxo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sanxenxo",
+        "pisos": "sanxenxo",
+        "spotahome": "sanxenxo"
+      }
+    },
+    {
+      "slug": "sarria",
+      "name": "Sarria",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sarria"
+      }
+    },
+    {
+      "slug": "sauzal",
+      "name": "Sauzal",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sauzal"
+      }
+    },
+    {
+      "slug": "sax",
+      "name": "Sax",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sax",
+        "pisos": "sax"
+      }
+    },
+    {
+      "slug": "sedavi",
+      "name": "Sedaví",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sedavi",
+        "pisos": "sedavi"
+      }
+    },
+    {
+      "slug": "segorbe",
+      "name": "Segorbe",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "segorbe",
+        "pisos": "segorbe"
+      }
+    },
+    {
+      "slug": "segovia",
+      "name": "Segovia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "segovia",
+        "pisos": "segovia"
+      }
+    },
+    {
+      "slug": "sentmenat",
+      "name": "Sentmenat",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sentmenat",
+        "pisos": "sentmenat"
+      }
+    },
+    {
+      "slug": "sesena",
+      "name": "Seseña",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sesena",
+        "pisos": "sesena"
+      }
+    },
+    {
+      "slug": "sestao",
+      "name": "Sestao",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sestao",
+        "pisos": "sestao"
+      }
+    },
+    {
+      "slug": "silla",
+      "name": "Silla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "silla",
+        "pisos": "silla"
+      }
+    },
+    {
+      "slug": "sitges",
+      "name": "Sitges",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sitges",
+        "pisos": "sitges",
+        "spotahome": "sitges"
+      }
+    },
+    {
+      "slug": "sopela",
+      "name": "Sopela",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sopela",
+        "pisos": "sopela"
+      }
+    },
+    {
+      "slug": "soria",
+      "name": "Soria",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "soria",
+        "pisos": "soria",
+        "spotahome": "soria"
+      }
+    },
+    {
+      "slug": "suances",
+      "name": "Suances",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "suances",
+        "pisos": "suances"
+      }
+    },
+    {
+      "slug": "sueca",
+      "name": "Sueca",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "sueca",
+        "pisos": "sueca"
+      }
+    },
+    {
+      "slug": "soller",
+      "name": "Sóller",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "soller",
+        "pisos": "soller"
+      }
+    },
+    {
+      "slug": "tacoronte",
+      "name": "Tacoronte",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tacoronte",
+        "pisos": "tacoronte"
+      }
+    },
+    {
+      "slug": "tarifa",
+      "name": "Tarifa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tarifa",
+        "pisos": "tarifa",
+        "spotahome": "tarifa"
+      }
+    },
+    {
+      "slug": "tegueste",
+      "name": "Tegueste",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tegueste",
+        "pisos": "tegueste"
+      }
+    },
+    {
+      "slug": "teo",
+      "name": "Teo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "teo",
+        "pisos": "teo"
+      }
+    },
+    {
+      "slug": "teror",
+      "name": "Teror",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "teror",
+        "pisos": "teror"
+      }
+    },
+    {
+      "slug": "teruel",
+      "name": "Teruel",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "teruel",
+        "pisos": "teruel",
+        "spotahome": "teruel"
+      }
+    },
+    {
+      "slug": "tiana",
+      "name": "Tiana",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tiana",
+        "pisos": "tiana"
+      }
+    },
+    {
+      "slug": "tobarra",
+      "name": "Tobarra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tobarra",
+        "pisos": "tobarra"
+      }
+    },
+    {
+      "slug": "toledo",
+      "name": "Toledo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "toledo",
+        "pisos": "toledo",
+        "spotahome": "toledo"
+      }
+    },
+    {
+      "slug": "tomares",
+      "name": "Tomares",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tomares",
+        "pisos": "tomares"
+      }
+    },
+    {
+      "slug": "tomelloso",
+      "name": "Tomelloso",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tomelloso"
+      }
+    },
+    {
+      "slug": "tona",
+      "name": "Tona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tona",
+        "pisos": "tona"
+      }
+    },
+    {
+      "slug": "tordera",
+      "name": "Tordera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tordera",
+        "pisos": "tordera"
+      }
+    },
+    {
+      "slug": "tordesillas",
+      "name": "Tordesillas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tordesillas",
+        "pisos": "tordesillas"
+      }
+    },
+    {
+      "slug": "toro",
+      "name": "Toro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "toro",
+        "pisos": "toro"
+      }
+    },
+    {
+      "slug": "torredembarra",
+      "name": "Torredembarra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torredembarra",
+        "pisos": "torredembarra"
+      }
+    },
+    {
+      "slug": "torredonjimeno",
+      "name": "Torredonjimeno",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torredonjimeno",
+        "pisos": "torredonjimeno"
+      }
+    },
+    {
+      "slug": "torrelavega",
+      "name": "Torrelavega",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torrelavega",
+        "pisos": "torrelavega",
+        "spotahome": "torrelavega"
+      }
+    },
+    {
+      "slug": "torrelodones",
+      "name": "Torrelodones",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torrelodones",
+        "pisos": "torrelodones"
+      }
+    },
+    {
+      "slug": "torremolinos",
+      "name": "Torremolinos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torremolinos",
+        "spotahome": "torremolinos"
+      }
+    },
+    {
+      "slug": "torrevieja",
+      "name": "Torrevieja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torrevieja",
+        "pisos": "torrevieja",
+        "spotahome": "torrevieja"
+      }
+    },
+    {
+      "slug": "torrijos",
+      "name": "Torrijos",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torrijos",
+        "pisos": "torrijos"
+      }
+    },
+    {
+      "slug": "torrox",
+      "name": "Torrox",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "torrox",
+        "pisos": "torrox"
+      }
+    },
+    {
+      "slug": "tortosa",
+      "name": "Tortosa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tortosa",
+        "pisos": "tortosa"
+      }
+    },
+    {
+      "slug": "trujillo",
+      "name": "Trujillo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "trujillo",
+        "spotahome": "trujillo"
+      }
+    },
+    {
+      "slug": "tudela",
+      "name": "Tudela",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tudela",
+        "pisos": "tudela"
+      }
+    },
+    {
+      "slug": "tui",
+      "name": "Tui",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tui",
+        "pisos": "tui"
+      }
+    },
+    {
+      "slug": "tarrega",
+      "name": "Tàrrega",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tarrega",
+        "pisos": "tarrega"
+      }
+    },
+    {
+      "slug": "tias",
+      "name": "Tías",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "tias",
+        "pisos": "tias"
+      }
+    },
+    {
+      "slug": "ubrique",
+      "name": "Ubrique",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ubrique",
+        "pisos": "ubrique"
+      }
+    },
+    {
+      "slug": "utebo",
+      "name": "Utebo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "utebo",
+        "pisos": "utebo"
+      }
+    },
+    {
+      "slug": "utiel",
+      "name": "Utiel",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "utiel",
+        "pisos": "utiel"
+      }
+    },
+    {
+      "slug": "utrera",
+      "name": "Utrera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "utrera",
+        "pisos": "utrera"
+      }
+    },
+    {
+      "slug": "valdemorillo",
+      "name": "Valdemorillo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "valdemorillo",
+        "pisos": "valdemorillo"
+      }
+    },
+    {
+      "slug": "valdemoro",
+      "name": "Valdemoro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "valdemoro",
+        "pisos": "valdemoro",
+        "spotahome": "valdemoro"
+      }
+    },
+    {
+      "slug": "valdepenas",
+      "name": "Valdepeñas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "valdepenas",
+        "pisos": "valdepenas"
+      }
+    },
+    {
+      "slug": "valdovino",
+      "name": "Valdoviño",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "valdovino",
+        "pisos": "valdovino"
+      }
+    },
+    {
+      "slug": "valdes",
+      "name": "Valdés",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "valdes",
+        "pisos": "valdes"
+      }
+    },
+    {
+      "slug": "vallirana",
+      "name": "Vallirana",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "vallirana",
+        "pisos": "vallirana"
+      }
+    },
+    {
+      "slug": "valls",
+      "name": "Valls",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "valls",
+        "pisos": "valls"
+      }
+    },
+    {
+      "slug": "vera",
+      "name": "Vera",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "vera",
+        "pisos": "vera"
+      }
+    },
+    {
+      "slug": "vic",
+      "name": "Vic",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "vic",
+        "pisos": "vic",
+        "spotahome": "vic"
+      }
+    },
+    {
+      "slug": "viladecans",
+      "name": "Viladecans",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "viladecans",
+        "pisos": "viladecans",
+        "spotahome": "viladecans"
+      }
+    },
+    {
+      "slug": "vilamarxant",
+      "name": "Vilamarxant",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "vilamarxant",
+        "pisos": "vilamarxant"
+      }
+    },
+    {
+      "slug": "villablino",
+      "name": "Villablino",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "villablino"
+      }
+    },
+    {
+      "slug": "villalbilla",
+      "name": "Villalbilla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "villalbilla",
+        "pisos": "villalbilla"
+      }
+    },
+    {
+      "slug": "villaquilambre",
+      "name": "Villaquilambre",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "villaquilambre",
+        "pisos": "villaquilambre"
+      }
+    },
+    {
+      "slug": "villarrobledo",
+      "name": "Villarrobledo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "villarrobledo",
+        "pisos": "villarrobledo"
+      }
+    },
+    {
+      "slug": "villaviciosa",
+      "name": "Villaviciosa",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "villaviciosa"
+      }
+    },
+    {
+      "slug": "villena",
+      "name": "Villena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "villena"
+      }
+    },
+    {
+      "slug": "vinaros",
+      "name": "Vinaròs",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "vinaros",
+        "pisos": "vinaros"
+      }
+    },
+    {
+      "slug": "viveiro",
+      "name": "Viveiro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "viveiro",
+        "pisos": "viveiro"
+      }
+    },
+    {
+      "slug": "vicar",
+      "name": "Vícar",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "vicar",
+        "pisos": "vicar"
+      }
+    },
+    {
+      "slug": "xirivella",
+      "name": "Xirivella",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "xirivella",
+        "pisos": "xirivella"
+      }
+    },
+    {
+      "slug": "xixona",
+      "name": "Xixona",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "xixona"
+      }
+    },
+    {
+      "slug": "xativa",
+      "name": "Xàtiva",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "xativa",
+        "pisos": "xativa"
+      }
+    },
+    {
+      "slug": "yecla",
+      "name": "Yecla",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "yecla",
+        "pisos": "yecla"
+      }
+    },
+    {
+      "slug": "zafra",
+      "name": "Zafra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "zafra",
+        "pisos": "zafra"
+      }
+    },
+    {
+      "slug": "zamora",
+      "name": "Zamora",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "zamora",
+        "pisos": "zamora",
+        "spotahome": "zamora"
+      }
+    },
+    {
+      "slug": "zarautz",
+      "name": "Zarautz",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "zarautz",
+        "pisos": "zarautz"
+      }
+    },
+    {
+      "slug": "zierbena",
+      "name": "Zierbena",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "zierbena",
+        "pisos": "zierbena"
+      }
+    },
+    {
+      "slug": "zubia",
+      "name": "Zubia",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "zubia"
+      }
+    },
+    {
+      "slug": "aguilas",
+      "name": "Águilas",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "aguilas",
+        "pisos": "aguilas"
+      }
+    },
+    {
+      "slug": "avila",
+      "name": "Ávila",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "avila",
+        "pisos": "avila",
+        "spotahome": "avila"
+      }
+    },
+    {
+      "slug": "ecija",
+      "name": "Écija",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ecija",
+        "pisos": "ecija"
+      }
+    },
+    {
+      "slug": "ubeda",
+      "name": "Úbeda",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "habitaclia": "ubeda",
+        "pisos": "ubeda"
+      }
+    }
+  ]
+}

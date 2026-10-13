@@ -1,0 +1,254 @@
+{
+  "country": "pt",
+  "cities": [
+    {
+      "slug": "faro",
+      "name": "Faro",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "olx_pt": 8,
+        "spotahome_pt": "faro"
+      }
+    },
+    {
+      "slug": "lisboa",
+      "name": "Lisboa",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "olx_pt": 11,
+        "spotahome_pt": "lisbon"
+      }
+    },
+    {
+      "slug": "porto",
+      "name": "Porto",
+      "region": "",
+      "priority": true,
+      "refs": {
+        "olx_pt": 13,
+        "spotahome_pt": "porto"
+      }
+    },
+    {
+      "slug": "aveiro",
+      "name": "Aveiro",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 1,
+        "spotahome_pt": "aveiro"
+      }
+    },
+    {
+      "slug": "beja",
+      "name": "Beja",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 2,
+        "spotahome_pt": "beja"
+      }
+    },
+    {
+      "slug": "braga",
+      "name": "Braga",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 3,
+        "spotahome_pt": "braga"
+      }
+    },
+    {
+      "slug": "braganca",
+      "name": "Bragança",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 4,
+        "spotahome_pt": "braganca"
+      }
+    },
+    {
+      "slug": "castelo-branco",
+      "name": "Castelo Branco",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 5
+      }
+    },
+    {
+      "slug": "coimbra",
+      "name": "Coimbra",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 6,
+        "spotahome_pt": "coimbra"
+      }
+    },
+    {
+      "slug": "guarda",
+      "name": "Guarda",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 9,
+        "spotahome_pt": "guarda"
+      }
+    },
+    {
+      "slug": "terceira",
+      "name": "Ilha Terceira",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 43
+      }
+    },
+    {
+      "slug": "madeira",
+      "name": "Ilha da Madeira",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 31,
+        "spotahome_pt": "funchal"
+      }
+    },
+    {
+      "slug": "flores",
+      "name": "Ilha das Flores",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 48
+      }
+    },
+    {
+      "slug": "porto-santo",
+      "name": "Ilha de Porto Santo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 32
+      }
+    },
+    {
+      "slug": "santa-maria",
+      "name": "Ilha de Santa Maria",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 41
+      }
+    },
+    {
+      "slug": "sao-jorge",
+      "name": "Ilha de São Jorge",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 45
+      }
+    },
+    {
+      "slug": "sao-miguel",
+      "name": "Ilha de São Miguel",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 42
+      }
+    },
+    {
+      "slug": "pico",
+      "name": "Ilha do Pico",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 46
+      }
+    },
+    {
+      "slug": "leiria",
+      "name": "Leiria",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 10,
+        "spotahome_pt": "leiria"
+      }
+    },
+    {
+      "slug": "portalegre",
+      "name": "Portalegre",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 12
+      }
+    },
+    {
+      "slug": "santarem",
+      "name": "Santarém",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 14,
+        "spotahome_pt": "santarem"
+      }
+    },
+    {
+      "slug": "setubal",
+      "name": "Setúbal",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 15,
+        "spotahome_pt": "setubal"
+      }
+    },
+    {
+      "slug": "viana-do-castelo",
+      "name": "Viana do Castelo",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 16
+      }
+    },
+    {
+      "slug": "vila-real",
+      "name": "Vila Real",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 17
+      }
+    },
+    {
+      "slug": "viseu",
+      "name": "Viseu",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 18,
+        "spotahome_pt": "viseu"
+      }
+    },
+    {
+      "slug": "evora",
+      "name": "Évora",
+      "region": "",
+      "priority": false,
+      "refs": {
+        "olx_pt": 7,
+        "spotahome_pt": "evora"
+      }
+    }
+  ]
+}

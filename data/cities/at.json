@@ -1,0 +1,110 @@
+{
+  "country": "at",
+  "cities": [
+    {
+      "slug": "wien",
+      "name": "Wien",
+      "region": "Wien",
+      "priority": true,
+      "refs": {"willhaben": "wien"}
+    },
+    {
+      "slug": "niederoesterreich",
+      "name": "Niederösterreich",
+      "region": "Niederösterreich",
+      "priority": false,
+      "refs": {"willhaben": "niederoesterreich"}
+    },
+    {
+      "slug": "oberoesterreich",
+      "name": "Oberösterreich",
+      "region": "Oberösterreich",
+      "priority": false,
+      "refs": {"willhaben": "oberoesterreich"}
+    },
+    {
+      "slug": "steiermark",
+      "name": "Steiermark",
+      "region": "Steiermark",
+      "priority": false,
+      "refs": {"willhaben": "steiermark"}
+    },
+    {
+      "slug": "tirol",
+      "name": "Tirol",
+      "region": "Tirol",
+      "priority": false,
+      "refs": {"willhaben": "tirol"}
+    },
+    {
+      "slug": "kaernten",
+      "name": "Kärnten",
+      "region": "Kärnten",
+      "priority": false,
+      "refs": {"willhaben": "kaernten"}
+    },
+    {
+      "slug": "salzburg",
+      "name": "Salzburg",
+      "region": "Salzburg",
+      "priority": false,
+      "refs": {"willhaben": "salzburg"}
+    },
+    {
+      "slug": "vorarlberg",
+      "name": "Vorarlberg",
+      "region": "Vorarlberg",
+      "priority": false,
+      "refs": {"willhaben": "vorarlberg"}
+    },
+    {
+      "slug": "burgenland",
+      "name": "Burgenland",
+      "region": "Burgenland",
+      "priority": false,
+      "refs": {"willhaben": "burgenland"}
+    },
+    {
+      "slug": "graz",
+      "name": "Graz",
+      "region": "Steiermark",
+      "priority": true,
+      "refs": {"willhaben": "steiermark/graz"}
+    },
+    {
+      "slug": "linz",
+      "name": "Linz",
+      "region": "Oberösterreich",
+      "priority": true,
+      "refs": {"willhaben": "oberoesterreich/linz"}
+    },
+    {
+      "slug": "innsbruck",
+      "name": "Innsbruck",
+      "region": "Tirol",
+      "priority": true,
+      "refs": {"willhaben": "tirol/innsbruck"}
+    },
+    {
+      "slug": "klagenfurt",
+      "name": "Klagenfurt",
+      "region": "Kärnten",
+      "priority": true,
+      "refs": {"willhaben": "kaernten/klagenfurt"}
+    },
+    {
+      "slug": "villach",
+      "name": "Villach",
+      "region": "Kärnten",
+      "priority": false,
+      "refs": {"willhaben": "kaernten/villach"}
+    },
+    {
+      "slug": "wels",
+      "name": "Wels",
+      "region": "Oberösterreich",
+      "priority": false,
+      "refs": {"willhaben": "oberoesterreich/wels"}
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "ua": {
+    "code": "ua",
+    "name": "🇺🇦 Україна",
+    "name_en": "Ukraine",
+    "language": "uk",
+    "currency": "грн",
+    "free": true,
+    "price_stars": 0
+  },
+  "pl": {
+    "code": "pl",
+    "name": "🇵🇱 Польща",
+    "name_en": "Poland",
+    "language": "pl",
+    "currency": "zł",
+    "free": false,
+    "price_stars": 100
+  },
+  "pt": {
+    "code": "pt",
+    "name": "🇵🇹 Португалія",
+    "name_en": "Portugal",
+    "language": "pt",
+    "currency": "€",
+    "free": false,
+    "price_stars": 100
+  },
+  "ro": {
+    "code": "ro",
+    "name": "🇷🇴 Румунія",
+    "name_en": "Romania",
+    "language": "ro",
+    "currency": "lei",
+    "free": false,
+    "price_stars": 100
+  },
+  "bg": {
+    "code": "bg",
+    "name": "🇧🇬 Болгарія",
+    "name_en": "Bulgaria",
+    "language": "bg",
+    "currency": "лв",
+    "free": false,
+    "price_stars": 100
+  },
+  "de": {
+    "code": "de",
+    "name": "🇩🇪 Німеччина",
+    "name_en": "Germany",
+    "language": "de",
+    "currency": "€",
+    "free": false,
+    "price_stars": 150
+  },
+  "es": {
+    "code": "es",
+    "name": "🇪🇸 Іспанія",
+    "name_en": "Spain",
+    "language": "es",
+    "currency": "€",
+    "free": false,
+    "price_stars": 100
+  },
+  "hr": {
+    "code": "hr",
+    "name": "🇭🇷 Хорватія",
+    "name_en": "Croatia",
+    "language": "hr",
+    "currency": "€",
+    "free": false,
+    "price_stars": 100
+  },    
+  "fr": {
+    "code": "fr",
+    "name": "🇫🇷 Франція",
+    "name_en": "France",
+    "language": "fr",
+    "currency": "€",
+    "free": false,
+    "price_stars": 100
+  }  ,
+  "gb": {
+    "code": "gb",
+    "name": "🇬🇧 Велика Британія",
+    "name_en": "United Kingdom",
+    "language": "en",
+    "currency": "£",
+    "free": false,
+    "price_stars": 150
+  } ,
+  "at": {
+    "code": "at",
+    "name": "🇦🇹 Австрія",
+    "name_en": "Austria",
+    "language": "de",
+    "currency": "€",
+    "free": false,
+    "price_stars": 150
+  },
+  "cz": {
+    "code": "cz",
+    "name": "🇨🇿 Чехія",
+    "name_en": "Czechia",
+    "language": "cs",
+    "currency": "Kč",
+    "free": false,
+    "price_stars": 100
+  },
+  "md": {
+  "code": "md",
+  "name": "🇲🇩 Молдова",
+  "name_en": "Moldova",
+  "language": "ro",
+  "currency": "MDL",
+  "free": false,
+  "price_stars": 100
+}, "al": {
+  "code": "al",
+  "name": "🇦🇱 Албанія",
+  "name_en": "Albania",
+  "language": "sq",
+  "currency": "L",
+  "free": false,
+  "price_stars": 100
+}  ,"it": {
+    "code": "it",
+    "name": "🇮🇹 Італія",
+    "name_en": "Italy",
+    "language": "it",
+    "currency": "€",
+    "free": false,
+    "price_stars": 100
+  }
+}

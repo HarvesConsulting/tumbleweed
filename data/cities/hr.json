@@ -1,0 +1,110 @@
+{
+  "country": "hr",
+  "cities": [
+    {
+      "slug": "zagreb",
+      "name": "Zagreb",
+      "region": "Grad Zagreb",
+      "priority": true,
+      "refs": { "nekretnine": "zagreb" }
+    },
+    {
+      "slug": "split",
+      "name": "Split",
+      "region": "Splitsko-dalmatinska",
+      "priority": true,
+      "refs": { "nekretnine": "split" }
+    },
+    {
+      "slug": "rijeka",
+      "name": "Rijeka",
+      "region": "Primorsko-goranska",
+      "priority": true,
+      "refs": { "nekretnine": "rijeka" }
+    },
+    {
+      "slug": "osijek",
+      "name": "Osijek",
+      "region": "Osječko-baranjska",
+      "priority": true,
+      "refs": { "nekretnine": "osijek" }
+    },
+    {
+      "slug": "zadar",
+      "name": "Zadar",
+      "region": "Zadarska",
+      "priority": true,
+      "refs": { "nekretnine": "zadar" }
+    },
+    {
+      "slug": "pula",
+      "name": "Pula",
+      "region": "Istarska",
+      "priority": true,
+      "refs": { "nekretnine": "pula" }
+    },
+    {
+      "slug": "slavonski-brod",
+      "name": "Slavonski Brod",
+      "region": "Brodsko-posavska",
+      "priority": true,
+      "refs": { "nekretnine": "slavonski-brod" }
+    },
+    {
+      "slug": "karlovac",
+      "name": "Karlovac",
+      "region": "Karlovačka",
+      "priority": true,
+      "refs": { "nekretnine": "karlovac" }
+    },
+    {
+      "slug": "sisak",
+      "name": "Sisak",
+      "region": "Sisačko-moslavačka",
+      "priority": true,
+      "refs": { "nekretnine": "sisak" }
+    },
+    {
+      "slug": "varazdin",
+      "name": "Varaždin",
+      "region": "Varaždinska",
+      "priority": true,
+      "refs": { "nekretnine": "varazdin" }
+    },
+    {
+      "slug": "sibenik",
+      "name": "Šibenik",
+      "region": "Šibensko-kninska",
+      "priority": true,
+      "refs": { "nekretnine": "sibenik" }
+    },
+    {
+      "slug": "dubrovnik",
+      "name": "Dubrovnik",
+      "region": "Dubrovačko-neretvanska",
+      "priority": true,
+      "refs": { "nekretnine": "dubrovnik" }
+    },
+    {
+      "slug": "bjelovar",
+      "name": "Bjelovar",
+      "region": "Bjelovarsko-bilogorska",
+      "priority": true,
+      "refs": { "nekretnine": "bjelovar" }
+    },
+    {
+      "slug": "kastela",
+      "name": "Kaštela",
+      "region": "Splitsko-dalmatinska",
+      "priority": true,
+      "refs": { "nekretnine": "kastela" }
+    },
+    {
+      "slug": "samobor",
+      "name": "Samobor",
+      "region": "Zagrebačka",
+      "priority": true,
+      "refs": { "nekretnine": "samobor" }
+    }
+  ]
+}

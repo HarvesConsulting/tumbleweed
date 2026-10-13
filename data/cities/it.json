@@ -1,0 +1,878 @@
+{
+  "country": "it",
+  "cities": [
+    {
+      "slug": "afragola",
+      "name": "Afragola",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "afragola"
+      }
+    },
+    {
+      "slug": "alessandria",
+      "name": "Alessandria",
+      "region": "Piemonte",
+      "priority": true,
+      "refs": {
+        "wikicasa": "alessandria"
+      }
+    },
+    {
+      "slug": "ancona",
+      "name": "Ancona",
+      "region": "Marche",
+      "priority": true,
+      "refs": {
+        "wikicasa": "ancona"
+      }
+    },
+    {
+      "slug": "andria",
+      "name": "Andria",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "andria"
+      }
+    },
+    {
+      "slug": "aosta",
+      "name": "Aosta",
+      "region": "Valle d'Aosta",
+      "priority": true,
+      "refs": {
+        "wikicasa": "aosta"
+      }
+    },
+    {
+      "slug": "aprilia",
+      "name": "Aprilia",
+      "region": "Lazio",
+      "priority": true,
+      "refs": {
+        "wikicasa": "aprilia"
+      }
+    },
+    {
+      "slug": "arezzo",
+      "name": "Arezzo",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "arezzo"
+      }
+    },
+    {
+      "slug": "asti",
+      "name": "Asti",
+      "region": "Piemonte",
+      "priority": true,
+      "refs": {
+        "wikicasa": "asti"
+      }
+    },
+    {
+      "slug": "avellino",
+      "name": "Avellino",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "avellino"
+      }
+    },
+    {
+      "slug": "bari",
+      "name": "Bari",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "bari"
+      }
+    },
+    {
+      "slug": "barletta",
+      "name": "Barletta",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "barletta"
+      }
+    },
+    {
+      "slug": "benevento",
+      "name": "Benevento",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "benevento"
+      }
+    },
+    {
+      "slug": "bergamo",
+      "name": "Bergamo",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "bergamo"
+      }
+    },
+    {
+      "slug": "bitonto",
+      "name": "Bitonto",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "bitonto"
+      }
+    },
+    {
+      "slug": "bologna",
+      "name": "Bologna",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "bologna"
+      }
+    },
+    {
+      "slug": "bolzano",
+      "name": "Bolzano",
+      "region": "Trentino-Alto Adige",
+      "priority": true,
+      "refs": {
+        "wikicasa": "bolzano"
+      }
+    },
+    {
+      "slug": "brescia",
+      "name": "Brescia",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "brescia"
+      }
+    },
+    {
+      "slug": "brindisi",
+      "name": "Brindisi",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "brindisi"
+      }
+    },
+    {
+      "slug": "busto-arsizio",
+      "name": "Busto Arsizio",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "busto-arsizio"
+      }
+    },
+    {
+      "slug": "cagliari",
+      "name": "Cagliari",
+      "region": "Sardegna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "cagliari"
+      }
+    },
+    {
+      "slug": "carpi",
+      "name": "Carpi",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "carpi"
+      }
+    },
+    {
+      "slug": "caserta",
+      "name": "Caserta",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "caserta"
+      }
+    },
+    {
+      "slug": "casoria",
+      "name": "Casoria",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "casoria"
+      }
+    },
+    {
+      "slug": "castellammare-di-stabia",
+      "name": "Castellammare di Stabia",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "castellammare-di-stabia"
+      }
+    },
+    {
+      "slug": "catania",
+      "name": "Catania",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "catania"
+      }
+    },
+    {
+      "slug": "catanzaro",
+      "name": "Catanzaro",
+      "region": "Calabria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "catanzaro"
+      }
+    },
+    {
+      "slug": "cesena",
+      "name": "Cesena",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "cesena"
+      }
+    },
+    {
+      "slug": "cinisello-balsamo",
+      "name": "Cinisello Balsamo",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "cinisello-balsamo"
+      }
+    },
+    {
+      "slug": "como",
+      "name": "Como",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "como"
+      }
+    },
+    {
+      "slug": "cosenza",
+      "name": "Cosenza",
+      "region": "Calabria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "cosenza"
+      }
+    },
+    {
+      "slug": "cremona",
+      "name": "Cremona",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "cremona"
+      }
+    },
+    {
+      "slug": "crotone",
+      "name": "Crotone",
+      "region": "Calabria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "crotone"
+      }
+    },
+    {
+      "slug": "cuneo",
+      "name": "Cuneo",
+      "region": "Piemonte",
+      "priority": true,
+      "refs": {
+        "wikicasa": "cuneo"
+      }
+    },
+    {
+      "slug": "faenza",
+      "name": "Faenza",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "faenza"
+      }
+    },
+    {
+      "slug": "ferrara",
+      "name": "Ferrara",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "ferrara"
+      }
+    },
+    {
+      "slug": "firenze",
+      "name": "Firenze",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "firenze"
+      }
+    },
+    {
+      "slug": "foggia",
+      "name": "Foggia",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "foggia"
+      }
+    },
+    {
+      "slug": "forli",
+      "name": "Forlì",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "forli"
+      }
+    },
+    {
+      "slug": "gela",
+      "name": "Gela",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "gela"
+      }
+    },
+    {
+      "slug": "genova",
+      "name": "Genova",
+      "region": "Liguria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "genova"
+      }
+    },
+    {
+      "slug": "giugliano-in-campania",
+      "name": "Giugliano in Campania",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "giugliano-in-campania"
+      }
+    },
+    {
+      "slug": "grosseto",
+      "name": "Grosseto",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "grosseto"
+      }
+    },
+    {
+      "slug": "guidonia-montecelio",
+      "name": "Guidonia Montecelio",
+      "region": "Lazio",
+      "priority": true,
+      "refs": {
+        "wikicasa": "guidonia-montecelio"
+      }
+    },
+    {
+      "slug": "imola",
+      "name": "Imola",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "imola"
+      }
+    },
+    {
+      "slug": "l-aquila",
+      "name": "L'Aquila",
+      "region": "Abruzzo",
+      "priority": true,
+      "refs": {
+        "wikicasa": "l-aquila"
+      }
+    },
+    {
+      "slug": "la-spezia",
+      "name": "La Spezia",
+      "region": "Liguria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "la-spezia"
+      }
+    },
+    {
+      "slug": "lamezia-terme",
+      "name": "Lamezia Terme",
+      "region": "Calabria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "lamezia-terme"
+      }
+    },
+    {
+      "slug": "latina",
+      "name": "Latina",
+      "region": "Lazio",
+      "priority": true,
+      "refs": {
+        "wikicasa": "latina"
+      }
+    },
+    {
+      "slug": "lecce",
+      "name": "Lecce",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "lecce"
+      }
+    },
+    {
+      "slug": "livorno",
+      "name": "Livorno",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "livorno"
+      }
+    },
+    {
+      "slug": "lucca",
+      "name": "Lucca",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "lucca"
+      }
+    },
+    {
+      "slug": "marsala",
+      "name": "Marsala",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "marsala"
+      }
+    },
+    {
+      "slug": "massa",
+      "name": "Massa",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "massa"
+      }
+    },
+    {
+      "slug": "matera",
+      "name": "Matera",
+      "region": "Basilicata",
+      "priority": true,
+      "refs": {
+        "wikicasa": "matera"
+      }
+    },
+    {
+      "slug": "messina",
+      "name": "Messina",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "messina"
+      }
+    },
+    {
+      "slug": "milano",
+      "name": "Milano",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "milano"
+      }
+    },
+    {
+      "slug": "modena",
+      "name": "Modena",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "modena"
+      }
+    },
+    {
+      "slug": "molfetta",
+      "name": "Molfetta",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "molfetta"
+      }
+    },
+    {
+      "slug": "monza",
+      "name": "Monza",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "monza"
+      }
+    },
+    {
+      "slug": "napoli",
+      "name": "Napoli",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "napoli"
+      }
+    },
+    {
+      "slug": "novara",
+      "name": "Novara",
+      "region": "Piemonte",
+      "priority": true,
+      "refs": {
+        "wikicasa": "novara"
+      }
+    },
+    {
+      "slug": "padova",
+      "name": "Padova",
+      "region": "Veneto",
+      "priority": true,
+      "refs": {
+        "wikicasa": "padova"
+      }
+    },
+    {
+      "slug": "palermo",
+      "name": "Palermo",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "palermo"
+      }
+    },
+    {
+      "slug": "parma",
+      "name": "Parma",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "parma"
+      }
+    },
+    {
+      "slug": "pavia",
+      "name": "Pavia",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "pavia"
+      }
+    },
+    {
+      "slug": "perugia",
+      "name": "Perugia",
+      "region": "Umbria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "perugia"
+      }
+    },
+    {
+      "slug": "pesaro",
+      "name": "Pesaro",
+      "region": "Marche",
+      "priority": true,
+      "refs": {
+        "wikicasa": "pesaro"
+      }
+    },
+    {
+      "slug": "pescara",
+      "name": "Pescara",
+      "region": "Abruzzo",
+      "priority": true,
+      "refs": {
+        "wikicasa": "pescara"
+      }
+    },
+    {
+      "slug": "piacenza",
+      "name": "Piacenza",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "piacenza"
+      }
+    },
+    {
+      "slug": "pisa",
+      "name": "Pisa",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "pisa"
+      }
+    },
+    {
+      "slug": "pistoia",
+      "name": "Pistoia",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "pistoia"
+      }
+    },
+    {
+      "slug": "potenza",
+      "name": "Potenza",
+      "region": "Basilicata",
+      "priority": true,
+      "refs": {
+        "wikicasa": "potenza"
+      }
+    },
+    {
+      "slug": "prato",
+      "name": "Prato",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "prato"
+      }
+    },
+    {
+      "slug": "ravenna",
+      "name": "Ravenna",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "ravenna"
+      }
+    },
+    {
+      "slug": "rimini",
+      "name": "Rimini",
+      "region": "Emilia-Romagna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "rimini"
+      }
+    },
+    {
+      "slug": "roma",
+      "name": "Roma",
+      "region": "Lazio",
+      "priority": true,
+      "refs": {
+        "wikicasa": "roma"
+      }
+    },
+    {
+      "slug": "salerno",
+      "name": "Salerno",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "salerno"
+      }
+    },
+    {
+      "slug": "sanremo",
+      "name": "Sanremo",
+      "region": "Liguria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "sanremo"
+      }
+    },
+    {
+      "slug": "sassari",
+      "name": "Sassari",
+      "region": "Sardegna",
+      "priority": true,
+      "refs": {
+        "wikicasa": "sassari"
+      }
+    },
+    {
+      "slug": "savona",
+      "name": "Savona",
+      "region": "Liguria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "savona"
+      }
+    },
+    {
+      "slug": "sesto-san-giovanni",
+      "name": "Sesto San Giovanni",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "sesto-san-giovanni"
+      }
+    },
+    {
+      "slug": "siena",
+      "name": "Siena",
+      "region": "Toscana",
+      "priority": true,
+      "refs": {
+        "wikicasa": "siena"
+      }
+    },
+    {
+      "slug": "taranto",
+      "name": "Taranto",
+      "region": "Puglia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "taranto"
+      }
+    },
+    {
+      "slug": "terni",
+      "name": "Terni",
+      "region": "Umbria",
+      "priority": true,
+      "refs": {
+        "wikicasa": "terni"
+      }
+    },
+    {
+      "slug": "torino",
+      "name": "Torino",
+      "region": "Piemonte",
+      "priority": true,
+      "refs": {
+        "wikicasa": "torino"
+      }
+    },
+    {
+      "slug": "torre-del-greco",
+      "name": "Torre del Greco",
+      "region": "Campania",
+      "priority": true,
+      "refs": {
+        "wikicasa": "torre-del-greco"
+      }
+    },
+    {
+      "slug": "trapani",
+      "name": "Trapani",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "trapani"
+      }
+    },
+    {
+      "slug": "trento",
+      "name": "Trento",
+      "region": "Trentino-Alto Adige",
+      "priority": true,
+      "refs": {
+        "wikicasa": "trento"
+      }
+    },
+    {
+      "slug": "treviso",
+      "name": "Treviso",
+      "region": "Veneto",
+      "priority": true,
+      "refs": {
+        "wikicasa": "treviso"
+      }
+    },
+    {
+      "slug": "trieste",
+      "name": "Trieste",
+      "region": "Friuli-Venezia Giulia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "trieste"
+      }
+    },
+    {
+      "slug": "udine",
+      "name": "Udine",
+      "region": "Friuli-Venezia Giulia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "udine"
+      }
+    },
+    {
+      "slug": "varese",
+      "name": "Varese",
+      "region": "Lombardia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "varese"
+      }
+    },
+    {
+      "slug": "venezia",
+      "name": "Venezia",
+      "region": "Veneto",
+      "priority": true,
+      "refs": {
+        "wikicasa": "venezia"
+      }
+    },
+    {
+      "slug": "verona",
+      "name": "Verona",
+      "region": "Veneto",
+      "priority": true,
+      "refs": {
+        "wikicasa": "verona"
+      }
+    },
+    {
+      "slug": "vicenza",
+      "name": "Vicenza",
+      "region": "Veneto",
+      "priority": true,
+      "refs": {
+        "wikicasa": "vicenza"
+      }
+    },
+    {
+      "slug": "viterbo",
+      "name": "Viterbo",
+      "region": "Lazio",
+      "priority": true,
+      "refs": {
+        "wikicasa": "viterbo"
+      }
+    },
+    {
+      "slug": "vittoria",
+      "name": "Vittoria",
+      "region": "Sicilia",
+      "priority": true,
+      "refs": {
+        "wikicasa": "vittoria"
+      }
+    }
+  ]
+}
