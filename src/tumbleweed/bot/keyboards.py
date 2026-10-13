@@ -7,7 +7,7 @@ Callback_data формат: "<action>:<value>"
   jobtype:full      — тип зайнятості
   exp:any           — досвід
   skip:<step>       — пропустити крок
-  action:<cmd>      — службові команди (settings, stop, ...)
+  action:<cmd>      — службові команди (menu, change, my_job, toggle_notify)
 """
 from __future__ import annotations
 
@@ -22,15 +22,10 @@ COUNTRY_FLAGS = {
     "ua": "🇺🇦 Україна",
     "pl": "🇵🇱 Польща",
     "ro": "🇷🇴 Румунія",
-    # Резерв — коли додамо парсери:
-    # "de": "🇩🇪 Німеччина",
-    # "pt": "🇵🇹 Португалія",
-    # "bg": "🇧🇬 Болгарія",
 }
 
 
 def country_keyboard() -> InlineKeyboardMarkup:
-    """Клавіатура вибору країни — 2 колонки."""
     items = list(COUNTRY_FLAGS.items())
     rows = []
     for i in range(0, len(items), 2):
@@ -46,9 +41,7 @@ def country_keyboard() -> InlineKeyboardMarkup:
 # Крок 2. Вибір міста
 # ───────────────────────────────────────────────────────
 
-# Мапа міст для бота (поки — не з каталогу; простіше для MVP)
 CITIES: dict[str, list[tuple[str, str]]] = {
-    # (slug, label)
     "ua": [
         ("kyiv", "Київ"),
         ("lviv", "Львів"),
@@ -70,7 +63,6 @@ CITIES: dict[str, list[tuple[str, str]]] = {
 
 
 def city_keyboard(country: str) -> InlineKeyboardMarkup:
-    """Клавіатура вибору міста + кнопка «Будь-яке місто»."""
     cities = CITIES.get(country, [])
     rows: list[list[InlineKeyboardButton]] = []
 
@@ -91,11 +83,10 @@ def city_keyboard(country: str) -> InlineKeyboardMarkup:
 
 
 # ───────────────────────────────────────────────────────
-# Крок 3. Вибір професії (категорії)
+# Крок 3. Вибір сфери
 # ───────────────────────────────────────────────────────
 
-# Ключі мають відповідати data/jobs/professions_ua.json
-PROFESSION_CATEGORIES = [
+CATEGORIES = [
     ("it", "💻 IT / Програмування"),
     ("bud", "🏗 Будівництво"),
     ("med", "🏥 Медицина"),
@@ -109,26 +100,86 @@ PROFESSION_CATEGORIES = [
 ]
 
 
-def profession_keyboard() -> InlineKeyboardMarkup:
-    """Клавіатура вибору категорії професій — 1 колонка."""
+def category_keyboard() -> InlineKeyboardMarkup:
     rows: list[list[InlineKeyboardButton]] = []
-
-    for key, label in PROFESSION_CATEGORIES:
-        rows.append([
-            InlineKeyboardButton(label, callback_data=f"prof:{key}"),
-        ])
-
+    for key, label in CATEGORIES:
+        rows.append([InlineKeyboardButton(label, callback_data=f"cat:{key}")])
     rows.append([
-        InlineKeyboardButton("✏️ Ввести своє", callback_data="action:custom_prof"),
-    ])
-    rows.append([
-        InlineKeyboardButton("🌍 Будь-яка", callback_data="skip:prof"),
+        InlineKeyboardButton("🌍 Будь-яка сфера", callback_data="skip:cat"),
     ])
     rows.append([
         InlineKeyboardButton("⬅️ Назад", callback_data="action:back_city"),
     ])
     return InlineKeyboardMarkup(rows)
 
+
+# ───────────────────────────────────────────────────────
+# Крок 3.1. Результати пошуку підкатегорій (toggle)
+# ───────────────────────────────────────────────────────
+
+def subcategory_results_keyboard(
+    results: list,                # list[Subcategory]
+    selected: set[str],
+    category_key: str,
+    category_label: str,
+) -> InlineKeyboardMarkup:
+    """Результати пошуку + toggle ✅/⬜ + кнопки внизу."""
+    rows: list[list[InlineKeyboardButton]] = []
+
+    for sub in results:
+        mark = "✅" if sub.key in selected else "⬜"
+        rows.append([InlineKeyboardButton(
+            f"{mark} {sub.label}",
+            callback_data=f"sub:{sub.key}",
+        )])
+
+    # Лічильник обраного
+    if selected:
+        rows.append([InlineKeyboardButton(
+            f"— Обрано: {len(selected)} —",
+            callback_data="noop",
+        )])
+
+    # ─── Кнопки внизу ───
+    # 1) Головна дія — «Завершити вибір» (тільки якщо щось обрано)
+    if selected:
+        rows.append([InlineKeyboardButton(
+            f"✅ Завершити вибір ({len(selected)})  →",
+            callback_data="action:sub_done",
+        )])
+    else:
+        # Якщо нічого не обрано — це «Пропустити»
+        rows.append([InlineKeyboardButton(
+            "⏭ Пропустити (будь-яка)",
+            callback_data="action:sub_done",
+        )])
+
+    # 2) Другорядні дії
+    rows.append([InlineKeyboardButton(
+        "🔍 Додати ще підкатегорію",
+        callback_data="action:search_again",
+    )])
+    rows.append([InlineKeyboardButton(
+        f"🌍 Будь-яка в {category_label.split(' ', 1)[-1]}",
+        callback_data="skip:sub",
+    )])
+    rows.append([InlineKeyboardButton(
+        "⬅️ Назад до сфер",
+        callback_data="action:back_category",
+    )])
+    return InlineKeyboardMarkup(rows)
+
+
+def subcategory_empty_keyboard(category_label: str) -> InlineKeyboardMarkup:
+    """Коли пошук нічого не знайшов."""
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔍 Спробувати ще", callback_data="action:search_again")],
+        [InlineKeyboardButton(
+            f"🌍 Будь-яка в {category_label.split(' ', 1)[-1]}",
+            callback_data="skip:sub",
+        )],
+        [InlineKeyboardButton("⬅️ Назад до сфер", callback_data="action:back_category")],
+    ])
 
 # ───────────────────────────────────────────────────────
 # Крок 4. Тип зайнятості
@@ -175,37 +226,58 @@ def experience_keyboard() -> InlineKeyboardMarkup:
 
 
 # ───────────────────────────────────────────────────────
-# Головне меню (після налаштування)
+# Головне меню (для профілю, що вже налаштований)
 # ───────────────────────────────────────────────────────
 
-def main_menu_keyboard(rentalert_url: str) -> InlineKeyboardMarkup:
-    """Кнопки головного меню після завершення налаштування."""
+def main_menu_keyboard(enabled: bool, rentalert_url: str) -> InlineKeyboardMarkup:
+    """Головне меню з toggle-кнопкою сповіщень + дії."""
+    toggle_label = "🔔 Сповіщення: УВІМК" if enabled else "🔕 Сповіщення: ВИМК"
+
     return InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("⚙️ Налаштування", callback_data="action:settings"),
-        ],
-        [
-            InlineKeyboardButton("⏸ Пауза", callback_data="action:pause"),
-            InlineKeyboardButton("▶️ Увімкнути", callback_data="action:resume"),
-        ],
-        [
-            InlineKeyboardButton("🏠 Хочу житло", url=rentalert_url),
-        ],
+        [InlineKeyboardButton(toggle_label, callback_data="action:toggle_notify")],
+        [InlineKeyboardButton("✏️ Змінити сферу та підкатегорії", callback_data="action:change_filters")],
+        [InlineKeyboardButton("📊 Моя робота", callback_data="action:my_job")],
+        [InlineKeyboardButton("🏠 Знайти житло", url=rentalert_url)],
     ])
 
 
 # ───────────────────────────────────────────────────────
-# Кнопка "Житло тут" на кожній вакансії
+# Кнопка "Знайти житло" під вакансією
 # ───────────────────────────────────────────────────────
 
 def vacancy_keyboard(link: str, rentalert_url: str) -> InlineKeyboardMarkup:
-    """Кнопки під вакансією: Відкрити / Житло тут / Ігнор."""
+    """Кнопки під вакансією."""
     return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔗 Відкрити вакансію", url=link)],
         [
-            InlineKeyboardButton("🔗 Відкрити", url=link),
-        ],
-        [
-            InlineKeyboardButton("🏠 Житло тут", url=rentalert_url),
+            InlineKeyboardButton("🏠 Знайти житло", url=rentalert_url),
             InlineKeyboardButton("🚫 Ігнор", callback_data="action:ignore_vacancy"),
         ],
     ])
+
+# ───────────────────────────────────────────────────────
+# Постійна Reply Keyboard (знизу екрана)
+# ───────────────────────────────────────────────────────
+
+from telegram import ReplyKeyboardMarkup, KeyboardButton
+
+
+# Текстові мітки Reply-кнопок
+BTN_MY_JOB = "📊 Моя робота"
+BTN_TOGGLE_ON = "🔔 Сповіщення: УВІМК"
+BTN_TOGGLE_OFF = "🔕 Сповіщення: ВИМК"
+BTN_CHANGE = "✏️ Змінити фільтри"
+BTN_RENT = "🏠 Знайти житло"
+
+
+def main_reply_keyboard(enabled: bool) -> ReplyKeyboardMarkup:
+    """Постійна клавіатура знизу — завжди доступна."""
+    toggle_label = BTN_TOGGLE_ON if enabled else BTN_TOGGLE_OFF
+    return ReplyKeyboardMarkup(
+        [
+            [KeyboardButton(BTN_MY_JOB), KeyboardButton(toggle_label)],
+            [KeyboardButton(BTN_CHANGE), KeyboardButton(BTN_RENT)],
+        ],
+        resize_keyboard=True,
+        is_persistent=True,
+    )
