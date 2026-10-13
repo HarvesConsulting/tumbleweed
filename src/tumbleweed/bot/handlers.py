@@ -52,6 +52,8 @@ from .keyboards import (
     main_reply_keyboard,
     subcategory_empty_keyboard,
     subcategory_results_keyboard,
+    city_results_keyboard,
+    city_empty_keyboard,
 )
 from .states import State
 
@@ -188,6 +190,97 @@ async def on_country(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         parse_mode="Markdown",
     )
     return State.CHOOSING_CITY
+
+# ───────────────────────────────────────────────────────
+# Крок 2.1. Кнопка «✏️ Ввести місто»
+# ───────────────────────────────────────────────────────
+
+async def on_enter_city(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Користувач натиснув «✏️ Ввести місто» — просимо текст."""
+    query = update.callback_query
+    await query.answer()
+
+    country = context.user_data.get("country", "ua")
+    labels = {"ua": "🇺🇦 України", "pl": "🇵🇱 Польщі", "ro": "🇷🇴 Румунії"}
+
+    await query.edit_message_text(
+        f"✏️ *Введи назву міста* у {labels.get(country, '')}:\n\n"
+        "Наприклад: `Тернопіль`, `Краків`, `Cluj`\n\n"
+        "Мінімум 2 символи.",
+        parse_mode="Markdown",
+    )
+    return State.CHOOSING_CITY_QUERY
+
+
+# ───────────────────────────────────────────────────────
+# Крок 2.2. Обробка текстового вводу міста
+# ───────────────────────────────────────────────────────
+
+async def on_city_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Користувач ввів назву міста — шукаємо збіги."""
+    from tumbleweed.services.city_search import search_cities
+
+    text = (update.message.text or "").strip()
+    country = context.user_data.get("country", "ua")
+
+    if len(text) < 2:
+        await update.message.reply_text(
+            "⚠️ Введи мінімум 2 символи. Спробуй ще раз.",
+        )
+        return State.CHOOSING_CITY_QUERY
+
+    results = search_cities(country, text, limit=3)
+
+    if not results:
+        await update.message.reply_text(
+            f"🔍 За запитом *{text}* нічого не знайдено.\n\n"
+            "Спробуй іншу назву або обери «🌍 Будь-яке місто».",
+            reply_markup=city_empty_keyboard(text),
+            parse_mode="Markdown",
+        )
+        return State.CHOOSING_CITY_PICK
+
+    context.user_data["last_city_results"] = results
+    context.user_data["last_city_query"] = text
+
+    await update.message.reply_text(
+        f"🔍 За запитом *{text}* знайдено {len(results)}:\n\n"
+        "Обери місто або введи інше:",
+        reply_markup=city_results_keyboard(results, text),
+        parse_mode="Markdown",
+    )
+    return State.CHOOSING_CITY_PICK
+
+
+# ───────────────────────────────────────────────────────
+# Крок 2.3. Вибір міста з результатів
+# ───────────────────────────────────────────────────────
+
+async def on_city_pick(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Користувач обрав місто зі списку."""
+    from tumbleweed.services.city_search import get_city
+
+    query = update.callback_query
+    await query.answer()
+
+    _, slug = query.data.split(":", 1)
+    country = context.user_data.get("country", "ua")
+    city = get_city(country, slug)
+
+    if not city:
+        await query.edit_message_text(f"⚠️ Місто не знайдено: {slug}")
+        return State.CHOOSING_CITY_PICK
+
+    # Зберігаємо вибір
+    context.user_data["cities"] = [slug]
+    context.user_data["city_display"] = city.name
+
+    await query.edit_message_text(
+        f"✅ Обрано: *{city.name}*\n\n💼 *Обери сферу роботи:*",
+        reply_markup=category_keyboard(),
+        parse_mode="Markdown",
+    )
+    return State.CHOOSING_CATEGORY
 
 
 # ───────────────────────────────────────────────────────
@@ -712,6 +805,18 @@ async def on_action(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await query.answer()
     _, action = query.data.split(":", 1)
 
+    if action == "enter_city":
+        return await on_enter_city(update, context)
+    if action == "back_to_city_menu":
+        # Повернення до списку міст
+        country = context.user_data.get("country", "ua")
+        labels = {"ua": "🇺🇦 Україна", "pl": "🇵🇱 Польща", "ro": "🇷🇴 Румунія"}
+        await query.edit_message_text(
+            f"📍 *{labels.get(country, '')}* — обери місто:",
+            reply_markup=city_keyboard(country),
+            parse_mode="Markdown",
+        )
+        return State.CHOOSING_CITY
     if action == "back_country":
         return await on_back_to_country(update, context)
     if action == "back_city":
@@ -833,6 +938,14 @@ def build_conversation_handler() -> ConversationHandler:
             ],
             State.CHOOSING_CITY: [
                 CallbackQueryHandler(on_city, pattern=r"^city:"),
+                CallbackQueryHandler(on_city_skip, pattern=r"^skip:city$"),
+                CallbackQueryHandler(on_action, pattern=r"^action:"),
+            ],
+            State.CHOOSING_CITY_QUERY: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, on_city_query),
+            ],
+            State.CHOOSING_CITY_PICK: [
+                CallbackQueryHandler(on_city_pick, pattern=r"^city:"),
                 CallbackQueryHandler(on_city_skip, pattern=r"^skip:city$"),
                 CallbackQueryHandler(on_action, pattern=r"^action:"),
             ],

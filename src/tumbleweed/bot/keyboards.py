@@ -41,38 +41,24 @@ def country_keyboard() -> InlineKeyboardMarkup:
 # Крок 2. Вибір міста
 # ───────────────────────────────────────────────────────
 
-CITIES: dict[str, list[tuple[str, str]]] = {
-    "ua": [
-        ("kyiv", "Київ"),
-        ("lviv", "Львів"),
-        ("odesa", "Одеса"),
-        ("kharkiv", "Харків"),
-        ("dnipro", "Дніпро"),
-    ],
-    "pl": [
-        ("warszawa", "Варшава"),
-        ("krakow", "Краків"),
-        ("wroclaw", "Вроцлав"),
-        ("gdansk", "Гданськ"),
-        ("poznan", "Познань"),
-    ],
-    "ro": [
-        ("bucuresti", "Бухарест"),
-    ],
-}
-
-
 def city_keyboard(country: str) -> InlineKeyboardMarkup:
-    cities = CITIES.get(country, [])
+    """Клавіатура вибору міста: топ-6 + «Ввести місто»."""
+    from tumbleweed.services.city_search import popular_cities
+
+    cities = popular_cities(country, limit=6)
     rows: list[list[InlineKeyboardButton]] = []
 
+    # Топ-6 у 2 колонки
     for i in range(0, len(cities), 2):
-        row = [
-            InlineKeyboardButton(label, callback_data=f"city:{slug}")
-            for slug, label in cities[i : i + 2]
-        ]
+        row = []
+        for c in cities[i : i + 2]:
+            row.append(InlineKeyboardButton(c.name, callback_data=f"city:{c.slug}"))
         rows.append(row)
 
+    # Кнопка «Ввести місто текстом»
+    rows.append([
+        InlineKeyboardButton("✏️ Ввести місто", callback_data="action:enter_city"),
+    ])
     rows.append([
         InlineKeyboardButton("🌍 Будь-яке місто", callback_data="skip:city"),
     ])
@@ -80,6 +66,42 @@ def city_keyboard(country: str) -> InlineKeyboardMarkup:
         InlineKeyboardButton("⬅️ Назад", callback_data="action:back_country"),
     ])
     return InlineKeyboardMarkup(rows)
+
+
+def city_results_keyboard(
+    results: list,                       # list[City]
+    query: str,
+) -> InlineKeyboardMarkup:
+    """Результати пошуку міста."""
+    rows: list[list[InlineKeyboardButton]] = []
+
+    for city in results:
+        label = city.name
+        if city.region:
+            label += f" ({city.region})"
+        rows.append([
+            InlineKeyboardButton(label, callback_data=f"city:{city.slug}"),
+        ])
+
+    rows.append([
+        InlineKeyboardButton("🔍 Спробувати ще", callback_data="action:enter_city"),
+    ])
+    rows.append([
+        InlineKeyboardButton("🌍 Будь-яке місто", callback_data="skip:city"),
+    ])
+    rows.append([
+        InlineKeyboardButton("⬅️ Назад", callback_data="action:back_country"),
+    ])
+    return InlineKeyboardMarkup(rows)
+
+
+def city_empty_keyboard(query: str) -> InlineKeyboardMarkup:
+    """Коли нічого не знайдено."""
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔍 Спробувати ще", callback_data="action:enter_city")],
+        [InlineKeyboardButton("🌍 Будь-яке місто", callback_data="skip:city")],
+        [InlineKeyboardButton("⬅️ Назад до країн", callback_data="action:back_country")],
+    ])
 
 
 # ───────────────────────────────────────────────────────
