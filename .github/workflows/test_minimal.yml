@@ -1,6 +1,8 @@
 name: Minimal test
 
 on:
+  repository_dispatch:
+    types: [minimal_test]
   workflow_dispatch:
   push:
     branches: [main]
@@ -9,6 +11,7 @@ on:
       - 'scripts/run_cycle_jobs.py'
       - 'scripts/run_notify.py'
       - '.github/workflows/aggregate_jobs.yml'
+      - '.github/workflows/test_minimal.yml'
 
 jobs:
   hello:
@@ -20,4 +23,13 @@ jobs:
           python-version: "3.11"
           cache: "pip"
       - name: Hello
-        run: echo "Hello with paths"
+        run: echo "Hello"
+      - name: Install editable
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      - name: Run cycle (dry)
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: python -c "print('Would run cycle here')"
