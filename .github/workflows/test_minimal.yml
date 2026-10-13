@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - 'src/tumbleweed/parsers/**'
+      - 'scripts/run_cycle_jobs.py'
+      - 'scripts/run_notify.py'
+      - '.github/workflows/aggregate_jobs.yml'
 
 jobs:
   hello:
@@ -15,4 +20,4 @@ jobs:
           python-version: "3.11"
           cache: "pip"
       - name: Hello
-        run: echo "Hello with cache"
+        run: echo "Hello with paths"
