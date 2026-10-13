@@ -1,9 +1,18 @@
 name: TumbleWeed — aggregate & notify
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"
+  # GitHub schedule ненадійний на free tier — використовуємо repository_dispatch
+  # з cron-job.org (як у rentalert-v2)
+  repository_dispatch:
+    types: [tumbleweed_aggregate]
   workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - 'src/tumbleweed/parsers/**'
+      - 'scripts/run_cycle_jobs.py'
+      - 'scripts/run_notify.py'
+      - '.github/workflows/aggregate_jobs.yml'
 
 jobs:
   aggregate:
@@ -25,18 +34,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
-      - name: Run parser cycle (OLX UA/PL/RO)
+      - name: Run parser cycle
         env:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN:   ${{ secrets.TURSO_AUTH_TOKEN }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
           TUMBLEWEED_BOT_TOKEN: ${{ secrets.TUMBLEWEED_BOT_TOKEN }}
-          RENTALERT_BOT_URL:  ${{ secrets.RENTALERT_BOT_URL }}
+          RENTALERT_BOT_URL: ${{ secrets.RENTALERT_BOT_URL }}
         run: python scripts/run_cycle_jobs.py
 
-      - name: Run notifier (match + send)
+      - name: Run notifier
         env:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
-          TURSO_AUTH_TOKEN:   ${{ secrets.TURSO_AUTH_TOKEN }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
           TUMBLEWEED_BOT_TOKEN: ${{ secrets.TUMBLEWEED_BOT_TOKEN }}
-          RENTALERT_BOT_URL:  ${{ secrets.RENTALERT_BOT_URL }}
+          RENTALERT_BOT_URL: ${{ secrets.RENTALERT_BOT_URL }}
         run: python scripts/run_notify.py
