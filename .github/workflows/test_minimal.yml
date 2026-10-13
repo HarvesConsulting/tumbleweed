@@ -1,0 +1,17 @@
+name: Minimal test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "Hello from GitHub runner"
+      - name: Date
+        run: date
+      - name: Python
+        run: python --version
