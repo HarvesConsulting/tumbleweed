@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: tumbleweed
+    runtime: docker
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    envVars:
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: TUMBLEWEED_BOT_TOKEN
+        sync: false
+      - key: TUMBLEWEED_WEBHOOK_URL
+        sync: false
+      - key: RENTALERT_BOT_URL
+        sync: false
+      - key: RENDER_API_KEY
+        generateValue: true
