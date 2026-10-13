@@ -94,25 +94,35 @@ class OlxJobParser(JobParser):
         query: str = "",
         limit: int = 40,
     ) -> list[Vacancy]:
-        """Обходить усі категорії та повертає дедуплікований список."""
-        seen: dict[str, Vacancy] = {}    # raw_id → Vacancy
+        """Якщо є query — один запит. Якщо немає — обхід усіх категорій."""
+        seen: dict[str, Vacancy] = {}
 
-        per_cat_limit = max(10, limit // max(1, len(self.cfg.category_ids)) + 5)
-        # напр., 50 категорій, limit=40 → per_cat_limit=10
-
-        for cat_id in self.cfg.category_ids:
-            try:
-                items = await self._fetch_one(cat_id, city_slug, query, per_cat_limit)
-            except Exception as e:
-                print(f"⚠️  {self.display_name} cat={cat_id}: {type(e).__name__}: {e}")
-                continue
-
+        if query:
+            # Швидкий шлях: один запит за ключовим словом
+            print(f"  → {self.display_name} (за запитом, швидко)")
+            items = await self._fetch_one(
+                cat_id=self.cfg.category_ids[0],   # будь-яка категорія
+                city_slug=city_slug,
+                query=query,
+                limit=min(limit, 50),
+            )
             for v in items:
-                if v and v.raw_id not in seen:
+                if v:
                     seen[v.raw_id] = v
-
-            # невелика пауза між категоріями
-            await asyncio.sleep(random.uniform(0.3, 0.8))
+        else:
+            # Повільний шлях: обхід усіх категорій
+            print(f"  → {self.display_name} (обхід {len(self.cfg.category_ids)} категорій)")
+            per_cat_limit = max(10, limit // max(1, len(self.cfg.category_ids)) + 5)
+            for cat_id in self.cfg.category_ids:
+                try:
+                    items = await self._fetch_one(cat_id, city_slug, query, per_cat_limit)
+                except Exception as e:
+                    print(f"⚠️  {self.display_name} cat={cat_id}: {type(e).__name__}: {e}")
+                    continue
+                for v in items:
+                    if v and v.raw_id not in seen:
+                        seen[v.raw_id] = v
+                await asyncio.sleep(random.uniform(0.3, 0.8))
 
         return list(seen.values())[:limit]
 

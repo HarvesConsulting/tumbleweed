@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from tumbleweed.config import DATA_DIR, settings
 from tumbleweed.db.client import TursoClient
 from tumbleweed.db.queries_jobs import save_and_mark
-from tumbleweed.parsers.registry import get_parser
+from tumbleweed.parsers.registry import get_parser, get_parsers
 
 
 # ───────────────────────────────────────────────────────
@@ -66,20 +66,20 @@ def build_jobs() -> list[tuple[str, str, str]]:
     """Повертає список (country, city_slug, query)."""
     jobs: list[tuple[str, str, str]] = []
 
-    # UA — по всіх містах
-    ua_cities = ["kyiv", "lviv", "odesa", "kharkiv", "dnipro"]
-    ua_queries = build_ua_queries(max_per_category=2)  # 10 сфер × 2 = 20 запитів
+    # UA — по 2 містах, 20 запитів з professions_ua.json
+    ua_cities = ["kyiv", "lviv"]
+    ua_queries = build_ua_queries(max_per_category=2)
     for city in ua_cities:
         for q in ua_queries:
             jobs.append(("ua", city, q))
 
-    # PL — Варшава, Краків (найпопулярніші)
-    pl_cities = ["warszawa", "krakow"]
+    # PL — 10 запитів
+    pl_cities = ["warszawa"]
     for city in pl_cities:
-        for q in PL_QUERIES[:10]:      # 10 запитів
+        for q in PL_QUERIES[:10]:
             jobs.append(("pl", city, q))
 
-    # RO — Бухарест
+    # RO — 10 запитів
     for q in RO_QUERIES[:10]:
         jobs.append(("ro", "bucuresti", q))
 
@@ -96,28 +96,36 @@ async def run_one(
     query: str,
     client: TursoClient,
 ) -> tuple[int, int]:
-    parser = get_parser(country)
-    if parser is None:
-        print(f"⚠️  Немає парсера: {country}")
+    """Запускає ВСІ парсери для країни та об'єднує результати."""
+    parsers = get_parsers(country)
+    if not parsers:
+        print(f"⚠️  Немає парсерів для {country}")
         return (0, 0)
 
-    print(f"\n→ [{country}/{city}] query={query!r}")
-    try:
-        vacancies = await parser.fetch(city_slug=city, query=query, limit=40)
-    except Exception as e:
-        print(f"  ❌ Помилка парсингу: {type(e).__name__}: {e}")
-        return (0, 0)
+    total_found = 0
+    total_new = 0
 
-    new_count = 0
-    for v in vacancies:
+    for parser in parsers:
+        print(f"\n→ [{parser.display_name} | {city}] query={query!r}")
         try:
-            if save_and_mark(client, v):
-                new_count += 1
+            vacancies = await parser.fetch(city_slug=city, query=query, limit=40)
         except Exception as e:
-            print(f"  ❌ Збереження {v.raw_id}: {e}")
+            print(f"  ❌ Помилка: {type(e).__name__}: {e}")
+            continue
 
-    print(f"  Знайдено: {len(vacancies)}, нових: {new_count}")
-    return (len(vacancies), new_count)
+        new_count = 0
+        for v in vacancies:
+            try:
+                if save_and_mark(client, v):
+                    new_count += 1
+            except Exception as e:
+                print(f"  ❌ Збереження: {e}")
+
+        print(f"  Знайдено: {len(vacancies)}, нових: {new_count}")
+        total_found += len(vacancies)
+        total_new += new_count
+
+    return (total_found, total_new)
 
 
 async def main() -> None:

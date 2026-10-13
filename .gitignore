@@ -47,3 +47,8 @@ desktop.ini
 # === Logs ===
 *.log
 logs/
+# Тимчасові скрипти
+scripts/_*.py
+scripts/check_*.py
+scripts/probe_*.py
+scripts/debug_*.py
