@@ -135,7 +135,7 @@ class OlxJobParser(JobParser):
         if city_slug and city_slug in self.cfg.city_ids:
             params["city_id"] = self.cfg.city_ids[city_slug]
 
-        await asyncio.sleep(random.uniform(0.4, 1.2))
+        await asyncio.sleep(random.uniform(2.0, 4.0))
 
         def _do_request():
             return cffi_requests.get(

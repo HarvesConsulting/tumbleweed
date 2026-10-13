@@ -54,12 +54,47 @@ def mark_seen(client: TursoClient, v: Vacancy) -> None:
 
 
 def save_and_mark(client: TursoClient, v: Vacancy) -> bool:
-    """Зберігає вакансію + позначає як побачену. True, якщо вона нова."""
-    if is_seen(client, v.source_key, v.raw_id):
+    """Зберігає вакансію + позначає як побачену.
+
+    Використовує INSERT OR IGNORE — дедуплікація через PRIMARY KEY.
+    Повертає True, якщо вакансія була новою (тобто INSERT вставив рядок).
+    """
+    try:
+        # Одразу вставляємо в seen_vacancies — якщо вже є, IGNORE не вставить
+        result = client.execute_non_query(
+            """
+            INSERT OR IGNORE INTO seen_vacancies
+                (id, raw_id, source_key, country, city_slug, title, company,
+                 salary, link, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            [
+                v.id, v.raw_id, v.source_key, v.country, v.city_slug, v.title,
+                v.company, v.salary, v.link, v.created_at,
+            ],
+        )
+        if result == 0:
+            # Вже було — не нова
+            return False
+
+        # Нова — зберігаємо в vacancies
+        client.execute_non_query(
+            """
+            INSERT OR IGNORE INTO vacancies
+                (id, raw_id, source_key, country, city_slug, title, company,
+                 salary, job_type, experience, description, link, photo, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            [
+                v.id, v.raw_id, v.source_key, v.country, v.city_slug, v.title,
+                v.company, v.salary, v.job_type, v.experience, v.description,
+                v.link, v.photo, v.created_at,
+            ],
+        )
+        return True
+    except Exception as e:
+        print(f"⚠️ save_and_mark: {e}")
         return False
-    save_vacancy(client, v)
-    mark_seen(client, v)
-    return True
 
 
 # ───────────────────────────────────────────────────────
