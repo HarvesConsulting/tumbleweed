@@ -81,4 +81,8 @@ class Notifier:
             return False
 
     async def close(self) -> None:
-        await self._bot.close()
+        """Закрити Bot. Якщо Telegram відповідає 429 — ігноруємо."""
+        try:
+            await self._bot.close()
+        except Exception as e:
+            log.debug("Не вдалось коректно закрити Bot: %s", e)
