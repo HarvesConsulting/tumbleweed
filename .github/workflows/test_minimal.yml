@@ -9,9 +9,8 @@ jobs:
   hello:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Hello
         run: echo "Hello from GitHub runner"
-      - name: Date
-        run: date
-      - name: Python
+      - name: Python version
         run: python --version
