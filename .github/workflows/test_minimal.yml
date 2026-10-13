@@ -1,9 +1,6 @@
 name: Minimal test
 
 on:
-  repository_dispatch:
-    types: [minimal_test]
-  workflow_dispatch: {}
   push:
     branches: [main]
 
@@ -17,6 +14,16 @@ jobs:
           python-version: "3.11"
           cache: "pip"
       - name: Install
-        run: pip install -e .
-      - name: Test
-        run: python -c "print('OK')"
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      - name: Run cycle (limited)
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+          TUMBLEWEED_BOT_TOKEN: ${{ secrets.TUMBLEWEED_BOT_TOKEN }}
+          RENTALERT_BOT_URL: ${{ secrets.RENTALERT_BOT_URL }}
+        run: |
+          echo "=== START CYCLE ==="
+          timeout 180 python scripts/run_cycle_jobs.py || echo "TIMEOUT OR ERROR"
+          echo "=== END CYCLE ==="
