@@ -28,23 +28,23 @@ log = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
+# Перевірка: ми в gunicorn worker чи в master?
+def _is_gunicorn_worker() -> bool:
+    """True, якщо це gunicorn worker, а не master."""
+    try:
+        from gunicorn.arbiter import Arbiter
+        return not isinstance(threading.current_thread(), threading._MainThread) \
+               or os.environ.get("GUNICORN_WORKER") == "1" \
+               or hasattr(threading.current_thread(), "name") and "gunicorn" in threading.current_thread().name.lower()
+    except ImportError:
+        return True
+
+
 # Глобальні об'єкти
 _ptb_app = None
 _loop: asyncio.AbstractEventLoop | None = None
-
-# API key для захисту /parse-workua
-API_KEY = os.getenv("RENDER_API_KEY", "")
-
-
-# ───────────────────────────────────────────────────────
-# Telegram webhook
-# ───────────────────────────────────────────────────────
-
-# Глобальні об'єкти
-_ptb_app = None
-_loop: asyncio.AbstractEventLoop | None = None
-_ptb_lock = threading.Lock()          # ← ДОДАНО: захист від подвійного запуску
-_ptb_started = False                   # ← ДОДАНО: прапорець
+_ptb_lock = threading.Lock()
+_ptb_started = False
 
 
 def _run_ptb_forever() -> None:
@@ -107,6 +107,20 @@ def health() -> tuple[str, int]:
     return "TumbleWeed is alive", 200
 
 
+@app.route("/debug")
+def debug() -> tuple[dict, int]:
+    """Діагностика."""
+    result = {
+        "ptb_app": _ptb_app is not None,
+        "loop_exists": _loop is not None,
+        "loop_running": _loop.is_running() if _loop else False,
+        "ptb_started": _ptb_started,
+    }
+    if _ptb_app is not None:
+        result["handlers_count"] = len(_ptb_app.handlers[0]) if _ptb_app.handlers else 0
+    return result, 200
+
+
 @app.route("/webhook", methods=["POST"])
 def webhook() -> tuple[str, int]:
     """Отримує оновлення від Telegram."""
@@ -123,13 +137,21 @@ def webhook() -> tuple[str, int]:
             log.info("🔘 update_id=%s callback=%r", update_id, cb_data)
         else:
             log.info("📦 update_id=%s keys=%s", update_id, list(data.keys()))
-
+       
         # Отримуємо Application
         application = get_ptb_app()
         update = Update.de_json(data, application.bot)
 
-        # Кладемо в update_queue — PTB сам обробить (потокобезпечно)
-        application.update_queue.put_nowait(update)
+        # Перевірка: event loop живий
+        if _loop is None or not _loop.is_running():
+            log.error("Event loop не запущено — не можу обробити update")
+            return "error: loop not running", 500
+
+        # Обробляємо через run_coroutine_threadsafe — правильний спосіб для webhook
+        asyncio.run_coroutine_threadsafe(
+            application.process_update(update),
+            _loop,
+        )
         return "ok", 200
     except Exception as e:
         log.exception("Webhook error: %s", e)
