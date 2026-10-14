@@ -11,6 +11,8 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import threading
+import time
 
 from flask import Flask, jsonify, request
 from telegram import Update
@@ -38,15 +40,39 @@ API_KEY = os.getenv("RENDER_API_KEY", "")
 # Telegram webhook
 # ───────────────────────────────────────────────────────
 
-def get_ptb_app():
-    """Ліниво ініціалізуємо PTB Application."""
+def _run_ptb_forever() -> None:
+    """Запускає PTB Application у фоновому потоці та крутить event loop."""
     global _ptb_app, _loop
+
+    _loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(_loop)
+
+    _ptb_app = build_application()
+    _loop.run_until_complete(_ptb_app.initialize())
+    _loop.run_until_complete(_ptb_app.start())
+
+    log.info("✅ PTB Application запущено і обробляє update_queue")
+
+    # Крутимо event loop вічно
+    _loop.run_forever()
+
+
+def get_ptb_app():
+    """Ліниво ініціалізуємо PTB Application у фоновому потоці."""
+    global _ptb_app
+
     if _ptb_app is None:
-        _loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(_loop)
-        _ptb_app = build_application()
-        _loop.run_until_complete(_ptb_app.initialize())
-        log.info("✅ PTB Application ініціалізовано")
+        threading.Thread(target=_run_ptb_forever, daemon=True).start()
+
+        # Чекаємо до 10 сек
+        for _ in range(20):
+            if _ptb_app is not None:
+                break
+            time.sleep(0.5)
+
+        if _ptb_app is None:
+            raise RuntimeError("PTB Application не запустився")
+
     return _ptb_app
 
 
@@ -79,7 +105,6 @@ def parse_workua() -> tuple[dict, int]:
 
     Захищено заголовком X-API-Key.
     """
-    # Перевірка API-ключа
     if API_KEY:
         provided = request.headers.get("X-API-Key", "")
         if provided != API_KEY:
@@ -109,7 +134,7 @@ async def _run_workua_parse() -> dict:
 
     # Збираємо запити з активних профілів
     profiles = list_active_profiles(client)
-    queries: set[tuple[str, str]] = set()   # (city_slug, query)
+    queries: set[tuple[str, str]] = set()
 
     for p in profiles:
         if not p.professions:
