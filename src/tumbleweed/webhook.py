@@ -145,6 +145,41 @@ def get_ptb_app(timeout: float = 30.0):
 def health() -> tuple[str, int]:
     """Простий health-check. НЕ чіпає PTB — щоб не блокувати webhook."""
     return "TumbleWeed is alive", 200
+@app.route("/keepalive")
+def keepalive() -> tuple[dict, int]:
+    """Тяжкий keep-alive: робить реальний HTTP-запит до OLX.
+
+    Використовується cron-job.org для утримання контейнера від sleep:
+    - вхідний трафік → Render не вимикає контейнер
+    - реальний запит до OLX → CPU активно працює → Render не заморожує
+    """
+    import time as _time
+    start = _time.time()
+    try:
+        from curl_cffi import requests as cffi_requests
+
+        r = cffi_requests.get(
+            "https://www.olx.ua/api/v1/offers/",
+            params={"limit": 1, "category_id": 1800},
+            headers={"Accept": "application/json"},
+            impersonate="chrome124",
+            timeout=10,
+        )
+        elapsed = int((_time.time() - start) * 1000)
+        log.info("💓 keepalive: OLX %s за %d ms", r.status_code, elapsed)
+        return {
+            "ok": True,
+            "olx_status": r.status_code,
+            "elapsed_ms": elapsed,
+        }, 200
+    except Exception as e:
+        elapsed = int((_time.time() - start) * 1000)
+        log.warning("💓 keepalive: помилка за %d ms: %s", elapsed, e)
+        return {
+            "ok": False,
+            "error": str(e),
+            "elapsed_ms": elapsed,
+        }, 500
 
 
 @app.route("/debug")
