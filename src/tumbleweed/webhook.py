@@ -92,8 +92,33 @@ def webhook() -> tuple[str, int]:
     """Отримує оновлення від Telegram."""
     try:
         data = request.get_json(force=True)
-        update = Update.de_json(data, get_ptb_app().bot)
-        get_ptb_app().update_queue.put_nowait(update)
+
+        # Логування кожного update
+        update_id = data.get("update_id", "?")
+        if "message" in data:
+            text = data["message"].get("text", "")[:50]
+            log.info("📨 update_id=%s message=%r", update_id, text)
+        elif "callback_query" in data:
+            cb_data = data["callback_query"].get("data", "")[:50]
+            log.info("🔘 update_id=%s callback=%r", update_id, cb_data)
+        else:
+            log.info("📦 update_id=%s keys=%s", update_id, list(data.keys()))
+
+        # Отримуємо Application
+        application = get_ptb_app()
+        update = Update.de_json(data, application.bot)
+
+        # ← КЛЮЧОВЕ: правильна передача у фоновий event loop
+        if _loop is None:
+            raise RuntimeError("Event loop не запущено")
+
+        future = asyncio.run_coroutine_threadsafe(
+            application.process_update(update),
+            _loop,
+        )
+        # Не чекаємо на результат — Telegram отримає 200 одразу
+        # (process_update виконається у фоновому потоці)
+
         return "ok", 200
     except Exception as e:
         log.exception("Webhook error: %s", e)
