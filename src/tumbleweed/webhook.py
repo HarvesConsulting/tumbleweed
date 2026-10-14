@@ -28,6 +28,52 @@ log = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
+# ───────────────────────────────────────────────────────
+# Background keep-awake scheduler
+# ───────────────────────────────────────────────────────
+
+def _keep_awake_scheduler() -> None:
+    """Фоновий потік: робить запити до OLX/Robota.ua кожні 5 хв.
+
+    Це:
+    1. Реально корисна робота (парсинг).
+    2. Утримує Render від sleep (бо CPU активний).
+    """
+    import time as _time
+
+    # Чекаємо 60 сек після старту, щоб PTB ініціалізувався
+    _time.sleep(60)
+
+    iteration = 0
+    while True:
+        iteration += 1
+        try:
+            log.info("💓 keep-awake #%d: старт", iteration)
+
+            # Робимо реальний HTTP-запит до OLX (легкий, 1 категорія)
+            from curl_cffi import requests as cffi_requests
+
+            r = cffi_requests.get(
+                "https://www.olx.ua/api/v1/offers/",
+                params={"limit": 5, "category_id": 1800},
+                headers={"Accept": "application/json"},
+                impersonate="chrome124",
+                timeout=15,
+            )
+            log.info(
+                "💓 keep-awake #%d: OLX %s, %d items",
+                iteration, r.status_code, len((r.json() or {}).get("data") or []),
+            )
+        except Exception as e:
+            log.warning("💓 keep-awake #%d: %s", iteration, e)
+
+        _time.sleep(240)  # 4 хв
+
+
+# Запускаємо фоновий потік при імпорті модуля
+if os.getenv("RENDER") or os.getenv("PORT"):
+    threading.Thread(target=_keep_awake_scheduler, daemon=True).start()
+
 # API-ключ для захисту /parse-workua
 API_KEY = os.getenv("RENDER_API_KEY", "")
 
