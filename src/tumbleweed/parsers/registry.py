@@ -1,6 +1,6 @@
 """Реєстр парсерів TumbleWeed.
 
-Підтримує кілька парсерів на одну країну (OLX, Work.ua, Robota.ua).
+Підтримує кілька парсерів на одну країну: OLX, Work.ua, Robota.ua, Pidbir.ua.
 """
 from __future__ import annotations
 
@@ -12,34 +12,31 @@ from .workua import WorkUaParser
 
 
 def get_parsers(country: str) -> list[JobParser]:
-    """Повертає список усіх парсерів для країни."""
+    """Повертає список усіх парсерів для країни.
+
+    Args:
+        country: ISO код країни ("ua", "pl", "ro").
+
+    Returns:
+        Список парсерів. Для "ua" — OLX, Work.ua, Robota.ua, Pidbir.ua.
+        Для інших — тільки OLX (якщо налаштований).
+    """
     parsers: list[JobParser] = []
 
-    # OLX — для всіх країн
+    # OLX — для всіх країн, де налаштовано
     cfg = OLX_COUNTRIES.get(country)
     if cfg:
         parsers.append(OlxJobParser(cfg))
 
-    # Work.ua — тільки UA (на паузі)
+    # Українські джерела
     if country == "ua":
         parsers.append(WorkUaParser())
-
-    # Robota.ua — тільки UA
-    if country == "ua":
         parsers.append(RobotaUaParser())
-
-    # Pidbir.ua — тільки UA (агро-ніша)
-    if country == "ua":
         parsers.append(PidbirUaParser())
 
     return parsers
 
 
-def get_parser(country: str) -> JobParser | None:
-    """Застаріле — повертає перший парсер для країни."""
-    parsers = get_parsers(country)
-    return parsers[0] if parsers else None
-
-
 def get_available_countries() -> list[str]:
+    """Повертає список країн, для яких є налаштовані парсери."""
     return list(OLX_COUNTRIES.keys())
