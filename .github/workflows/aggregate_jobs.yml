@@ -30,6 +30,7 @@ jobs:
       - name: Parse
         env:
           PYTHONUNBUFFERED: "1"
+          USE_WORKUA: "0"           # ← ДОДАНО: Work.ua блокується Cloudflare
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
           TUMBLEWEED_BOT_TOKEN: ${{ secrets.TUMBLEWEED_BOT_TOKEN }}
