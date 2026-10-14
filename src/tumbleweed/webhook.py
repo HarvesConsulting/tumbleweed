@@ -141,16 +141,25 @@ def webhook() -> tuple[str, int]:
             log.error("Event loop не запущено — не можу обробити update")
             return "error: loop not running", 500
 
+        import time as _time
+        _start = _time.time()
+        log.info("⏱ Старт обробки update_id=%s", update_id)
+
         future = asyncio.run_coroutine_threadsafe(
             application.process_update(update),
             _loop,
         )
 
         def _log_result(fut):
+            elapsed = (_time.time() - _start) * 1000
             try:
                 fut.result(timeout=0.1)
+                log.info("✅ Обробка update_id=%s завершена за %.0f ms", update_id, elapsed)
             except Exception as e:
-                log.exception("Обробка update %s впала: %s", update_id, e)
+                log.exception(
+                    "❌ Обробка update_id=%s впала за %.0f ms: %s",
+                    update_id, elapsed, e,
+                )
 
         future.add_done_callback(_log_result)
         return "ok", 200
