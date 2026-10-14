@@ -102,11 +102,7 @@ def get_ptb_app():
 @app.route("/")
 @app.route("/health")
 def health() -> tuple[str, int]:
-    # Прокидаємо PTB при першому пінгу (для keep-alive cron)
-    try:
-        get_ptb_app()
-    except Exception as e:
-        log.warning("PTB init (from /health): %s", e)
+    """Простий health-check. НЕ чіпає PTB — щоб не блокувати webhook."""
     return "TumbleWeed is alive", 200
 
 
