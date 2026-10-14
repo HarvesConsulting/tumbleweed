@@ -52,3 +52,6 @@ scripts/_*.py
 scripts/check_*.py
 scripts/probe_*.py
 scripts/debug_*.py
+
+# иняток: генератор мапи міст (потрібен на проді)
+!scripts/_build_robota_city_map.py

@@ -60,34 +60,74 @@ class RobotaUaParser(JobParser):
         query: str = "",
         limit: int = 40,
     ) -> list[Vacancy]:
-        """Повертає вакансії з Robota.ua."""
+        """Повертає вакансії з Robota.ua, фільтруючи за містом."""
+
+        # ── ФІКС: резолвимо slug → cityId ──────────────────────────
+        city_id: int | None = None
+        if city_slug:
+            # Синтетичний slug виду "robota_ua_1" → int("1")
+            if city_slug.startswith("robota_ua_"):
+                try:
+                    city_id = int(city_slug.rsplit("_", 1)[-1])
+                except ValueError:
+                    pass
+
+            # Інакше — через сервіс (спочатку API, потім fallback-словник)
+            if city_id is None:
+                from ..services.robota_cities import get_city_id
+                raw = get_city_id(city_slug)
+                if raw is not None:
+                    try:
+                        city_id = int(raw)
+                    except (ValueError, TypeError):
+                        city_id = None
+
+            if city_id is None:
+                print(
+                    f"⚠️  {self.display_name}: місто '{city_slug}' "
+                    f"не знайдено в довіднику — шукаю по всій Україні"
+                )
+            else:
+                print(
+                    f"  → {self.display_name}: фільтр по місту "
+                    f"'{city_slug}' (cityId={city_id})"
+                )
+        # ───────────────────────────────────────────────────────────
+
+        filter_data = {
+            "keywords": query or "",
+            "militaryVacancyDisplayMode": "APPENDED",
+            "metroBranches": [],
+            "additionalKeywords": "",
+            "clusterKeywords": [],
+            "salary": 0,
+            "districtIds": [],
+            "microDistrictIds": [],
+            "scheduleIds": [],
+            "rubrics": [],
+            "showAgencies": True,
+            "showOnlyNoCvApplyVacancies": False,
+            "showOnlySpecialNeeds": False,
+            "showOnlyWithoutExperience": False,
+            "showOnlyNotViewed": False,
+            "showWithoutSalary": True,
+            "location": {"latitude": 0, "longitude": 0},
+            "isForVeterans": False,
+            "isReservation": False,
+            "isOfficeWithGenerator": False,
+            "isOfficeWithShelter": False,
+            "gender": None,
+            "branchIds": [],
+        }
+
+        # ── ФІКС: передаємо cityId у GraphQL-фільтр ────────────────
+        if city_id is not None:
+            filter_data["cityId"] = city_id
+        # ───────────────────────────────────────────────────────────
+
         variables = {
             "pagination": {"count": min(limit, 40), "page": 0},
-            "filter": {
-                "keywords": query or "",
-                "militaryVacancyDisplayMode": "APPENDED",
-                "metroBranches": [],
-                "additionalKeywords": "",
-                "clusterKeywords": [],
-                "salary": 0,
-                "districtIds": [],
-                "microDistrictIds": [],
-                "scheduleIds": [],
-                "rubrics": [],
-                "showAgencies": True,
-                "showOnlyNoCvApplyVacancies": False,
-                "showOnlySpecialNeeds": False,
-                "showOnlyWithoutExperience": False,
-                "showOnlyNotViewed": False,
-                "showWithoutSalary": True,
-                "location": {"latitude": 0, "longitude": 0},
-                "isForVeterans": False,
-                "isReservation": False,
-                "isOfficeWithGenerator": False,
-                "isOfficeWithShelter": False,
-                "gender": None,
-                "branchIds": [],
-            },
+            "filter": filter_data,
             "sort": "BY_BUSINESS_SCORE",
         }
 
@@ -163,12 +203,10 @@ class RobotaUaParser(JobParser):
         if isinstance(city, dict):
             city_name = city.get("name")
 
-        # Правильний формат URL Robota.ua:
-        # https://robota.ua/company{company_id}/vacancy{vacancy_id}
+        # URL: https://robota.ua/company{company_id}/vacancy{vacancy_id}
         if company_id:
             link = f"https://robota.ua/company{company_id}/vacancy{raw_id}"
         else:
-            # Fallback (без company_id)
             link = f"https://robota.ua/vacancy{raw_id}"
 
         return Vacancy(
