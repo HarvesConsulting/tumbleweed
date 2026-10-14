@@ -28,6 +28,9 @@ log = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
+# API-ключ для захисту /parse-workua
+API_KEY = os.getenv("RENDER_API_KEY", "")
+
 # Перевірка: ми в gunicorn worker чи в master?
 def _is_gunicorn_worker() -> bool:
     """True, якщо це gunicorn worker, а не master."""
