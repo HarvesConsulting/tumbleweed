@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from .base_job import JobParser
 from .olx_jobs import OLX_COUNTRIES, OlxJobParser
+from .pidbir_ua import PidbirUaParser
 from .robota_ua import RobotaUaParser
 from .workua import WorkUaParser
 
@@ -26,6 +27,10 @@ def get_parsers(country: str) -> list[JobParser]:
     # Robota.ua — тільки UA
     if country == "ua":
         parsers.append(RobotaUaParser())
+
+    # Pidbir.ua — тільки UA (агро-ніша)
+    if country == "ua":
+        parsers.append(PidbirUaParser())
 
     return parsers
 
