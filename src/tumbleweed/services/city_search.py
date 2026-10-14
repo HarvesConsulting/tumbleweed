@@ -123,11 +123,6 @@ def _load_cities(country: str) -> list[City]:
                     if not slug or not name:
                         continue
 
-                    # Пропускаємо синтетичні slug
-                    if any(slug.startswith(prefix) for prefix in
-                           ("olx_", "dimria_", "999md_", "rj_", "dom_", "raw_")):
-                        continue
-
                     if slug in seen_slugs:
                         continue
                     seen_slugs.add(slug)
@@ -137,6 +132,8 @@ def _load_cities(country: str) -> list[City]:
                     olx_id = refs.get("olx_ua") if isinstance(refs, dict) else None
                     workua_id = item.get("workua_id")
 
+                    # Синтетичні slug (olx_ua_19797, dimria_20159) — теж додаємо,
+                    # бо вони мають справжні назви міст. Просто зберігаємо як є.
                     cities.append(City(
                         slug=slug,
                         name=name,
