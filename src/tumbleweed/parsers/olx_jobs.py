@@ -94,35 +94,85 @@ class OlxJobParser(JobParser):
         query: str = "",
         limit: int = 40,
     ) -> list[Vacancy]:
-        """Якщо є query — один запит. Якщо немає — обхід усіх категорій."""
-        seen: dict[str, Vacancy] = {}
+        """Якщо є query — швидкий шлях (один запит).
+        Якщо немає — обхід усіх категорій."""
 
         if query:
-            # Швидкий шлях: один запит за ключовим словом
-            print(f"  → {self.display_name} (за запитом, швидко)")
-            items = await self._fetch_one(
-                cat_id=self.cfg.category_ids[0],   # будь-яка категорія
-                city_slug=city_slug,
-                query=query,
-                limit=min(limit, 50),
-            )
-            for v in items:
-                if v:
-                    seen[v.raw_id] = v
-        else:
-            # Повільний шлях: обхід усіх категорій
-            print(f"  → {self.display_name} (обхід {len(self.cfg.category_ids)} категорій)")
-            per_cat_limit = max(10, limit // max(1, len(self.cfg.category_ids)) + 5)
-            for cat_id in self.cfg.category_ids:
+            # ── Швидкий шлях з пагінацією ────────────────────────
+            print(f"  → {self.display_name} (query={query!r}, з пагінацією)")
+
+            PAGE_SIZE = 50
+            MAX_PAGES = 5
+            total_wanted = max(1, limit)
+            pages_needed = min(MAX_PAGES, (total_wanted + PAGE_SIZE - 1) // PAGE_SIZE)
+
+            all_vacancies: list[Vacancy] = []
+            seen_ids: set[str] = set()
+            offset = 0
+
+            for page_num in range(pages_needed):
                 try:
-                    items = await self._fetch_one(cat_id, city_slug, query, per_cat_limit)
+                    batch = await self._fetch_one(
+                        cat_id=self.cfg.category_ids[0],
+                        city_slug=city_slug,
+                        query=query,
+                        limit=PAGE_SIZE,
+                        offset=offset,
+                    )
                 except Exception as e:
-                    print(f"⚠️  {self.display_name} cat={cat_id}: {type(e).__name__}: {e}")
-                    continue
-                for v in items:
-                    if v and v.raw_id not in seen:
-                        seen[v.raw_id] = v
-                await asyncio.sleep(random.uniform(0.3, 0.8))
+                    print(f"  ❌ {self.display_name}: {type(e).__name__}: {e}")
+                    break
+
+                if not batch:
+                    print(f"  ℹ️  offset={offset}: порожньо — стоп")
+                    break
+
+                new_on_page = 0
+                for v in batch:
+                    if v.raw_id not in seen_ids:
+                        seen_ids.add(v.raw_id)
+                        all_vacancies.append(v)
+                        new_on_page += 1
+
+                print(
+                    f"  📄 offset={offset}: отримано {len(batch)}, "
+                    f"нових {new_on_page} (всього: {len(all_vacancies)})"
+                )
+
+                if len(all_vacancies) >= total_wanted:
+                    break
+
+                if len(batch) < PAGE_SIZE:
+                    # неповна сторінка — далі не йдемо
+                    break
+
+                offset += PAGE_SIZE
+
+            return all_vacancies[:total_wanted]
+
+        # ── Повільний шлях — обхід усіх категорій (без query) ────
+        print(f"  → {self.display_name} (обхід {len(self.cfg.category_ids)} категорій)")
+        seen: dict[str, Vacancy] = {}
+        per_cat_limit = max(10, limit // max(1, len(self.cfg.category_ids)) + 5)
+
+        for cat_id in self.cfg.category_ids:
+            try:
+                items = await self._fetch_one(
+                    cat_id=cat_id,
+                    city_slug=city_slug,
+                    query=query,
+                    limit=per_cat_limit,
+                    offset=0,
+                )
+            except Exception as e:
+                print(f"⚠️  {self.display_name} cat={cat_id}: {type(e).__name__}: {e}")
+                continue
+
+            for v in items:
+                if v and v.raw_id not in seen:
+                    seen[v.raw_id] = v
+
+            await asyncio.sleep(random.uniform(0.3, 0.8))
 
         return list(seen.values())[:limit]
 
@@ -132,22 +182,20 @@ class OlxJobParser(JobParser):
         city_slug: str | None,
         query: str,
         limit: int,
+        offset: int = 0,
     ) -> list[Vacancy]:
         url = f"https://www.{self.cfg.domain}/api/v1/offers/"
         params: dict[str, object] = {
-            "offset": 0,
+            "offset": offset,
             "limit": min(limit, 50),
             "category_id": cat_id,
             "sort_by": "created_at:desc",
         }
         if query:
             params["query"] = query
-        # Обробка city_slug:
-        # 1. Синтетичний slug типу "olx_ua_96" → витягуємо 96
-        # 2. Природний slug "kyiv" → шукаємо в мапі
+
         if city_slug:
             if city_slug.startswith("olx_"):
-                # "olx_ua_64" → ["olx", "ua", "64"] → 64
                 parts = city_slug.split("_")
                 if len(parts) >= 3:
                     try:

@@ -60,18 +60,18 @@ class RobotaUaParser(JobParser):
         query: str = "",
         limit: int = 40,
     ) -> list[Vacancy]:
-        """Повертає вакансії з Robota.ua, фільтруючи за містом."""
+        """Повертає вакансії з Robota.ua, фільтруючи за містом.
 
+        Пагінація: Robota.ua віддає максимум 40 за запит, тому робимо
+        кілька послідовних запитів, поки не досягнемо `limit`.
+        """
         # ── ФІКС: резолвимо slug → cityId ──────────────────────────
         city_id: int | None = None
         if city_slug:
             from ..services.robota_cities import get_city_id, get_city_id_by_name
 
-            # 1. Спроба через нормальний slug
             raw = get_city_id(city_slug)
 
-            # 2. Fallback: синтетичний slug (olx_ua_XXX, dimria_XXX)
-            #    → витягуємо назву міста з каталогу → шукаємо за назвою
             if raw is None:
                 try:
                     from ..services.city_search import get_city as get_city_full
@@ -130,50 +130,92 @@ class RobotaUaParser(JobParser):
             "branchIds": [],
         }
 
-        # ── ФІКС: передаємо cityId у GraphQL-фільтр ────────────────
         if city_id is not None:
             filter_data["cityId"] = city_id
-        # ───────────────────────────────────────────────────────────
 
-        variables = {
-            "pagination": {"count": min(limit, 40), "page": 0},
-            "filter": filter_data,
-            "sort": "BY_BUSINESS_SCORE",
-        }
+        # ── ПАГІНАЦІЯ ──────────────────────────────────────────────
+        PAGE_SIZE = 40                    # максимум для одного запиту
+        MAX_PAGES = 10                    # запобіжник — не більше 10 сторінок
+        total_wanted = max(1, limit)      # скільки всього треба
+        pages_needed = min(MAX_PAGES, (total_wanted + PAGE_SIZE - 1) // PAGE_SIZE)
 
-        payload = {
-            "operationName": "getPublishedVacanciesList",
-            "variables": variables,
-            "query": GRAPHQL_QUERY,
-        }
+        all_items: list[dict] = []
+        seen_ids: set[str] = set()
 
-        await asyncio.sleep(random.uniform(1.0, 2.0))
+        for page_num in range(pages_needed):
+            variables = {
+                "pagination": {"count": PAGE_SIZE, "page": page_num},
+                "filter": filter_data,
+                "sort": "BY_BUSINESS_SCORE",
+            }
 
-        def _do_request():
-            return cffi_requests.post(
-                self.API_URL,
-                json=payload,
-                headers=self.HEADERS,
-                impersonate="chrome124",
-                timeout=25,
+            payload = {
+                "operationName": "getPublishedVacanciesList",
+                "variables": variables,
+                "query": GRAPHQL_QUERY,
+            }
+
+            # Пауза між запитами — 1-2 сек випадково
+            await asyncio.sleep(random.uniform(1.0, 2.0))
+
+            def _do_request(payload=payload):
+                return cffi_requests.post(
+                    self.API_URL,
+                    json=payload,
+                    headers=self.HEADERS,
+                    impersonate="chrome124",
+                    timeout=25,
+                )
+
+            r = await asyncio.to_thread(_do_request)
+
+            if r.status_code != 200:
+                print(
+                    f"❌ {self.display_name}: HTTP {r.status_code} "
+                    f"(page={page_num}) — {r.text[:150]}"
+                )
+                break
+
+            try:
+                data = r.json()
+            except Exception as e:
+                print(f"❌ {self.display_name}: JSON error: {e}")
+                break
+
+            page_data = (data.get("data") or {}).get("publishedVacancies") or {}
+            items = page_data.get("items") or []
+            total_count = page_data.get("totalCount", 0)
+
+            if not items:
+                # Сторінка порожня — далі сенсу немає
+                print(f"  ℹ️  Сторінка {page_num + 1}: порожньо — стоп")
+                break
+
+            new_on_page = 0
+            for item in items:
+                rid = str(item.get("id") or "")
+                if rid and rid not in seen_ids:
+                    seen_ids.add(rid)
+                    all_items.append(item)
+                    new_on_page += 1
+
+            print(
+                f"  📄 Сторінка {page_num + 1}/{pages_needed}: "
+                f"отримано {len(items)}, унікальних {new_on_page} "
+                f"(всього: {len(all_items)} / {total_count})"
             )
 
-        r = await asyncio.to_thread(_do_request)
+            if len(all_items) >= total_wanted:
+                break
 
-        if r.status_code != 200:
-            print(f"❌ {self.display_name}: HTTP {r.status_code} — {r.text[:150]}")
-            return []
+            if page_num + 1 < pages_needed and len(items) < PAGE_SIZE:
+                # Остання сторінка (неповна) — далі не йдемо
+                break
 
-        try:
-            data = r.json()
-        except Exception as e:
-            print(f"❌ {self.display_name}: JSON error: {e}")
-            return []
+        # ───────────────────────────────────────────────────────────
 
-        items = (data.get("data") or {}).get("publishedVacancies", {}).get("items", [])
-
-        vacancies = []
-        for item in items:
+        vacancies: list[Vacancy] = []
+        for item in all_items[:total_wanted]:
             v = self._parse_item(item, city_slug or "")
             if v:
                 vacancies.append(v)
