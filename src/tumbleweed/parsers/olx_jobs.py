@@ -142,8 +142,20 @@ class OlxJobParser(JobParser):
         }
         if query:
             params["query"] = query
-        if city_slug and city_slug in self.cfg.city_ids:
-            params["city_id"] = self.cfg.city_ids[city_slug]
+        # Обробка city_slug:
+        # 1. Синтетичний slug типу "olx_ua_96" → витягуємо 96
+        # 2. Природний slug "kyiv" → шукаємо в мапі
+        if city_slug:
+            if city_slug.startswith("olx_"):
+                # "olx_ua_64" → ["olx", "ua", "64"] → 64
+                parts = city_slug.split("_")
+                if len(parts) >= 3:
+                    try:
+                        params["city_id"] = int(parts[-1])
+                    except ValueError:
+                        pass
+            elif city_slug in self.cfg.city_ids:
+                params["city_id"] = self.cfg.city_ids[city_slug]
 
         await asyncio.sleep(random.uniform(2.0, 4.0))
 
