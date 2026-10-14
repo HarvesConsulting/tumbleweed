@@ -22,11 +22,9 @@ from tumbleweed.services.subcategory_search import get_subcategory
 # «Холодний старт» — що парсити, навіть якщо немає підписок
 # ───────────────────────────────────────────────────────
 
-COLD_START = [
-    ("ua", "kyiv", "backend"),
-    ("ua", "kyiv", "продавець"),
-    ("ua", "kyiv", "водій"),
-]
+# COLD_START вимкнено — БД уже достатньо наповнена.
+# Парсимо тільки те, що шукають користувачі.
+COLD_START: list[tuple[str, str, str]] = []
 
 
 # ───────────────────────────────────────────────────────
@@ -79,13 +77,25 @@ def build_jobs_from_users(client: TursoClient) -> list[tuple[str, str, str]]:
 
 
 def build_jobs(client: TursoClient) -> list[tuple[str, str, str]]:
-    """Об'єднує запити з профілів + холодний старт."""
+    """Об'єднує запити з профілів.
+
+    COLD_START додається ТІЛЬКИ якщо в БД мало вакансій (< 1000).
+    """
     from_users = build_jobs_from_users(client)
 
-    # Додаємо cold-start запити (щоб нові користувачі одразу бачили результат)
+    # Перевіряємо, скільки вакансій у БД
+    try:
+        count = client.execute("SELECT COUNT(*) FROM vacancies")[0][0]
+    except Exception:
+        count = 0
+
     combined: set[tuple[str, str, str]] = set(from_users)
-    for j in COLD_START:
-        combined.add(j)
+
+    # COLD_START тільки для холодного старту
+    if count < 1000:
+        print(f"ℹ️  Холодний старт (БД: {count} вакансій < 1000)", flush=True)
+        for j in COLD_START:
+            combined.add(j)
 
     return list(combined)
 
