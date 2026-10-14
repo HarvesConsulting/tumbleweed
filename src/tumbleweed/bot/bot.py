@@ -31,8 +31,7 @@ def build_application() -> Application:
     # 1. ConversationHandler — основний флоу /start → ... → DONE
     app.add_handler(build_conversation_handler())
 
-    # 2. Окремі команди на верхньому рівні (працюють поза діалогом)
-    app.add_handler(CommandHandler("start", cmd_start))
+    # 2. Окремі команди на верхньому рівні (працюють поза діалогом)    
     app.add_handler(CommandHandler("settings", cmd_settings))
     app.add_handler(CommandHandler("stop", cmd_stop))
     app.add_handler(CommandHandler("resume", cmd_resume))
