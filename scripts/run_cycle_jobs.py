@@ -85,7 +85,8 @@ def build_jobs(client: TursoClient) -> list[tuple[str, str, str]]:
 
     # Перевіряємо, скільки вакансій у БД
     try:
-        count = client.execute("SELECT COUNT(*) FROM vacancies")[0][0]
+        raw = client.execute("SELECT COUNT(*) FROM vacancies")[0][0]
+        count = int(raw) if raw is not None else 0
     except Exception:
         count = 0
 
