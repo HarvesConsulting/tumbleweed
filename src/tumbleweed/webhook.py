@@ -40,6 +40,13 @@ API_KEY = os.getenv("RENDER_API_KEY", "")
 # Telegram webhook
 # ───────────────────────────────────────────────────────
 
+# Глобальні об'єкти
+_ptb_app = None
+_loop: asyncio.AbstractEventLoop | None = None
+_ptb_lock = threading.Lock()          # ← ДОДАНО: захист від подвійного запуску
+_ptb_started = False                   # ← ДОДАНО: прапорець
+
+
 def _run_ptb_forever() -> None:
     """Запускає PTB Application у фоновому потоці та крутить event loop."""
     global _ptb_app, _loop
@@ -58,22 +65,35 @@ def _run_ptb_forever() -> None:
 
 
 def get_ptb_app():
-    """Ліниво ініціалізуємо PTB Application у фоновому потоці."""
-    global _ptb_app
+    """Ліниво ініціалізуємо PTB Application у фоновому потоці (thread-safe)."""
+    global _ptb_app, _ptb_started
 
-    if _ptb_app is None:
+    if _ptb_app is not None:
+        return _ptb_app
+
+    with _ptb_lock:
+        # Double-check: можливо, інший потік вже запустив
+        if _ptb_app is not None:
+            return _ptb_app
+
+        if _ptb_started:
+            # Вже запускається — чекаємо
+            for _ in range(40):
+                if _ptb_app is not None:
+                    return _ptb_app
+                time.sleep(0.5)
+            raise RuntimeError("PTB Application не запустився (timeout)")
+
+        _ptb_started = True
         threading.Thread(target=_run_ptb_forever, daemon=True).start()
 
-        # Чекаємо до 10 сек
-        for _ in range(20):
+        # Чекаємо до 20 сек
+        for _ in range(40):
             if _ptb_app is not None:
-                break
+                return _ptb_app
             time.sleep(0.5)
 
-        if _ptb_app is None:
-            raise RuntimeError("PTB Application не запустився")
-
-    return _ptb_app
+        raise RuntimeError("PTB Application не запустився (timeout)")
 
 
 @app.route("/")
@@ -108,17 +128,8 @@ def webhook() -> tuple[str, int]:
         application = get_ptb_app()
         update = Update.de_json(data, application.bot)
 
-        # ← КЛЮЧОВЕ: правильна передача у фоновий event loop
-        if _loop is None:
-            raise RuntimeError("Event loop не запущено")
-
-        future = asyncio.run_coroutine_threadsafe(
-            application.process_update(update),
-            _loop,
-        )
-        # Не чекаємо на результат — Telegram отримає 200 одразу
-        # (process_update виконається у фоновому потоці)
-
+        # Кладемо в update_queue — PTB сам обробить (потокобезпечно)
+        application.update_queue.put_nowait(update)
         return "ok", 200
     except Exception as e:
         log.exception("Webhook error: %s", e)
@@ -222,11 +233,13 @@ async def _run_workua_parse() -> dict:
 # Startup (для Render/gunicorn)
 # ───────────────────────────────────────────────────────
 
-# На Render (gunicorn) — ініціалізуємо PTB одразу при старті worker,
-# а не чекаємо першого запиту на /webhook.
 if os.getenv("RENDER") or os.getenv("PORT"):
     log.info("🚀 Ініціалізуємо PTB при старті (Render detected)")
-    threading.Thread(target=_run_ptb_forever, daemon=True).start()
+    try:
+        get_ptb_app()
+        log.info("✅ PTB готовий до роботи")
+    except Exception as e:
+        log.exception("Помилка старту PTB: %s", e)
 
 
 # ───────────────────────────────────────────────────────
