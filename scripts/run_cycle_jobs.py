@@ -94,6 +94,9 @@ def build_jobs(client: TursoClient) -> list[tuple[str, str, str]]:
 # Основна логіка
 # ───────────────────────────────────────────────────────
 
+import os
+USE_WORKUA = os.getenv("USE_WORKUA", "1") == "1"
+
 async def run_one(
     country: str,
     city: str,
@@ -106,11 +109,15 @@ async def run_one(
         print(f"⚠️  Немає парсерів для {country}")
         return (0, 0)
 
+    # Фільтруємо Work.ua, якщо він вимкнений
+    if not USE_WORKUA:
+        parsers = [p for p in parsers if p.source_key != "workua_ua"]
+
     total_found = 0
     total_new = 0
 
     for parser in parsers:
-        print(f"\n→ [{parser.display_name} | {city or 'вся країна'}] query={query!r}", flush=True)
+        print(f"\n→ [{parser.display_name} | {city or 'вся країна'}] query={query!r}", flush=True)        
         try:
             vacancies = await parser.fetch(
                 city_slug=city or None,
