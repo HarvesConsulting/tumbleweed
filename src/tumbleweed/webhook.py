@@ -79,6 +79,11 @@ def get_ptb_app():
 @app.route("/")
 @app.route("/health")
 def health() -> tuple[str, int]:
+    # Прокидаємо PTB при першому пінгу (для keep-alive cron)
+    try:
+        get_ptb_app()
+    except Exception as e:
+        log.warning("PTB init (from /health): %s", e)
     return "TumbleWeed is alive", 200
 
 
@@ -186,6 +191,17 @@ async def _run_workua_parse() -> dict:
         "found": total_found,
         "new": total_new,
     }
+
+
+# ───────────────────────────────────────────────────────
+# Startup (для Render/gunicorn)
+# ───────────────────────────────────────────────────────
+
+# На Render (gunicorn) — ініціалізуємо PTB одразу при старті worker,
+# а не чекаємо першого запиту на /webhook.
+if os.getenv("RENDER") or os.getenv("PORT"):
+    log.info("🚀 Ініціалізуємо PTB при старті (Render detected)")
+    threading.Thread(target=_run_ptb_forever, daemon=True).start()
 
 
 # ───────────────────────────────────────────────────────
