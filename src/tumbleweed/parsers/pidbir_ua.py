@@ -17,6 +17,7 @@ from html import unescape
 from curl_cffi import requests as cffi_requests
 
 from .base_job import JobParser, Vacancy
+from ..services.city_search import get_city
 
 
 class PidbirUaParser(JobParser):
@@ -149,9 +150,40 @@ class PidbirUaParser(JobParser):
         district_obj = item.get("job_district") or {}
         district = (district_obj.get("main_text") or "").strip()
 
+        # ── ФІЛЬТР ПО МІСТУ ───────────────────────────
+        # Pidbir API НЕ фільтрує по місту — робимо це самі.
+        if city_slug:
+            try:
+                target = get_city(self.country, city_slug)
+            except Exception:
+                target = None
+
+            if target:
+                # Матч 1: точна назва міста
+                name_match = target.name.lower() == city_name.lower()
+
+                # Матч 2: регіон (для сіл типу "Лядське" в "Тернопільській")
+                region_match = (
+                    target.region
+                    and region
+                    and target.region.lower() in region.lower()
+                )
+
+                if not (name_match or region_match):
+                    return None  # не наше місто — пропускаємо
+
         # ── Компанія ──────────────────────────────────
-        # У JSON немає явного company, використовуємо responsible_user_name
-        company = (item.get("responsible_user_name") or "").strip() or None
+        company = None
+        company_obj = item.get("company")
+        if isinstance(company_obj, dict):
+            # Пріоритет: brand_name → company_name → responsible_user_name
+            company = (
+                (company_obj.get("brand_name") or "").strip()
+                or (company_obj.get("company_name") or "").strip()
+                or None
+            )
+        if not company:
+            company = (item.get("responsible_user_name") or "").strip() or None
 
         # ── Зарплата ──────────────────────────────────
         salary_obj = item.get("salary") or {}
@@ -183,9 +215,12 @@ class PidbirUaParser(JobParser):
         desc_text = re.sub(r"\s+", " ", desc_text).strip()
         description = desc_text[:500] or None
 
-        # ── URL ───────────────────────────────────────
+        # ── URL: https://pidbir.ua/vacancies/{id}-{slug} ──
         slug = (item.get("slug") or "").strip()
-        link = f"https://pidbir.ua/vacancy/{slug}" if slug else ""
+        if slug:
+            link = f"https://pidbir.ua/vacancies/{vid}-{slug}"
+        else:
+            link = f"https://pidbir.ua/vacancies/{vid}"
 
         # ── city_slug ─────────────────────────────────
         # якщо caller передав city_slug — використовуємо його,
@@ -226,8 +261,9 @@ class PidbirUaParser(JobParser):
             job_type=job_type,
             experience=experience,
             description=description,
-            created_at=None,  # у JSON немає дати публікації
+            created_at=item.get("created_at") or None,
             extra={
+                "city_name": city_name,
                 "region": region,
                 "district": district,
                 "categories": item.get("job_categoy_names") or [],
