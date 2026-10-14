@@ -65,22 +65,32 @@ class RobotaUaParser(JobParser):
         # ── ФІКС: резолвимо slug → cityId ──────────────────────────
         city_id: int | None = None
         if city_slug:
-            # Синтетичний slug виду "robota_ua_1" → int("1")
-            if city_slug.startswith("robota_ua_"):
-                try:
-                    city_id = int(city_slug.rsplit("_", 1)[-1])
-                except ValueError:
-                    pass
+            from ..services.robota_cities import get_city_id, get_city_id_by_name
 
-            # Інакше — через сервіс (спочатку API, потім fallback-словник)
-            if city_id is None:
-                from ..services.robota_cities import get_city_id
-                raw = get_city_id(city_slug)
-                if raw is not None:
-                    try:
-                        city_id = int(raw)
-                    except (ValueError, TypeError):
-                        city_id = None
+            # 1. Спроба через нормальний slug
+            raw = get_city_id(city_slug)
+
+            # 2. Fallback: синтетичний slug (olx_ua_XXX, dimria_XXX)
+            #    → витягуємо назву міста з каталогу → шукаємо за назвою
+            if raw is None:
+                try:
+                    from ..services.city_search import get_city as get_city_full
+                    c = get_city_full(self.country, city_slug)
+                    if c and c.name:
+                        raw = get_city_id_by_name(c.name)
+                        if raw:
+                            print(
+                                f"  ↻ {self.display_name}: '{city_slug}' "
+                                f"→ '{c.name}' → cityId={raw}"
+                            )
+                except Exception as e:
+                    print(f"  ⚠️  Fallback lookup failed: {e}")
+
+            if raw is not None:
+                try:
+                    city_id = int(raw)
+                except (ValueError, TypeError):
+                    city_id = None
 
             if city_id is None:
                 print(
