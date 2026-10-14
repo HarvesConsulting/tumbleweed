@@ -54,20 +54,22 @@ def _run_ptb_forever() -> None:
     """Запускає PTB Application у фоновому потоці та крутить event loop."""
     global _ptb_app, _loop
 
-    _loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(_loop)
+    try:
+        _loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(_loop)
 
-    _ptb_app = build_application()
-    _loop.run_until_complete(_ptb_app.initialize())
-    _loop.run_until_complete(_ptb_app.start())
+        _ptb_app = build_application()
+        _loop.run_until_complete(_ptb_app.initialize())
+        _loop.run_until_complete(_ptb_app.start())
 
-    log.info("✅ PTB Application запущено і обробляє update_queue")
+        log.info("✅ PTB Application запущено і обробляє update_queue")
+        _loop.run_forever()
+    except Exception as e:
+        log.exception("❌ _run_ptb_forever впав: %s", e)
+        _ptb_app = None  # дозволяємо повторну спробу
 
-    # Крутимо event loop вічно
-    _loop.run_forever()
 
-
-def get_ptb_app():
+def get_ptb_app(timeout: float = 30.0):
     """Ліниво ініціалізуємо PTB Application у фоновому потоці (thread-safe)."""
     global _ptb_app, _ptb_started
 
@@ -75,27 +77,20 @@ def get_ptb_app():
         return _ptb_app
 
     with _ptb_lock:
-        # Double-check: можливо, інший потік вже запустив
         if _ptb_app is not None:
             return _ptb_app
 
-        if _ptb_started:
-            # Вже запускається — чекаємо
-            for _ in range(40):
-                if _ptb_app is not None:
-                    return _ptb_app
-                time.sleep(0.5)
-            raise RuntimeError("PTB Application не запустився (timeout)")
+        if not _ptb_started:
+            _ptb_started = True
+            threading.Thread(target=_run_ptb_forever, daemon=True).start()
 
-        _ptb_started = True
-        threading.Thread(target=_run_ptb_forever, daemon=True).start()
-
-        # Чекаємо до 20 сек
-        for _ in range(40):
+        deadline = time.time() + timeout
+        while time.time() < deadline:
             if _ptb_app is not None:
                 return _ptb_app
             time.sleep(0.5)
 
+        _ptb_started = False  # скидаємо, щоб наступний виклик спробував знову
         raise RuntimeError("PTB Application не запустився (timeout)")
 
 
@@ -146,11 +141,18 @@ def webhook() -> tuple[str, int]:
             log.error("Event loop не запущено — не можу обробити update")
             return "error: loop not running", 500
 
-        # Обробляємо через run_coroutine_threadsafe — правильний спосіб для webhook
-        asyncio.run_coroutine_threadsafe(
+        future = asyncio.run_coroutine_threadsafe(
             application.process_update(update),
             _loop,
         )
+
+        def _log_result(fut):
+            try:
+                fut.result(timeout=0.1)
+            except Exception as e:
+                log.exception("Обробка update %s впала: %s", update_id, e)
+
+        future.add_done_callback(_log_result)
         return "ok", 200
     except Exception as e:
         log.exception("Webhook error: %s", e)
@@ -263,6 +265,29 @@ if os.getenv("RENDER") or os.getenv("PORT"):
         log.exception("Помилка старту PTB: %s", e)
 
 
+# ───────────────────────────────────────────────────────
+# SIGTERM handler (Render sends this on restart)
+# ───────────────────────────────────────────────────────
+
+import signal
+import sys
+
+def _shutdown_handler(signum, frame):
+    log.info("🛑 Отримано сигнал %s — завершуємо PTB", signum)
+    if _loop is not None and _loop.is_running():
+        _loop.call_soon_threadsafe(_loop.stop)
+    if _ptb_app is not None:
+        try:
+            asyncio.run_coroutine_threadsafe(
+                _ptb_app.stop(),
+                _loop,
+            ).result(timeout=5)
+        except Exception as e:
+            log.warning("PTB stop: %s", e)
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, _shutdown_handler)
+signal.signal(signal.SIGINT, _shutdown_handler)
 # ───────────────────────────────────────────────────────
 # Local dev
 # ───────────────────────────────────────────────────────
