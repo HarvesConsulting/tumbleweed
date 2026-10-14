@@ -4,8 +4,7 @@ on:
   repository_dispatch:
     types: [tumbleweed_aggregate]
   workflow_dispatch: {}
-  push:
-    branches: [main]
+  
 
 jobs:
   aggregate:
