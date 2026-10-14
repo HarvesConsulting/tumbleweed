@@ -136,11 +136,13 @@ class RobotaUaParser(JobParser):
         if not raw_id or not title:
             return None
 
-        # Компанія
+        # Компанія (name + id)
         company = None
+        company_id = None
         comp = item.get("company")
         if isinstance(comp, dict):
             company = comp.get("name")
+            company_id = comp.get("id")
 
         # Зарплата
         salary = None
@@ -161,7 +163,13 @@ class RobotaUaParser(JobParser):
         if isinstance(city, dict):
             city_name = city.get("name")
 
-        link = f"https://robota.ua/company/vacancy/{raw_id}"
+        # Правильний формат URL Robota.ua:
+        # https://robota.ua/company{company_id}/vacancy{vacancy_id}
+        if company_id:
+            link = f"https://robota.ua/company{company_id}/vacancy{raw_id}"
+        else:
+            # Fallback (без company_id)
+            link = f"https://robota.ua/vacancy{raw_id}"
 
         return Vacancy(
             id=Vacancy.make_id(self.source_key, raw_id),
