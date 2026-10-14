@@ -115,19 +115,34 @@ def _load_cities(country: str) -> list[City]:
                 for item in items:
                     if not isinstance(item, dict):
                         continue
+
                     slug = item.get("slug") or item.get("key") or ""
                     name = item.get("name") or item.get("label") or ""
+
+                    # Базова перевірка
                     if not slug or not name:
                         continue
+
+                    # Пропускаємо синтетичні slug
+                    if any(slug.startswith(prefix) for prefix in
+                           ("olx_", "dimria_", "999md_", "rj_", "dom_", "raw_")):
+                        continue
+
                     if slug in seen_slugs:
                         continue
                     seen_slugs.add(slug)
+
+                    # Витягуємо olx_id з refs.olx_ua
+                    refs = item.get("refs") or {}
+                    olx_id = refs.get("olx_ua") if isinstance(refs, dict) else None
+                    workua_id = item.get("workua_id")
+
                     cities.append(City(
                         slug=slug,
                         name=name,
                         region=item.get("region") or item.get("state"),
-                        olx_id=item.get("olx_id"),
-                        workua_id=item.get("workua_id"),
+                        olx_id=olx_id,
+                        workua_id=workua_id,
                     ))
         except Exception as e:
             log.error("Помилка читання %s: %s", path, e)
