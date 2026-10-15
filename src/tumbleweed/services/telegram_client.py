@@ -60,6 +60,54 @@ class TelegramClient:
             payload["reply_markup"] = keyboard
         return self._call("sendMessage", payload)
 
+    def send_vacancy(self, chat_id: str | int, v: dict) -> bool:
+        """Надсилає одну вакансію з кнопками.
+
+        Args:
+            chat_id: ID чату
+            v: dict з полями: id, title, company, salary, city_slug, job_type, link
+
+        Returns:
+            True якщо успішно.
+        """
+        from tumbleweed.config import settings
+
+        title = (v.get("title") or "").strip()
+        company = v.get("company") or ""
+        salary = v.get("salary") or ""
+        city = v.get("city_slug") or ""
+        job_type = v.get("job_type") or ""
+        link = v.get("link") or ""
+        vacancy_id = v.get("id", "")
+
+        lines = [f"💼 *{title}*", ""]
+        if company:
+            lines.append(f"🏢 {company}")
+        if salary:
+            lines.append(f"💰 {salary}")
+        if city:
+            lines.append(f"📍 {city}")
+        if job_type:
+            lines.append(f"🕐 {job_type}")
+
+        text = "\n".join(lines)
+
+        rentalert_url = f"{settings.rentalert_bot_url}?start=from_tumbleweed_{chat_id}"
+
+        buttons: list[list[dict[str, str]]] = []
+        if link:
+            buttons.append([{"text": "🔗 Відкрити вакансію", "url": link}])
+        buttons.append([
+            {"text": "🏠 Житло тут", "url": rentalert_url},
+            {"text": "🚫 Ігнор", "callback_data": f"action:ignore_vacancy:{vacancy_id}"},
+        ])
+
+        return self.send_message(
+            chat_id,
+            text,
+            keyboard={"inline_keyboard": buttons},
+        )
+
     def send_photo(
         self,
         chat_id: str | int,
