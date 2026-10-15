@@ -46,6 +46,47 @@ _startup_lock = threading.Lock()
 _startup_done = False
 
 
+def _re_register_webhook() -> None:
+    """Пере-реєструє webhook у Telegram після рестарту Render.
+
+    Вирішує проблему "Telegram припиняє доставляти після рестарту Render".
+    Викликається один раз при startup — idempotent.
+    """
+    import httpx
+
+    token = settings.bot_token
+    if not token:
+        log.warning("_re_register_webhook: bot_token не задано")
+        return
+
+    webhook_url = settings.webhook_url or "https://tumbleweed.onrender.com/webhook"
+
+    try:
+        payload: dict = {
+            "url": webhook_url,
+            "drop_pending_updates": False,
+            "allowed_updates": ["message", "callback_query"],
+        }
+        if settings.webhook_secret:
+            payload["secret_token"] = settings.webhook_secret
+
+        r = httpx.post(
+            f"https://api.telegram.org/bot{token}/setWebhook",
+            json=payload,
+            timeout=10,
+        )
+        if r.status_code == 200:
+            result = r.json()
+            if result.get("ok"):
+                log.info("✅ Webhook пере-реєстровано: %s", webhook_url)
+            else:
+                log.warning("Webhook re-register: %s", result)
+        else:
+            log.warning("Webhook re-register: HTTP %d — %s", r.status_code, r.text[:200])
+    except Exception as e:
+        log.warning("Webhook re-register failed: %s", e)
+
+
 def _ensure_startup() -> None:
     """Lazy startup у worker process (thread-safe, idempotent).
 
@@ -66,6 +107,7 @@ def _ensure_startup() -> None:
             _ctx = build_context()
             _startup_done = True
             log.info("✅ Startup завершено")
+            _re_register_webhook()                    # ← ДОДАТИ
         except Exception as e:
             log.exception("❌ Startup failed: %s", e)
             raise
