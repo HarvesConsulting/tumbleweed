@@ -39,21 +39,22 @@ from tumbleweed.services.subcategory_search import (
 
 from .keyboards import (
     BTN_CHANGE,
-    BTN_MY_JOB,
+    BTN_HELP,
+    BTN_MY_PROFILE,
+    BTN_MY_VACANCIES,
     BTN_RENT,
     BTN_TOGGLE_OFF,
     BTN_TOGGLE_ON,
     category_keyboard,
     city_keyboard,
+    city_empty_keyboard,
+    city_results_keyboard,
     country_keyboard,
     experience_keyboard,
     job_type_keyboard,
-    main_menu_keyboard,
     main_reply_keyboard,
     subcategory_empty_keyboard,
     subcategory_results_keyboard,
-    city_results_keyboard,
-    city_empty_keyboard,
 )
 from .states import State
 
@@ -87,27 +88,59 @@ def _rentalert_url(chat_id: int) -> str:
 
 
 def _profile_summary_text(profile) -> str:
+    """Красивий опис профілю з людськими назвами."""
+    from tumbleweed.services.city_search import get_city
+
+    # ── Професії ───────────────────────────────
     profs_raw = profile.professions or []
     if not profs_raw:
-        profs_text = "🌍 будь-яка підкатегорія"
+        profs_text = "🌍 будь-яка"
     else:
         labels = []
         for p in profs_raw:
-            # p може бути "agro_tractor" або "custom:водій"
             if p.startswith("custom:"):
                 labels.append(p.replace("custom:", ""))
             else:
-                cat_key, _, sub_key = p.partition("_")
+                cat_key, _, _ = p.partition("_")
                 sub = get_subcategory(cat_key, p)
                 labels.append(sub.label if sub else p)
         profs_text = ", ".join(labels)
 
-    cities = ", ".join(profile.cities) or "будь-яке"
-    jts = ", ".join(profile.job_types) or "будь-яка"
+    # ── Міста — реальні назви, не slug'и ───────
+    city_slugs = profile.cities or []
+    if city_slugs:
+        city_names = []
+        for slug in city_slugs:
+            c = get_city(profile.country, slug)
+            city_names.append(c.name if c else slug)
+        cities_text = ", ".join(city_names)
+    else:
+        cities_text = "будь-яке"
+
+    # ── Тип зайнятості ─────────────────────────
+    jt_labels = {"full": "Повна", "part": "Часткова", "remote": "Віддалена"}
+    jts_raw = profile.job_types or []
+    jts_text = ", ".join(jt_labels.get(j, j) for j in jts_raw) or "будь-яка"
+
+    # ── Досвід ─────────────────────────────────
+    exp_labels = {
+        "all": "будь-який",
+        "no": "без досвіду",
+        "1-3": "1-3 роки",
+        "3+": "3+ років",
+    }
+    exp = exp_labels.get(profile.experience or "all", profile.experience or "all")
+
+    # ── Країна ─────────────────────────────────
+    country_labels = {"ua": "🇺🇦 Україна", "pl": "🇵🇱 Польща", "ro": "🇷🇴 Румунія"}
+    country_text = country_labels.get(profile.country, profile.country)
+
     return (
-        f"📍 {profile.country} | {cities}\n"
-        f"💼 {profs_text}\n"
-        f"⏰ {jts} | 🎓 {profile.experience}"
+        f"🌍 Країна: *{country_text}*\n"
+        f"🏙 Місто: {cities_text}\n"
+        f"💼 Професія: {profs_text}\n"
+        f"⏰ Зайнятість: {jts_text}\n"
+        f"🎓 Досвід: {exp}"
     )
 
 
@@ -128,23 +161,18 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if profile:
         status = "✅ увімкнено" if profile.enabled else "🔕 вимкнено"
         text = (
-            "🌾 *З поверненням у TumbleWeed!*\n\n"
+            "🌾 *TumbleWeed*\n\n"
             f"🔔 Сповіщення: *{status}*\n\n"
             f"{_profile_summary_text(profile)}\n\n"
-            "Обери дію або просто чекай — я надішлю нові вакансії автоматично."
+            "📍 Обери дію нижче 👇"
         )
+        # 1) Reply-клавіатура (встановлюємо меню знизу)
         await update.message.reply_text(
             "⌨️ Меню — знизу 👇",
             reply_markup=main_reply_keyboard(profile.enabled),
         )
-        await update.message.reply_text(
-            text,
-            reply_markup=main_menu_keyboard(
-                enabled=profile.enabled,
-                rentalert_url=_rentalert_url(update.effective_chat.id),
-            ),
-            parse_mode="Markdown",
-        )
+        # 2) Основне повідомлення (без inline)
+        await update.message.reply_text(text, parse_mode="Markdown")
         return ConversationHandler.END
 
     text = (
@@ -575,45 +603,45 @@ async def _finalize(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         )
         return ConversationHandler.END
 
-    # Гарний текст підкатегорій
-    if professions:
-        labels = []
-        for p in professions:
-            sub = get_subcategory(d.get("category", ""), p)
-            labels.append(sub.label if sub else p)
-        profs_text = ", ".join(labels)
+    # Перечитуємо профіль з БД (щоб отримати канонічні дані)
+    try:
+        profile = get_user_profile(_db(), chat_id)
+    except Exception:
+        profile = None
+
+    if profile:
+        summary = _profile_summary_text(profile)
     else:
-        profs_text = "🌍 будь-яка"
+        # Fallback — зібрати з d
+        profs_text = ", ".join(professions) if professions else "будь-яка"
+        cities_text = ", ".join(cities) if cities else "будь-яке"
+        jts_text = ", ".join(job_types) if job_types else "будь-яка"
+        summary = (
+            f"🌍 Країна: *{country}*\n"
+            f"🏙 Місто: {cities_text}\n"
+            f"💼 Професія: {profs_text}\n"
+            f"⏰ Зайнятість: {jts_text}\n"
+            f"🎓 Досвід: {experience}"
+        )
 
-    text = (
-        "✅ *Готово!*\n\n"
-        f"🌍 Країна: *{country}*\n"
-        f"🏙 Місто: {', '.join(cities) or 'будь-яке'}\n"
-        f"💼 Підкатегорії: {profs_text}\n"
-        f"⏰ Зайнятість: {', '.join(job_types) or 'будь-яка'}\n"
-        f"🎓 Досвід: {experience}\n\n"
-        "🔔 *Сповіщення увімкнено.*\nНові вакансії надходитимуть автоматично."
-    )
-
-    # Reply-клавіатура + повідомлення про старт
+    # 1) Reply-клавіатура + інструкція
     await update.effective_chat.send_message(
-        "🔍 *Розпочинаю пошук роботи!*\n\n"
-        "Знизу 👇 — кнопки для керування:\n"
-        "📊 *Моя робота* — переглянути фільтри\n"
-        "🔔 *Сповіщення* — увімкнути/вимкнути\n"
-        "✏️ *Змінити фільтри* — змінити сферу\n"
-        "🏠 *Знайти житло* — RentAlert\n\n"
+        "🔍 *Розпочинаю пошук!*\n\n"
+        "Знизу 👇 — кнопки:\n"
+        "📊 *Мої вакансії* — переглянути знайдені\n"
+        "👤 *Мій профіль* — налаштування\n"
+        "✏️ *Фільтри* — змінити сферу/місто\n"
+        "🏠 *Житло* — RentAlert\n"
+        "🔔 *Сповіщення* — увімк/вимк\n"
+        "❓ *Допомога* — довідка\n\n"
         "Перші вакансії надійдуть автоматично.",
         reply_markup=main_reply_keyboard(enabled=True),
         parse_mode="Markdown",
     )
 
+    # 2) Фінальний текст (без inline)
     await update.callback_query.edit_message_text(
-        text,
-        reply_markup=main_menu_keyboard(
-            enabled=True,
-            rentalert_url=_rentalert_url(update.effective_chat.id),
-        ),
+        f"✅ *Готово!*\n\n{summary}\n\n🔔 *Сповіщення увімкнено.*",
         parse_mode="Markdown",
     )
     return ConversationHandler.END
@@ -681,18 +709,14 @@ async def on_toggle_notify(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         profile.enabled = new_state
 
         status = "✅ увімкнено" if new_state else "🔕 вимкнено"
-        text = (
-            f"🌾 *TumbleWeed*\n\n"
-            f"🔔 Сповіщення: *{status}*\n\n"
-            f"{_profile_summary_text(profile)}"
-        )
         await query.edit_message_text(
-            text,
-            reply_markup=main_menu_keyboard(
-                enabled=new_state,
-                rentalert_url=_rentalert_url(update.effective_chat.id),
-            ),
+            f"🔔 Сповіщення: *{status}*",
             parse_mode="Markdown",
+        )
+        # Оновити reply-клавіатуру (щоб toggle-напис змінився)
+        await update.effective_chat.send_message(
+            "Оновлено 👇",
+            reply_markup=main_reply_keyboard(new_state),
         )
     except Exception as e:
         log.exception("toggle: %s", e)
@@ -700,7 +724,8 @@ async def on_toggle_notify(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     return ConversationHandler.END
 
 
-async def on_my_job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def on_my_profile(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """👤 Мій профіль (inline callback)."""
     query = update.callback_query
     await query.answer()
     chat_id = str(update.effective_chat.id)
@@ -708,26 +733,19 @@ async def on_my_job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         profile = get_user_profile(_db(), chat_id)
         if profile is None:
             await query.edit_message_text(
-                "👋 Ще немає налаштувань.\n"
-                "Натисни /start, щоб обрати країну та сферу роботи."
+                "👋 Ще немає налаштувань.\nНатисни /start."
             )
             return ConversationHandler.END
 
+        status = "✅ увімкнено" if profile.enabled else "🔕 вимкнено"
         text = (
-            "📊 *Твоя робота*\n\n"
+            "👤 *Мій профіль*\n\n"
             f"{_profile_summary_text(profile)}\n\n"
-            f"🔔 Сповіщення: {'✅ увімкнено' if profile.enabled else '🔕 вимкнено'}"
+            f"🔔 Сповіщення: *{status}*"
         )
-        await query.edit_message_text(
-            text,
-            reply_markup=main_menu_keyboard(
-                enabled=profile.enabled,
-                rentalert_url=_rentalert_url(update.effective_chat.id),
-            ),
-            parse_mode="Markdown",
-        )
+        await query.edit_message_text(text, parse_mode="Markdown")
     except Exception as e:
-        log.exception("my_job: %s", e)
+        log.exception("my_profile: %s", e)
         await query.edit_message_text(f"❌ {e}")
     return ConversationHandler.END
 
@@ -827,10 +845,6 @@ async def on_action(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return await on_subcategory_search_again(update, context)
     if action == "sub_done":
         return await on_subcategory_done(update, context)
-    if action == "toggle_notify":
-        return await on_toggle_notify(update, context)
-    if action == "my_job":
-        return await on_my_job(update, context)
     if action == "change_filters":
         return await on_change_filters(update, context)
 
@@ -866,33 +880,6 @@ async def on_ignore_vacancy(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         )
 
 
-# ───────────────────────────────────────────────────────
-# Reply-кнопки
-# ───────────────────────────────────────────────────────
-
-async def on_btn_my_job(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    chat_id = str(update.effective_chat.id)
-    try:
-        profile = get_user_profile(_db(), chat_id)
-        if not profile:
-            await update.message.reply_text(
-                "👋 Ще немає налаштувань.\n"
-                "Натисни /start, щоб обрати країну та сферу роботи."
-            )
-            return
-        text = (
-            "📊 *Твоя робота*\n\n"
-            f"{_profile_summary_text(profile)}\n\n"
-            f"🔔 {'✅ увімкнено' if profile.enabled else '🔕 вимкнено'}"
-        )
-        await update.message.reply_text(
-            text, reply_markup=main_reply_keyboard(profile.enabled), parse_mode="Markdown"
-        )
-    except Exception as e:
-        log.exception("btn my_job: %s", e)
-        await update.message.reply_text(f"❌ {e}")
-
-
 async def on_btn_toggle(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = str(update.effective_chat.id)
     try:
@@ -916,11 +903,88 @@ async def on_btn_toggle(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         await update.message.reply_text(f"❌ {e}")
 
 
-async def on_btn_rent(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    url = _rentalert_url(update.effective_chat.id)
-    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🏠 Відкрити RentAlert", url=url)]])
-    await update.message.reply_text("🏠 Шукати житло у RentAlert:", reply_markup=kb)
+# ───────────────────────────────────────────────────────
+# Reply-кнопки (текстові)
+# ───────────────────────────────────────────────────────
 
+async def on_btn_my_vacancies(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """📊 Мої вакансії — показує останні знайдені вакансії."""
+    try:
+        await update.message.reply_text(
+            "📊 *Мої вакансії*\n\n"
+            "Я надсилаю нові вакансії автоматично, коли знаходжу.\n"
+            "Останні показані тут 👇\n\n"
+            "_Поки що порожньо — чекай на нові._",
+            parse_mode="Markdown",
+        )
+    except Exception as e:
+        log.exception("my_vacancies: %s", e)
+        await update.message.reply_text(f"❌ {e}")
+
+
+async def on_btn_my_profile(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """👤 Мій профіль — показує фільтри (reply)."""
+    chat_id = str(update.effective_chat.id)
+    try:
+        profile = get_user_profile(_db(), chat_id)
+        if not profile:
+            await update.message.reply_text(
+                "👋 Ще немає профілю.\nНатисни /start."
+            )
+            return
+
+        status = "✅ увімкнено" if profile.enabled else "🔕 вимкнено"
+        text = (
+            "👤 *Мій профіль*\n\n"
+            f"{_profile_summary_text(profile)}\n\n"
+            f"🔔 Сповіщення: *{status}*"
+        )
+        await update.message.reply_text(
+            text,
+            reply_markup=main_reply_keyboard(profile.enabled),
+            parse_mode="Markdown",
+        )
+    except Exception as e:
+        log.exception("my_profile (reply): %s", e)
+        await update.message.reply_text(f"❌ {e}")
+
+
+async def on_btn_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """❓ Допомога."""
+    await update.message.reply_text(
+        "❓ *TumbleWeed — довідка*\n\n"
+        "📊 *Мої вакансії* — переглянути знайдені\n"
+        "👤 *Мій профіль* — фільтри та статус\n"
+        "✏️ *Фільтри* — змінити країну/місто/професію\n"
+        "🏠 *Житло* — перейти в RentAlert\n"
+        "🔔 *Сповіщення* — увімкнути/вимкнути\n\n"
+        "*Команди:*\n"
+        "/start — налаштувати профіль\n"
+        "/settings — переглянути налаштування\n"
+        "/stop — вимкнути сповіщення\n"
+        "/resume — увімкнути\n"
+        "/help — ця довідка",
+        parse_mode="Markdown",
+    )
+
+
+async def on_btn_rent_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """🏠 Житло — надсилає inline-посилання на RentAlert."""
+    url = _rentalert_url(update.effective_chat.id)
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🏠 Відкрити RentAlert", url=url)],
+    ])
+    await update.message.reply_text(
+        "🏠 *Пошук житла*\n\nRentAlert — окремий сервіс для оренди.",
+        reply_markup=kb,
+        parse_mode="Markdown",
+    )
+
+
+async def cmd_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Команда /help."""
+    await on_btn_help(update, context)
+    return ConversationHandler.END
 
 # ───────────────────────────────────────────────────────
 # Фабрика ConversationHandler
@@ -976,6 +1040,12 @@ def build_conversation_handler() -> ConversationHandler:
             CommandHandler("settings", cmd_settings),
             CommandHandler("stop", cmd_stop),
             CommandHandler("resume", cmd_resume),
+            CommandHandler("help", cmd_help),
+            MessageHandler(filters.Text([BTN_MY_VACANCIES]), on_btn_my_vacancies),
+            MessageHandler(filters.Text([BTN_MY_PROFILE]), on_btn_my_profile),
+            MessageHandler(filters.Text([BTN_RENT]), on_btn_rent_reply),
+            MessageHandler(filters.Text([BTN_TOGGLE_ON, BTN_TOGGLE_OFF]), on_btn_toggle),
+            MessageHandler(filters.Text([BTN_HELP]), on_btn_help),
         ],
         allow_reentry=True,
         per_message=False,    )

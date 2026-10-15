@@ -278,27 +278,30 @@ def vacancy_keyboard(link: str, rentalert_url: str) -> InlineKeyboardMarkup:
     ])
 
 # ───────────────────────────────────────────────────────
-# Постійна Reply Keyboard (знизу екрана)
+# Постійна Reply-клавіатура (як у RentAlert)
 # ───────────────────────────────────────────────────────
 
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
 
 # Текстові мітки Reply-кнопок
-BTN_MY_JOB = "📊 Моя робота"
+BTN_MY_VACANCIES = "📊 Мої вакансії"
+BTN_MY_PROFILE = "👤 Мій профіль"
+BTN_CHANGE = "✏️ Фільтри"
+BTN_RENT = "🏠 Житло"
 BTN_TOGGLE_ON = "🔔 Сповіщення: УВІМК"
 BTN_TOGGLE_OFF = "🔕 Сповіщення: ВИМК"
-BTN_CHANGE = "✏️ Змінити фільтри"
-BTN_RENT = "🏠 Знайти житло"
+BTN_HELP = "❓ Допомога"
 
 
 def main_reply_keyboard(enabled: bool) -> ReplyKeyboardMarkup:
-    """Постійна клавіатура знизу — завжди доступна."""
+    """Головне меню — 6 кнопок у 3 ряди (як у RentAlert)."""
     toggle_label = BTN_TOGGLE_ON if enabled else BTN_TOGGLE_OFF
     return ReplyKeyboardMarkup(
         [
-            [KeyboardButton(BTN_MY_JOB), KeyboardButton(toggle_label)],
+            [KeyboardButton(BTN_MY_VACANCIES), KeyboardButton(BTN_MY_PROFILE)],
             [KeyboardButton(BTN_CHANGE), KeyboardButton(BTN_RENT)],
+            [KeyboardButton(toggle_label), KeyboardButton(BTN_HELP)],
         ],
         resize_keyboard=True,
         is_persistent=True,
