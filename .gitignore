@@ -55,3 +55,8 @@ scripts/debug_*.py
 
 # иняток: генератор мапи міст (потрібен на проді)
 !scripts/_build_robota_city_map.py
+
+# Refactor snapshots
+refactor_snapshot.txt
+refactor_files_before.txt
+refactor_deps.txt
