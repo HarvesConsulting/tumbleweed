@@ -21,9 +21,10 @@ import threading
 import time
 from typing import Any
 
-from flask import Flask, jsonify, request
+from flask import Flask, request
 
 from tumbleweed.bot.bot import build_context
+from tumbleweed.config import settings
 from tumbleweed.services.dispatcher import BotContext, handle_update
 
 logging.basicConfig(
@@ -87,10 +88,7 @@ def debug() -> tuple[dict, int]:
     try:
         _ensure_startup()
     except Exception as e:
-        return {
-            "ready": False,
-            "error": str(e),
-        }, 500
+        return {"ready": False, "error": str(e)}, 500
 
     return {
         "ready": _ctx is not None,
@@ -102,11 +100,7 @@ def debug() -> tuple[dict, int]:
 
 @app.route("/keepalive")
 def keepalive() -> tuple[dict, int]:
-    """Швидкий endpoint для cron-job.org.
-
-    Викликає lazy startup, якщо ще не запущено.
-    Повертає миттєво.
-    """
+    """Швидкий endpoint для cron-job.org."""
     start = time.time()
     try:
         _ensure_startup()
@@ -123,10 +117,20 @@ def keepalive() -> tuple[dict, int]:
 def webhook() -> tuple[str, int]:
     """Telegram webhook — МИТТЄВИЙ return 200.
 
-    Обробка update відбувається у daemon-thread,
+    Обробка update у daemon-thread,
     щоб Telegram не чекав і не робив retry.
     """
     try:
+        # ── Перевірка secret від Telegram ──
+        if settings.webhook_secret:
+            secret = request.headers.get("X-Telegram-Bot-Api-Secret-Token", "")
+            if secret != settings.webhook_secret:
+                log.warning(
+                    "Webhook: невірний secret_token від %s",
+                    request.remote_addr,
+                )
+                return "forbidden", 403
+
         _ensure_startup()
         if _ctx is None:
             return "not ready", 503
@@ -179,7 +183,7 @@ def _safe_handle_update(data: dict[str, Any]) -> None:
 
 
 # ───────────────────────────────────────────────────────
-# Startup (lazy — викликається тільки у webhook)
+# Startup
 # ───────────────────────────────────────────────────────
 
 if os.getenv("RENDER") or os.getenv("PORT"):

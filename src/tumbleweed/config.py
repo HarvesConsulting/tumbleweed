@@ -15,6 +15,7 @@ load_dotenv(PROJECT_ROOT / ".env")
 class Settings:
     bot_token: str
     webhook_url: str
+    webhook_secret: str          # ← нове
     turso_url: str
     turso_token: str
     rentalert_bot_url: str
@@ -29,6 +30,7 @@ class Settings:
         return cls(
             bot_token=os.getenv("TUMBLEWEED_BOT_TOKEN", ""),
             webhook_url=os.getenv("TUMBLEWEED_WEBHOOK_URL", ""),
+            webhook_secret=os.getenv("WEBHOOK_SECRET", ""),   # ← нове
             turso_url=os.getenv("TURSO_DATABASE_URL", ""),
             turso_token=os.getenv("TURSO_AUTH_TOKEN", ""),
             rentalert_bot_url=os.getenv("RENTALERT_BOT_URL", "https://t.me/RentAlertBot"),
