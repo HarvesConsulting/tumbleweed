@@ -290,7 +290,114 @@ class OlxJobParser(JobParser):
 
         # --- локація ---
         location = item.get("location") or {}
-        city_name = (location.get("city") or {}).get("name") or ""
+        city_obj = location.get("city") or {}
+        region_obj = location.get("region") or {}
+        real_city_name = (city_obj.get("name") or "").strip()
+        real_city_id = city_obj.get("id")
+        real_region_name = (region_obj.get("name") or "").strip()
+
+        # ── ФІЛЬТР: чи вакансія справді з нашого міста? ──
+        if city_slug:
+            try:
+                from ..services.city_search import get_city
+                expected = get_city(self.country, city_slug)
+                if expected:
+                    # Матч 1: city.id співпадає
+                    city_id_match = (
+                        expected.olx_id
+                        and real_city_id
+                        and int(real_city_id) == int(expected.olx_id)
+                    )
+
+                    # Матч 2: регіон співпадає
+                    region_match = False
+                    if expected.region and real_region_name:
+                        expected_r = expected.region.lower().replace(" область", "").strip()
+                        real_r = real_region_name.lower().replace(" область", "").strip()
+                        region_match = (
+                            expected_r in real_r or real_r in expected_r
+                        )
+
+                    if not (city_id_match or region_match):
+                        print(
+                            f"    ⏭ Пропускаю '{title[:40]}' — "
+                            f"city={real_city_name!r} (id={real_city_id}), "
+                            f"region={real_region_name!r}"
+                        )
+                        return None
+            except Exception as e:
+                print(f"    ⚠️  Помилка фільтра міста: {e}")
+
+        return Vacancy(
+            id=Vacancy.make_id(self.source_key, raw_id),
+            raw_id=raw_id,
+            source_key=self.source_key,
+            country=self.country,
+            city_slug=city_slug or real_city_name.lower(),
+            title=title,
+            link=item.get("url", "") or "",
+            company=company,
+            salary=salary or None,
+            job_type=job_type or None,
+            experience=experience or None,
+            photo=photo,
+            created_at=item.get("created_at"),
+            extra={"location": location},
+        )
+
+        # --- params: price, type, experience, agreement ---
+        salary = job_type = experience = ""
+        for p in item.get("params", []):
+            k, v = p.get("key"), p.get("value")
+            if not isinstance(v, dict):
+                continue
+            label = v.get("label", "") or ""
+            if k == "salary" and label:
+                salary = label
+            elif k == "price" and label and not salary:
+                salary = label
+            elif k in ("type", "job_type") and label:
+                job_type = label
+            elif k == "experience" and label:
+                experience = label
+
+        # --- компанія: company → user.name → contact.name ---
+        company = None
+        comp = item.get("company")
+        if isinstance(comp, dict):
+            company = comp.get("name")
+        if not company:
+            user = item.get("user") or {}
+            if isinstance(user, dict):
+                company = user.get("name")
+        if not company:
+            contact = item.get("contact") or {}
+            if isinstance(contact, dict):
+                company = contact.get("name")
+
+        # --- фото ---
+        photo = None
+        photos = item.get("photos") or []
+        if photos and isinstance(photos[0], dict):
+            photo = photos[0].get("link")
+
+        # --- локація ---
+        location = item.get("location") or {}
+        city_obj = location.get("city") or {}
+        real_city_name = city_obj.get("name") or ""
+        real_city_id = city_obj.get("id")
+
+        # ── Перевірка: чи OLX повернув вакансію з правильного міста? ──
+        if city_slug and real_city_id:
+            try:
+                from ..services.city_search import get_city
+                expected = get_city(self.country, city_slug)
+                if expected and expected.olx_id:
+                    if int(real_city_id) != expected.olx_id:
+                        # OLX повернув вакансію з ІНШОГО міста — пропускаємо
+                        return None
+            except Exception:
+                pass  # якщо не вдалось перевірити — пропускаємо
 
         return Vacancy(
             id=Vacancy.make_id(self.source_key, raw_id),
