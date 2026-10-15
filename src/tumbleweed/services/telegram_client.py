@@ -92,7 +92,11 @@ class TelegramClient:
 
         text = "\n".join(lines)
 
-        rentalert_url = f"{settings.rentalert_bot_url}?start=from_tumbleweed_{chat_id}"
+        city_slug = v.get("city_slug") or ""
+        parts = ["from_tumbleweed", str(chat_id)]
+        if city_slug:
+            parts.append(city_slug)
+        rentalert_url = f"{settings.rentalert_bot_url}?start={'_'.join(parts)}"
 
         buttons: list[list[dict[str, str]]] = []
         if link:

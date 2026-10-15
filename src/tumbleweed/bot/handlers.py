@@ -49,9 +49,21 @@ log = logging.getLogger(__name__)
 # Утиліти
 # ───────────────────────────────────────────────────────
 
-def _rentalert_url(chat_id: str | int) -> str:
-    """URL на RentAlert з переданим chat_id."""
-    return f"{settings.rentalert_bot_url}?start=from_tumbleweed_{chat_id}"
+def _rentalert_url(chat_id: str | int, city_slug: str = "") -> str:
+    """URL на RentAlert з переданим chat_id і (опційно) містом.
+
+    Args:
+        chat_id: ID чату користувача
+        city_slug: slug міста ("kropyvnytskyi", "kyiv", ...)
+
+    Returns:
+        Deep link: https://t.me/RentAlertBot?start=from_tumbleweed_XXX_CITY
+    """
+    base = settings.rentalert_bot_url
+    parts = ["from_tumbleweed", str(chat_id)]
+    if city_slug:
+        parts.append(city_slug)
+    return f"{base}?start={'_'.join(parts)}"
 
 
 def _profile_summary_text(profile) -> str:
@@ -295,14 +307,27 @@ def on_btn_help(chat_id: str, ctx) -> None:
 
 
 def on_btn_rent_reply(chat_id: str, ctx) -> None:
-    """🏠 Житло."""
-    url = _rentalert_url(chat_id)
-    ctx.notifier.send_message(
-        chat_id,
-        "🏠 *Пошук житла*\n\n"
-        f"RentAlert — окремий сервіс для оренди.\n\n"
-        f"👉 [Відкрити RentAlert]({url})",
-    )
+    """🏠 Житло — перехід у RentAlert з передачею міста."""
+    from tumbleweed.db.queries_jobs import get_user_profile
+
+    # Отримуємо перше місто з профілю
+    city_slug = ""
+    try:
+        profile = get_user_profile(ctx.client, chat_id)
+        if profile and profile.cities:
+            city_slug = profile.cities[0]
+    except Exception:
+        pass
+
+    url = _rentalert_url(chat_id, city_slug)
+
+    text = "🏠 *Пошук житла*\n\n"
+    text += "RentAlert — окремий сервіс для оренди.\n\n"
+    if city_slug:
+        text += f"📍 Передам місто: *{city_slug}*\n\n"
+    text += f"👉 [Відкрити RentAlert]({url})"
+
+    ctx.notifier.send_message(chat_id, text)
 
 
 def on_btn_change_filters(chat_id: str, ctx) -> None:
