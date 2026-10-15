@@ -986,6 +986,36 @@ async def cmd_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await on_btn_help(update, context)
     return ConversationHandler.END
 
+
+# ───────────────────────────────────────────────────────
+# Універсальний обробник reply-кнопок
+# ───────────────────────────────────────────────────────
+
+async def on_reply_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Універсальний fallback для reply-кнопок.
+
+    Якщо користувач натискає reply-кнопку під час діалогу —
+    скасовуємо діалог і виконуємо відповідну дію.
+    """
+    text = (update.message.text or "").strip()
+
+    # Скидаємо поточний діалог
+    context.user_data.clear()
+
+    # Диспетчеризація
+    if text == BTN_MY_VACANCIES:
+        await on_btn_my_vacancies(update, context)
+    elif text == BTN_MY_PROFILE:
+        await on_btn_my_profile(update, context)
+    elif text == BTN_RENT:
+        await on_btn_rent_reply(update, context)
+    elif text in (BTN_TOGGLE_ON, BTN_TOGGLE_OFF):
+        await on_btn_toggle(update, context)
+    elif text == BTN_HELP:
+        await on_btn_help(update, context)
+
+    return ConversationHandler.END
+
 # ───────────────────────────────────────────────────────
 # Фабрика ConversationHandler
 # ───────────────────────────────────────────────────────
@@ -1006,6 +1036,13 @@ def build_conversation_handler() -> ConversationHandler:
                 CallbackQueryHandler(on_action, pattern=r"^action:"),
             ],
             State.CHOOSING_CITY_QUERY: [
+                # Reply-кнопки мають пріоритет над пошуком
+                MessageHandler(filters.Text([
+                    BTN_MY_VACANCIES, BTN_MY_PROFILE, BTN_RENT,
+                    BTN_HELP, BTN_TOGGLE_ON, BTN_TOGGLE_OFF,
+                ]), on_reply_button),
+                MessageHandler(filters.Text([BTN_CHANGE]), cmd_start_filters),
+                # Тепер — вільний текст
                 MessageHandler(filters.TEXT & ~filters.COMMAND, on_city_query),
             ],
             State.CHOOSING_CITY_PICK: [
@@ -1019,6 +1056,11 @@ def build_conversation_handler() -> ConversationHandler:
                 CallbackQueryHandler(on_action, pattern=r"^action:"),
             ],
             State.CHOOSING_SUBCATEGORY_QUERY: [
+                MessageHandler(filters.Text([
+                    BTN_MY_VACANCIES, BTN_MY_PROFILE, BTN_RENT,
+                    BTN_HELP, BTN_TOGGLE_ON, BTN_TOGGLE_OFF,
+                ]), on_reply_button),
+                MessageHandler(filters.Text([BTN_CHANGE]), cmd_start_filters),
                 MessageHandler(filters.TEXT & ~filters.COMMAND, on_subcategory_query),
             ],
             State.CHOOSING_SUBCATEGORY_PICK: [
