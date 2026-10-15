@@ -121,7 +121,7 @@ def _row_to_profile(row: list[Any]) -> UserJobProfile:
         professions=json.loads(professions) if professions else [],
         job_types=json.loads(job_types) if job_types else [],
         experience=str(experience or "all"),
-        enabled=bool(enabled),
+        enabled=bool(int(enabled or 0)),
     )
 
 
