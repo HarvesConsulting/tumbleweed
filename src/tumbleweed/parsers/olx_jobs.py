@@ -195,15 +195,37 @@ class OlxJobParser(JobParser):
             params["query"] = query
 
         if city_slug:
+            city_id = None
+
+            # Гілка 1: olx_ua_64 → 64
             if city_slug.startswith("olx_"):
                 parts = city_slug.split("_")
                 if len(parts) >= 3:
                     try:
-                        params["city_id"] = int(parts[-1])
+                        city_id = int(parts[-1])
                     except ValueError:
                         pass
+
+            # Гілка 2: hardcoded (kyiv, lviv, ...)
             elif city_slug in self.cfg.city_ids:
-                params["city_id"] = self.cfg.city_ids[city_slug]
+                city_id = self.cfg.city_ids[city_slug]
+
+            # Гілка 3: НОВА — через довідник (kropyvnytskyi → olx_id)
+            if city_id is None:
+                try:
+                    from ..services.city_search import get_city
+                    city = get_city(self.country, city_slug)
+                    if city and city.olx_id:
+                        city_id = city.olx_id
+                        print(
+                            f"  ↻ {self.display_name}: '{city_slug}' "
+                            f"→ '{city.name}' → city_id={city_id}"
+                        )
+                except Exception as e:
+                    print(f"  ⚠️ {self.display_name}: fallback lookup failed: {e}")
+
+            if city_id:
+                params["city_id"] = city_id
 
         await asyncio.sleep(random.uniform(2.0, 4.0))
 

@@ -106,9 +106,11 @@ def find_vacancies_for_profile(
     client: TursoClient,
     profile: UserJobProfile,
     since_hours: int = 24,
-    max_per_user: int = 5,
+    max_per_source: int = 5,          # ← перейменовано: ліміт на джерело
 ) -> list[dict]:
-    """Знайти свіжі вакансії, що підходять під профіль (без надісланих)."""
+    """Знайти свіжі вакансії під профіль (по 5 з кожного джерела)."""
+    from collections import defaultdict
+
     candidates = list_recent_vacancies(
         client,
         country=profile.country,
@@ -117,8 +119,11 @@ def find_vacancies_for_profile(
         limit=500,
     )
 
-    matched: list[dict] = []
+    # Групуємо по source_key
+    by_source: dict[str, list[dict]] = defaultdict(list)
+
     for v in candidates:
+        # Фільтри
         if not _title_matches_professions(v["title"], profile.professions):
             continue
         if not _job_type_matches(v.get("job_type"), profile.job_types):
@@ -129,11 +134,21 @@ def find_vacancies_for_profile(
         except Exception as e:
             log.warning("has_sent_vacancy: %s", e)
             continue
-        matched.append(v)
-        if len(matched) >= max_per_user:
-            break
 
-    return matched
+        source_key = v.get("source_key") or "unknown"
+
+        # Скіп — якщо вже набрали 5 від цього джерела
+        if len(by_source[source_key]) >= max_per_source:
+            continue
+
+        by_source[source_key].append(v)
+
+    # Об'єднати усі джерела
+    result: list[dict] = []
+    for source_key, items in by_source.items():
+        result.extend(items)
+
+    return result
 
 
 def find_matches_for_all(

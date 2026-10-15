@@ -2,6 +2,9 @@
 
 Використовується в UX, коли користувач вводить назву міста текстом.
 Підтримує fuzzy-пошук по українській, російській та англійській.
+
+ЄДИНЕ ДЖЕРЕЛО ІСТИНИ — data/cities/{country}.json.
+Міста з priority: true — вважаються "популярними" і йдуть першими.
 """
 from __future__ import annotations
 
@@ -24,44 +27,7 @@ class City:
     region: str | None   # "Київська область"
     olx_id: int | None   # city_id у OLX
     workua_id: int | None
-
-
-# Популярні міста — захардкоджені ID (для швидкості)
-POPULAR_CITIES = {
-    "ua": {
-        "kyiv":          {"name": "Київ",           "region": "Київ",              "olx": 268, "workua": 1},
-        "lviv":          {"name": "Львів",          "region": "Львівська",         "olx": 273, "workua": 2},
-        "odesa":         {"name": "Одеса",          "region": "Одеська",           "olx": 271, "workua": 3},
-        "kharkiv":       {"name": "Харків",         "region": "Харківська",        "olx": 269, "workua": 4},
-        "dnipro":        {"name": "Дніпро",         "region": "Дніпропетровська",  "olx": 270, "workua": 5},
-        "zaporizhzhia":  {"name": "Запоріжжя",      "region": "Запорізька",        "olx": 272, "workua": 6},
-        "vinnytsia":     {"name": "Вінниця",        "region": "Вінницька",         "olx": 274, "workua": 7},
-        "ternopil":      {"name": "Тернопіль",      "region": "Тернопільська",     "olx": 285, "workua": 8},
-        "ivano_frankivsk":{"name": "Івано-Франківськ","region": "Івано-Франківська","olx": 293, "workua": 9},
-        "rivne":         {"name": "Рівне",          "region": "Рівненська",        "olx": 297, "workua": 10},
-        "lutsk":         {"name": "Луцьк",          "region": "Волинська",         "olx": 305, "workua": 11},
-        "zhytomyr":      {"name": "Житомир",        "region": "Житомирська",       "olx": 308, "workua": 12},
-        "cherkasy":      {"name": "Черкаси",        "region": "Черкаська",         "olx": 311, "workua": 13},
-        "poltava":       {"name": "Полтава",        "region": "Полтавська",        "olx": 314, "workua": 14},
-        "chernihiv":     {"name": "Чернігів",       "region": "Чернігівська",      "olx": 317, "workua": 15},
-        "sumy":          {"name": "Суми",           "region": "Сумська",           "olx": 320, "workua": 16},
-        "mykolaiv":      {"name": "Миколаїв",       "region": "Миколаївська",      "olx": 323, "workua": 17},
-        "kherson":       {"name": "Херсон",         "region": "Херсонська",        "olx": 326, "workua": 18},
-        "kropyvnytskyi": {"name": "Кропивницький",  "region": "Кіровоградська",    "olx": 329, "workua": 19},
-        "uzhhorod":      {"name": "Ужгород",        "region": "Закарпатська",      "olx": 332, "workua": 20},
-        "chernivtsi":    {"name": "Чернівці",       "region": "Чернівецька",       "olx": 335, "workua": 21},
-    },
-    "pl": {
-        "warszawa":  {"name": "Варшава",   "region": "Мазовецьке",   "olx": 17871, "workua": None},
-        "krakow":    {"name": "Краків",    "region": "Малопольське", "olx": 8959,  "workua": None},
-        "wroclaw":   {"name": "Вроцлав",   "region": "Нижньосілезьке", "olx": 9462, "workua": None},
-        "gdansk":    {"name": "Гданськ",   "region": "Поморське",     "olx": 2853, "workua": None},
-        "poznan":    {"name": "Познань",   "region": "Великопольське", "olx": 10011, "workua": None},
-    },
-    "ro": {
-        "bucuresti": {"name": "Бухарест",  "region": "Бухарест",    "olx": 1, "workua": None},
-    },
-}
+    priority: bool = False  # True → показувати у "популярних"
 
 
 # ───────────────────────────────────────────────────────
@@ -72,9 +38,7 @@ def _normalize(text: str) -> str:
     """Привести до нижнього регістру, прибрати діакритику, зайві пробіли."""
     text = text.lower().strip()
     text = unicodedata.normalize("NFKD", text)
-    # Видалити діакритичні знаки
     text = "".join(ch for ch in text if not unicodedata.combining(ch))
-    # Замінити схожі кириличні на латинські? Ні — залишимо як є.
     return text
 
 
@@ -86,81 +50,91 @@ def _normalize(text: str) -> str:
 def _load_cities(country: str) -> list[City]:
     """Завантажує data/cities/{country}.json один раз.
 
-    ВАЖЛИВО: популярні міста додаються ПЕРШИМИ — щоб мали пріоритет
-    з правильними olx_id. Каталог додається після, але пропускає
-    ті slug, які вже є в популярних.
+    Повертає список City, відсортований:
+      1. priority: true — першими (у порядку JSON)
+      2. решта — у порядку JSON
     """
     cities: list[City] = []
     seen_slugs: set[str] = set()
 
-    # 1. Популярні міста ПЕРШИМИ
-    popular = POPULAR_CITIES.get(country, {})
-    for slug, info in popular.items():
-        cities.append(City(
-            slug=slug,
-            name=info["name"],
-            region=info.get("region"),
-            olx_id=info.get("olx"),
-            workua_id=info.get("workua"),
-        ))
-        seen_slugs.add(slug)
-
-    # 2. Каталог з JSON
     path = DATA_DIR / "cities" / f"{country}.json"
-    if path.exists():
-        try:
-            raw = json.loads(path.read_text(encoding="utf-8"))
-            items = raw.get("cities") if isinstance(raw, dict) else raw
-            if isinstance(items, list):
-                for item in items:
-                    if not isinstance(item, dict):
-                        continue
+    if not path.exists():
+        log.warning("Не знайдено %s", path)
+        return []
 
-                    slug = item.get("slug") or item.get("key") or ""
-                    name = item.get("name") or item.get("label") or ""
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        items = raw.get("cities") if isinstance(raw, dict) else raw
+        if not isinstance(items, list):
+            log.error("Неправильний формат %s", path)
+            return []
 
-                    # Базова перевірка
-                    if not slug or not name:
-                        continue
+        priority_cities: list[City] = []
+        normal_cities: list[City] = []
 
-                    if slug in seen_slugs:
-                        continue
-                    seen_slugs.add(slug)
+        for item in items:
+            if not isinstance(item, dict):
+                continue
 
-                    # Витягуємо olx_id з refs.olx_ua
-                    refs = item.get("refs") or {}
-                    olx_id = refs.get("olx_ua") if isinstance(refs, dict) else None
-                    workua_id = item.get("workua_id")
+            slug = item.get("slug") or item.get("key") or ""
+            name = item.get("name") or item.get("label") or ""
 
-                    # Синтетичні slug (olx_ua_19797, dimria_20159) — теж додаємо,
-                    # бо вони мають справжні назви міст. Просто зберігаємо як є.
-                    cities.append(City(
-                        slug=slug,
-                        name=name,
-                        region=item.get("region") or item.get("state"),
-                        olx_id=olx_id,
-                        workua_id=workua_id,
-                    ))
-        except Exception as e:
-            log.error("Помилка читання %s: %s", path, e)
+            if not slug or not name:
+                continue
+            if slug in seen_slugs:
+                continue
+            seen_slugs.add(slug)
 
-    log.info("Завантажено %d міст для %s", len(cities), country)
+            # olx_id з refs.olx_ua
+            refs = item.get("refs") or {}
+            olx_id = refs.get("olx_ua") if isinstance(refs, dict) else None
+
+            # workua_id (якщо є у JSON)
+            workua_id = item.get("workua_id")
+
+            is_priority = bool(item.get("priority", False))
+
+            city = City(
+                slug=slug,
+                name=name,
+                region=item.get("region") or item.get("state"),
+                olx_id=olx_id,
+                workua_id=workua_id,
+                priority=is_priority,
+            )
+
+            if is_priority:
+                priority_cities.append(city)
+            else:
+                normal_cities.append(city)
+
+        # Priority — першими
+        cities = priority_cities + normal_cities
+
+    except Exception as e:
+        log.error("Помилка читання %s: %s", path, e)
+        return []
+
+    log.info(
+        "Завантажено %d міст для %s (з них %d priority)",
+        len(cities), country, sum(1 for c in cities if c.priority),
+    )
     return cities
 
 
+def _city_cache() -> dict[str, dict[str, City]]:
+    """Хелпер: повертає {country: {slug: City}} — не потрібно, бо використовуємо lru_cache."""
+    # Використовується рідко — тому окремо не кешуємо
+    return {}
+
+
 def get_city(country: str, slug: str) -> City | None:
-    """Знайти місто за slug."""
-    # Спочатку — популярні (у них є olx_id)
-    popular = POPULAR_CITIES.get(country, {})
-    if slug in popular:
-        info = popular[slug]
-        return City(
-            slug=slug,
-            name=info["name"],
-            region=info.get("region"),
-            olx_id=info.get("olx"),
-            workua_id=info.get("workua"),
-        )
+    """Знайти місто за slug.
+
+    Шукає у _load_cities(country) — єдине джерело істини.
+    """
+    if not slug:
+        return None
 
     for c in _load_cities(country):
         if c.slug == slug:
@@ -169,7 +143,7 @@ def get_city(country: str, slug: str) -> City | None:
 
 
 # ───────────────────────────────────────────────────────
-# Пошук
+# Пошук (fuzzy)
 # ───────────────────────────────────────────────────────
 
 def search_cities(
@@ -184,7 +158,6 @@ def search_cities(
        500 — назва починається з запиту
        300 — якесь слово в назві починається з запиту
        200 — регіон починається з запиту
-    Прибираємо матчі "підрядок у назві" — занадто дозвільно.
     """
     q = _normalize(query)
     if len(q) < 2:
@@ -199,30 +172,23 @@ def search_cities(
 
         score = 0
 
-        # 1. Точна назва
         if name_norm == q:
             score = 1000
-
-        # 2. Назва починається з запиту
         elif name_norm.startswith(q):
             score = 500
-
-        # 3. Якесь слово в назві починається з запиту
-        #    "тернопіль" → ["тернопіль"], а "кривий ріг" → ["кривий", "ріг"]
         elif any(word.startswith(q) for word in name_norm.split()):
             score = 300
-
-        # 4. Регіон починається з запиту
         elif region_norm and region_norm.startswith(q):
             score = 200
-
         else:
-            # Все інше — ігноруємо (прибрали "підрядок у назві")
             continue
 
-        # Бонус за наявність olx_id
+        # Бонус за olx_id
         if c.olx_id:
             score += 10
+        # Бонус за priority
+        if c.priority:
+            score += 5
 
         scored.append((c, score))
 
@@ -233,29 +199,18 @@ def search_cities(
 
     top_score = scored[0][1]
 
-    # Точний збіг або name.startswith — тільки 1 результат
     if top_score >= 500:
-        # Але якщо є кілька з однаковим скором — показати всі
         same_top = [c for c, s in scored if s == top_score]
         return same_top[:limit]
 
-    # Інші випадки — до limit
     return [c for c, _ in scored[:limit]]
 
 
 def popular_cities(country: str, limit: int = 6) -> list[City]:
-    """Повертає ТОП limit популярних міст."""
-    popular = POPULAR_CITIES.get(country, {})
-    result: list[City] = []
-    for slug, info in list(popular.items())[:limit]:
-        result.append(City(
-            slug=slug,
-            name=info["name"],
-            region=info.get("region"),
-            olx_id=info.get("olx"),
-            workua_id=info.get("workua"),
-        ))
-    return result
+    """Повертає ТОП limit міст з priority: true (у порядку JSON)."""
+    cities = _load_cities(country)
+    priority = [c for c in cities if c.priority]
+    return priority[:limit]
 
 
 # ───────────────────────────────────────────────────────
@@ -265,13 +220,8 @@ def popular_cities(country: str, limit: int = 6) -> list[City]:
 def find_olx_city_id(country: str, city_name: str) -> int | None:
     """Шукає city_id у OLX API за назвою міста.
 
-    Використовується для міст, яких немає в POPULAR_CITIES.
-    Довгий запит — тому викликати рідко.
+    Fallback для міст без olx_id у JSON. Довгий запит — викликати рідко.
     """
-    import logging
-    log = logging.getLogger(__name__)
-
-    # Домени OLX
     domains = {"ua": "olx.ua", "pl": "olx.pl", "ro": "olx.ro"}
     domain = domains.get(country)
     if not domain:
@@ -296,7 +246,6 @@ def find_olx_city_id(country: str, city_name: str) -> int | None:
         if not data:
             return None
 
-        # Беремо перший результат
         first = data[0]
         return first.get("id")
     except Exception as e:
