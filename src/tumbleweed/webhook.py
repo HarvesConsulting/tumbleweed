@@ -1,27 +1,30 @@
 """Flask-додаток для Render.
 
 Endpoint-и:
-  POST /webhook         — Telegram webhook (для бота 24/7)
-  GET  /health          — health-check (легкий, для моніторингу)
-  GET  /keepalive       — важкий keep-alive (для cron-job.org)
+  GET  /health          — легкий health-check
   GET  /debug           — діагностика
+  GET  /keepalive       — швидкий endpoint для cron-job.org
+  POST /webhook         — Telegram webhook (миттєвий return 200)
   GET  /                — те саме, що /health
+
+Архітектура:
+  - Lazy startup у worker process (gunicorn)
+  - Миттєвий return 200 з /webhook (обробка у daemon-thread)
+  - Немає PTB Application, event loop, ConversationHandler
+  - Sync: build_context + handle_update
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 import os
-import signal
-import sys
 import threading
 import time
+from typing import Any
 
-from flask import Flask, request
-from telegram import Update
+from flask import Flask, jsonify, request
 
-from tumbleweed.bot.bot import build_application
-from tumbleweed.config import settings
+from tumbleweed.bot.bot import build_context
+from tumbleweed.services.dispatcher import BotContext, handle_update
 
 logging.basicConfig(
     level=logging.INFO,
@@ -30,263 +33,158 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 app = Flask(__name__)
+app.json.ensure_ascii = False
 
 
 # ───────────────────────────────────────────────────────
-# Global state
+# Global state + lazy startup
 # ───────────────────────────────────────────────────────
 
-_ptb_app = None
-_loop: asyncio.AbstractEventLoop | None = None
-_ptb_lock = threading.Lock()
-_ptb_started = False
+_ctx: BotContext | None = None
+_startup_lock = threading.Lock()
+_startup_done = False
 
 
-# ───────────────────────────────────────────────────────
-# Background keep-awake scheduler (backup механізм)
-# ───────────────────────────────────────────────────────
+def _ensure_startup() -> None:
+    """Lazy startup у worker process (thread-safe, idempotent).
 
-def _keep_awake_scheduler() -> None:
-    """Фоновий потік: робить запит до OLX кожні 4 хв.
-
-    Backup для /keepalive + cron-job.org.
-    Якщо cron не працює — цей потік не дає Render заснути.
+    Гарантує, що BotContext створюється у worker gunicorn,
+    а не в master, і не блокує старт додатку.
     """
-    time.sleep(60)  # чекаємо PTB старт
+    global _ctx, _startup_done
 
-    iteration = 0
-    while True:
-        iteration += 1
+    if _ctx is not None:
+        return
+
+    with _startup_lock:
+        if _ctx is not None:
+            return
+
+        log.info("🔄 Startup у worker process...")
         try:
-            log.info("💓 keep-awake #%d: старт", iteration)
-
-            from curl_cffi import requests as cffi_requests
-
-            r = cffi_requests.get(
-                "https://www.olx.ua/api/v1/offers/",
-                params={"limit": 5, "category_id": 1800},
-                headers={"Accept": "application/json"},
-                impersonate="chrome124",
-                timeout=15,
-            )
-            log.info(
-                "💓 keep-awake #%d: OLX %s, %d items",
-                iteration,
-                r.status_code,
-                len((r.json() or {}).get("data") or []),
-            )
+            _ctx = build_context()
+            _startup_done = True
+            log.info("✅ Startup завершено")
         except Exception as e:
-            log.warning("💓 keep-awake #%d: %s", iteration, e)
-
-        time.sleep(240)  # 4 хв
-
-
-# ───────────────────────────────────────────────────────
-# PTB Application (runs in background thread)
-# ───────────────────────────────────────────────────────
-
-def _run_ptb_forever() -> None:
-    """Запускає PTB Application у фоновому потоці та крутить event loop."""
-    global _ptb_app, _loop
-
-    try:
-        _loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(_loop)
-
-        _ptb_app = build_application()
-        _loop.run_until_complete(_ptb_app.initialize())
-        _loop.run_until_complete(_ptb_app.start())
-
-        log.info("✅ PTB Application запущено і обробляє update_queue")
-        _loop.run_forever()
-    except Exception as e:
-        log.exception("❌ _run_ptb_forever впав: %s", e)
-        _ptb_app = None  # дозволяємо повторну спробу
-
-
-def get_ptb_app(timeout: float = 30.0):
-    """Ліниво ініціалізуємо PTB Application у фоновому потоці (thread-safe)."""
-    global _ptb_app, _ptb_started
-
-    if _ptb_app is not None:
-        return _ptb_app
-
-    with _ptb_lock:
-        if _ptb_app is not None:
-            return _ptb_app
-
-        if not _ptb_started:
-            _ptb_started = True
-            threading.Thread(target=_run_ptb_forever, daemon=True).start()
-
-        deadline = time.time() + timeout
-        while time.time() < deadline:
-            if _ptb_app is not None:
-                return _ptb_app
-            time.sleep(0.5)
-
-        _ptb_started = False
-        raise RuntimeError("PTB Application не запустився (timeout)")
+            log.exception("❌ Startup failed: %s", e)
+            raise
 
 
 # ───────────────────────────────────────────────────────
-# HTTP routes
+# Flask routes
 # ───────────────────────────────────────────────────────
 
 @app.route("/")
 @app.route("/health")
 def health() -> tuple[str, int]:
-    """Легкий health-check. НЕ чіпає PTB — щоб не блокувати webhook."""
+    """Легкий health-check — НЕ чіпає startup."""
     return "TumbleWeed is alive", 200
-
-
-@app.route("/keepalive")
-def keepalive() -> tuple[dict, int]:
-    """Важкий keep-alive: робить реальний HTTP-запит до OLX.
-
-    Використовується cron-job.org:
-    - вхідний трафік → Render не вимикає контейнер
-    - реальний запит до OLX → CPU активно працює
-    """
-    start = time.time()
-    try:
-        from curl_cffi import requests as cffi_requests
-
-        r = cffi_requests.get(
-            "https://www.olx.ua/api/v1/offers/",
-            params={"limit": 1, "category_id": 1800},
-            headers={"Accept": "application/json"},
-            impersonate="chrome124",
-            timeout=10,
-        )
-        elapsed = int((time.time() - start) * 1000)
-        log.info("💓 keepalive: OLX %s за %d ms", r.status_code, elapsed)
-        return {
-            "ok": True,
-            "olx_status": r.status_code,
-            "elapsed_ms": elapsed,
-        }, 200
-    except Exception as e:
-        elapsed = int((time.time() - start) * 1000)
-        log.warning("💓 keepalive: помилка за %d ms: %s", elapsed, e)
-        return {
-            "ok": False,
-            "error": str(e),
-            "elapsed_ms": elapsed,
-        }, 500
 
 
 @app.route("/debug")
 def debug() -> tuple[dict, int]:
-    """Діагностика стану PTB."""
-    result = {
-        "ptb_app": _ptb_app is not None,
-        "loop_exists": _loop is not None,
-        "loop_running": _loop.is_running() if _loop else False,
-        "ptb_started": _ptb_started,
-    }
-    if _ptb_app is not None:
-        result["handlers_count"] = (
-            len(_ptb_app.handlers[0]) if _ptb_app.handlers else 0
-        )
-    return result, 200
+    """Діагностика стану (чіпає startup)."""
+    try:
+        _ensure_startup()
+    except Exception as e:
+        return {
+            "ready": False,
+            "error": str(e),
+        }, 500
+
+    return {
+        "ready": _ctx is not None,
+        "startup_done": _startup_done,
+        "has_client": _ctx.client is not None if _ctx else False,
+        "has_notifier": _ctx.notifier is not None if _ctx else False,
+    }, 200
+
+
+@app.route("/keepalive")
+def keepalive() -> tuple[dict, int]:
+    """Швидкий endpoint для cron-job.org.
+
+    Викликає lazy startup, якщо ще не запущено.
+    Повертає миттєво.
+    """
+    start = time.time()
+    try:
+        _ensure_startup()
+        elapsed = int((time.time() - start) * 1000)
+        log.info("💓 keepalive: OK за %d ms", elapsed)
+        return {"ok": True, "elapsed_ms": elapsed}, 200
+    except Exception as e:
+        elapsed = int((time.time() - start) * 1000)
+        log.warning("💓 keepalive: помилка за %d ms: %s", elapsed, e)
+        return {"ok": False, "error": str(e), "elapsed_ms": elapsed}, 500
 
 
 @app.route("/webhook", methods=["POST"])
 def webhook() -> tuple[str, int]:
-    """Отримує оновлення від Telegram."""
-    try:
-        data = request.get_json(force=True)
+    """Telegram webhook — МИТТЄВИЙ return 200.
 
+    Обробка update відбувається у daemon-thread,
+    щоб Telegram не чекав і не робив retry.
+    """
+    try:
+        _ensure_startup()
+        if _ctx is None:
+            return "not ready", 503
+
+        data = request.get_json(force=True)
         update_id = data.get("update_id", "?")
+
+        # Логування
         if "message" in data:
-            text = data["message"].get("text", "")[:50]
+            text = (data["message"].get("text") or "")[:50]
             log.info("📨 update_id=%s message=%r", update_id, text)
         elif "callback_query" in data:
-            cb_data = data["callback_query"].get("data", "")[:50]
+            cb_data = (data["callback_query"].get("data") or "")[:50]
             log.info("🔘 update_id=%s callback=%r", update_id, cb_data)
         else:
             log.info("📦 update_id=%s keys=%s", update_id, list(data.keys()))
 
-        application = get_ptb_app()
-        update = Update.de_json(data, application.bot)
+        # Обробка у ФОНОВОМУ ПОТОЦІ — миттєвий return 200
+        threading.Thread(
+            target=_safe_handle_update,
+            args=(data,),
+            daemon=True,
+        ).start()
 
-        if _loop is None or not _loop.is_running():
-            log.error("Event loop не запущено — не можу обробити update")
-            return "error: loop not running", 500
-
-        start = time.time()
-        log.info("⏱ Старт обробки update_id=%s", update_id)
-
-        future = asyncio.run_coroutine_threadsafe(
-            application.process_update(update),
-            _loop,
-        )
-
-        def _log_result(fut):
-            elapsed = (time.time() - start) * 1000
-            try:
-                fut.result(timeout=0.1)
-                log.info(
-                    "✅ Обробка update_id=%s завершена за %.0f ms",
-                    update_id, elapsed,
-                )
-            except Exception as e:
-                log.exception(
-                    "❌ Обробка update_id=%s впала за %.0f ms: %s",
-                    update_id, elapsed, e,
-                )
-
-        future.add_done_callback(_log_result)
         return "ok", 200
     except Exception as e:
         log.exception("Webhook error: %s", e)
         return "error", 500
 
 
+def _safe_handle_update(data: dict[str, Any]) -> None:
+    """Обробляє update у потоці. Не блокує webhook."""
+    if _ctx is None:
+        log.error("_safe_handle_update: _ctx is None")
+        return
+
+    update_id = data.get("update_id", "?")
+    start = time.time()
+
+    try:
+        handle_update(data, _ctx)
+        elapsed = (time.time() - start) * 1000
+        log.info("✅ Обробка update_id=%s завершена за %.0f ms", update_id, elapsed)
+    except Exception as e:
+        elapsed = (time.time() - start) * 1000
+        log.exception(
+            "❌ Обробка update_id=%s впала за %.0f ms: %s",
+            update_id, elapsed, e,
+        )
+
+
 # ───────────────────────────────────────────────────────
-# Startup (Render/gunicorn)
+# Startup (lazy — викликається тільки у webhook)
 # ───────────────────────────────────────────────────────
 
 if os.getenv("RENDER") or os.getenv("PORT"):
-    log.info("🚀 Ініціалізуємо PTB при старті (Render detected)")
-    try:
-        get_ptb_app()
-        log.info("✅ PTB готовий до роботи")
-    except Exception as e:
-        log.exception("Помилка старту PTB: %s", e)
+    log.info("🚀 Render detected — startup буде ліниво (при першому /webhook)")
 
-    # Backup keep-awake (якщо cron-job.org не працює)
-    threading.Thread(target=_keep_awake_scheduler, daemon=True).start()
-    log.info("✅ Keep-awake scheduler запущено (backup)")
-
-
-# ───────────────────────────────────────────────────────
-# SIGTERM handler (Render sends on restart)
-# ───────────────────────────────────────────────────────
-
-def _shutdown_handler(signum, frame):
-    log.info("🛑 Отримано сигнал %s — завершуємо PTB", signum)
-    if _loop is not None and _loop.is_running():
-        _loop.call_soon_threadsafe(_loop.stop)
-    if _ptb_app is not None:
-        try:
-            asyncio.run_coroutine_threadsafe(
-                _ptb_app.stop(),
-                _loop,
-            ).result(timeout=5)
-        except Exception as e:
-            log.warning("PTB stop: %s", e)
-    sys.exit(0)
-
-
-signal.signal(signal.SIGTERM, _shutdown_handler)
-signal.signal(signal.SIGINT, _shutdown_handler)
-
-
-# ───────────────────────────────────────────────────────
-# Local dev
-# ───────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
