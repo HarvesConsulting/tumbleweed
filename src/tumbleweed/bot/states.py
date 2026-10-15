@@ -1,50 +1,45 @@
-"""FSM-стани для TumbleWeed-бота.
+"""FSM-стани для TumbleWeed-бота (sync, без ConversationHandler).
 
-Дві частини:
-1. ConversationHandler State (IntEnum) — для діалогу налаштування профілю.
-2. Простий рядковий FSM — для очікування текстового вводу (feedback, пошук).
+Простий рядковий FSM:
+    set_state(chat_id, "waiting_city")
+    state = get_state(chat_id)
+    clear_state(chat_id)
 
 При перезапуску застосунку стан скидається.
+Це нормально — очікування недовге (хвилина).
 """
 from __future__ import annotations
 
 import threading
-from enum import IntEnum, auto
-
 
 # ───────────────────────────────────────────────────────
-# ConversationHandler (для налаштування профілю)
+# Стани (рядкові константи)
 # ───────────────────────────────────────────────────────
 
-class State(IntEnum):
-    """Стани діалогу налаштування профілю користувача."""
-
-    CHOOSING_COUNTRY = auto()
-    CHOOSING_CITY = auto()
-    CHOOSING_CITY_QUERY = auto()
-    CHOOSING_CITY_PICK = auto()
-    CHOOSING_CATEGORY = auto()
-    CHOOSING_SUBCATEGORY_QUERY = auto()
-    CHOOSING_SUBCATEGORY_PICK = auto()
-    CHOOSING_JOB_TYPE = auto()
-    CHOOSING_EXPERIENCE = auto()
-    DONE = auto()
-
-
-# ───────────────────────────────────────────────────────
-# Простий FSM (для очікування тексту)
-# ───────────────────────────────────────────────────────
-
-# Стани очікування
-STATE_WAITING_FEEDBACK = "waiting_feedback"
+# Очікування текстового вводу
+STATE_WAITING_CITY = "waiting_city"
 STATE_WAITING_CITY_QUERY = "waiting_city_query"
+STATE_WAITING_FEEDBACK = "waiting_feedback"
+STATE_WAITING_SUBCATEGORY_QUERY = "waiting_subcategory_query"
+
+# Очікування натискання inline-кнопки (для вибору)
+STATE_CHOOSING_COUNTRY = "choosing_country"
+STATE_CHOOSING_CITY = "choosing_city"
+STATE_CHOOSING_CATEGORY = "choosing_category"
+STATE_CHOOSING_SUBCATEGORY = "choosing_subcategory"
+STATE_CHOOSING_JOB_TYPE = "choosing_job_type"
+STATE_CHOOSING_EXPERIENCE = "choosing_experience"
+
+# ───────────────────────────────────────────────────────
+# Сховище (in-memory)
+# ───────────────────────────────────────────────────────
 
 _states: dict[str, str] = {}
 _lock = threading.Lock()
 
 
 def set_state(chat_id: str | int, state: str) -> None:
-    """Встановити стан очікування."""
+    """Встановити стан."""
     with _lock:
         _states[str(chat_id)] = state
 
