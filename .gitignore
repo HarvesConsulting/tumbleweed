@@ -60,3 +60,6 @@ scripts/debug_*.py
 refactor_snapshot.txt
 refactor_files_before.txt
 refactor_deps.txt
+
+# Refactor backup (local only)
+refactor_backup/
