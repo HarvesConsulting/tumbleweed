@@ -45,15 +45,21 @@ def build_jobs_from_users(client: TursoClient) -> list[tuple[str, str, str]]:
     jobs: list[tuple[str, str, str]] = []
 
     for p in profiles:
-        # Профіль без professions — підписка на всю країну/місто.
-        # Ставимо загальний запит — але нам потрібне хоч якесь слово.
-        # У цьому випадку — пропускаємо, бо OLX без query = забагато запитів.
+        cities = p.cities or [""]
+
+        # ── Профіль без professions ──────────────────────
+        # Користувач обрав "будь-яка професія" — парсимо ВСІ
+        # вакансії у його місті (OLX обходить усі категорії).
         if not p.professions:
+            for city in cities:
+                job = (p.country, city, "")
+                if job not in seen:
+                    seen.add(job)
+                    jobs.append(job)
             continue
 
-        cities = p.cities or [""]      # порожнє = вся країна
-
-        for sub_key in p.professions:
+        # ── Профіль з конкретними професіями ─────────────
+        for sub_key in p.professions:            
             # sub_key може бути "agro_tractor" або "custom:водій"
             if sub_key.startswith("custom:"):
                 query = sub_key[len("custom:"):].strip()
