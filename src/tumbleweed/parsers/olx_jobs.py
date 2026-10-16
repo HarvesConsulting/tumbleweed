@@ -209,17 +209,13 @@ class OlxJobParser(JobParser):
             elif city_slug in self.cfg.city_ids:
                 city_id = self.cfg.city_ids[city_slug]
 
-            # Гілка 3: НОВА — через довідник (kropyvnytskyi → olx_id)
             if city_id is None:
                 try:
                     from ..services.city_search import get_city
                     city = get_city(self.country, city_slug)
                     if city and city.olx_id:
                         city_id = city.olx_id
-                        print(
-                            f"  ↻ {self.display_name}: '{city_slug}' "
-                            f"→ '{city.name}' → city_id={city_id}"
-                        )
+                        # print прибрано — шумить при обході категорій
                 except Exception as e:
                     print(f"  ⚠️ {self.display_name}: fallback lookup failed: {e}")
 
