@@ -26,6 +26,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
+      - name: Cleanup old
+        env:
+          PYTHONUNBUFFERED: "1"
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: python -u scripts/cleanup_old_vacancies.py          
+
       - name: Parse
         env:
           PYTHONUNBUFFERED: "1"
