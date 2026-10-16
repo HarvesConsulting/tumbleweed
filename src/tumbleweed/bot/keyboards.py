@@ -26,7 +26,7 @@ from typing import Any
 
 BTN_MY_VACANCIES = "📊 Мої вакансії"
 BTN_MY_PROFILE = "👤 Мій профіль"
-BTN_CHANGE = "✏️ Фільтри"
+BTN_CHANGE = "🔍 Знайти роботу"
 BTN_RENT = "🏠 Житло"
 BTN_TOGGLE_ON = "🔔 Сповіщення: УВІМК"
 BTN_TOGGLE_OFF = "🔕 Сповіщення: ВИМК"
