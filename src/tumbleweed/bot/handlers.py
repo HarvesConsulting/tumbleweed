@@ -1,16 +1,20 @@
 """Обробники TumbleWeed-бота (sync, без PTB Application).
 
-Нова архітектура:
+Нова архітектура (v2):
   - handlers.py — текстові повідомлення, команди, reply-кнопки, FSM
   - callbacks.py — inline callback'и
   - dispatcher.py — точка входу, розподіляє update'и
 
 FSM через states.py (простий рядковий):
-  set_state(chat_id, STATE_WAITING_CITY_QUERY)
+  set_state(chat_id, STATE_...)
   get_state(chat_id)
   clear_state(chat_id)
 
 Відправка через ctx.notifier — TelegramClient.
+
+Модель даних: user_subscriptions (багато підписок на chat_id).
+  Кнопка "📋 Мої пошуки" — показує список.
+  Кнопка "🔍 Знайти роботу" — починає flow додавання нової підписки.
 """
 from __future__ import annotations
 
@@ -18,16 +22,19 @@ import logging
 
 from tumbleweed.config import settings
 from tumbleweed.db.queries_jobs import (
-    get_user_profile,
-    set_user_enabled,
+    Subscription,
+    any_subscription_enabled,
+    count_subscriptions,
+    list_subscriptions,
+    set_all_subscriptions_enabled,
 )
 from tumbleweed.services.subcategory_search import get_category_label, get_subcategory
 
 from . import states
 from .keyboards import (
-    BTN_CHANGE,
+    BTN_FIND_JOB,
     BTN_HELP,
-    BTN_MY_PROFILE,
+    BTN_MY_SUBS,
     BTN_MY_VACANCIES,
     BTN_RENT,
     BTN_TOGGLE_OFF,
@@ -40,6 +47,7 @@ from .keyboards import (
     experience_keyboard,
     job_type_keyboard,
     main_reply_keyboard,
+    subscriptions_list_keyboard,
 )
 
 log = logging.getLogger(__name__)
@@ -50,15 +58,7 @@ log = logging.getLogger(__name__)
 # ───────────────────────────────────────────────────────
 
 def _rentalert_url(chat_id: str | int, city_slug: str = "") -> str:
-    """URL на RentAlert з переданим chat_id і (опційно) містом.
-
-    Args:
-        chat_id: ID чату користувача
-        city_slug: slug міста ("kropyvnytskyi", "kyiv", ...)
-
-    Returns:
-        Deep link: https://t.me/RentAlertBot?start=from_tumbleweed_XXX_CITY
-    """
+    """URL на RentAlert з переданим chat_id і (опційно) містом."""
     base = settings.rentalert_bot_url
     parts = ["from_tumbleweed", str(chat_id)]
     if city_slug:
@@ -66,61 +66,77 @@ def _rentalert_url(chat_id: str | int, city_slug: str = "") -> str:
     return f"{base}?start={'_'.join(parts)}"
 
 
-def _profile_summary_text(profile) -> str:
-    """Красивий опис профілю з людськими назвами."""
+def _profession_label(profession_key: str, country: str) -> str:
+    """Перетворює ключ підписки у людську назву."""
+    if not profession_key:
+        return "🌍 Будь-яка професія"
+    if profession_key.startswith("custom:"):
+        return profession_key[len("custom:"):].strip()
+    cat_key, _, _ = profession_key.partition("_")
+    sub = get_subcategory(cat_key, profession_key)
+    return sub.label if sub else profession_key
+
+
+def _city_label(country: str, city_slug: str) -> str:
+    """Slug міста → людська назва."""
+    if not city_slug:
+        return "🌍 Будь-яке місто"
     from tumbleweed.services.city_search import get_city
+    c = get_city(country, city_slug)
+    return c.name if c else city_slug
 
-    # ── Професії ───────────────────────────────
-    profs_raw = profile.professions or []
-    if not profs_raw:
-        profs_text = "🌍 будь-яка"
-    else:
-        labels = []
-        for p in profs_raw:
-            if p.startswith("custom:"):
-                labels.append(p.replace("custom:", ""))
-            else:
-                cat_key, _, _ = p.partition("_")
-                sub = get_subcategory(cat_key, p)
-                labels.append(sub.label if sub else p)
-        profs_text = ", ".join(labels)
 
-    # ── Міста — реальні назви ────────────────────
-    city_slugs = profile.cities or []
-    if city_slugs:
-        city_names = []
-        for slug in city_slugs:
-            c = get_city(profile.country, slug)
-            city_names.append(c.name if c else slug)
-        cities_text = ", ".join(city_names)
-    else:
-        cities_text = "будь-яке"
+def _job_types_label(job_types: list[str]) -> str:
+    """Людський опис типу зайнятості."""
+    if not job_types:
+        return "🌍 Будь-яка"
+    labels = {"full": "Повна", "part": "Часткова", "remote": "Віддалена"}
+    return ", ".join(labels.get(j, j) for j in job_types)
 
-    # ── Тип зайнятості ─────────────────────────
-    jt_labels = {"full": "Повна", "part": "Часткова", "remote": "Віддалена"}
-    jts_raw = profile.job_types or []
-    jts_text = ", ".join(jt_labels.get(j, j) for j in jts_raw) or "будь-яка"
 
-    # ── Досвід ─────────────────────────────────
-    exp_labels = {
-        "all": "будь-який",
-        "no": "без досвіду",
-        "1-3": "1-3 роки",
-        "3+": "3+ років",
+def _experience_label(experience: str) -> str:
+    """Людський опис досвіду."""
+    labels = {
+        "all": "🌍 Будь-який",
+        "no": "🌱 Без досвіду",
+        "1-3": "🌿 1-3 роки",
+        "3+": "🌳 3+ роки",
     }
-    exp = exp_labels.get(profile.experience or "all", profile.experience or "all")
+    return labels.get(experience or "all", experience or "all")
 
-    # ── Країна ─────────────────────────────────
-    country_labels = {"ua": "🇺🇦 Україна", "pl": "🇵🇱 Польща", "ro": "🇷🇴 Румунія"}
-    country_text = country_labels.get(profile.country, profile.country)
 
-    return (
-        f"🌍 Країна: *{country_text}*\n"
-        f"🏙 Місто: {cities_text}\n"
-        f"💼 Професія: {profs_text}\n"
-        f"⏰ Зайнятість: {jts_text}\n"
-        f"🎓 Досвід: {exp}"
-    )
+def _subscription_line(idx: int, sub: Subscription) -> str:
+    """Один рядок для списку підписок (без inline-кнопок)."""
+    city = _city_label(sub.country, sub.city_slug)
+    prof = _profession_label(sub.profession_key, sub.country)
+    status = "✅" if sub.enabled else "⏸"
+    return f"{status} *{idx}.* {city} · {prof}"
+
+
+def _subscriptions_summary_text(subs: list[Subscription]) -> str:
+    """Красивий текст списку підписок."""
+    if not subs:
+        return (
+            "📭 *У тебе поки немає пошуків*\n\n"
+            "Натисни «🔍 Знайти роботу», щоб додати перший."
+        )
+
+    lines = [
+        f"📋 *Твої пошуки* ({len(subs)}):",
+        "",
+    ]
+    for i, sub in enumerate(subs, start=1):
+        lines.append(_subscription_line(i, sub))
+        # Другий рядок з деталями (job_types / experience), якщо не дефолт
+        details = []
+        if sub.job_types:
+            details.append(f"⏰ {_job_types_label(sub.job_types)}")
+        if sub.experience and sub.experience != "all":
+            details.append(f"🎓 {_experience_label(sub.experience)}")
+        if details:
+            lines.append(f"     {' · '.join(details)}")
+
+    return "\n".join(lines)
 
 
 # ───────────────────────────────────────────────────────
@@ -132,36 +148,41 @@ def handle_start(chat_id: str, ctx) -> None:
     states.clear_state(chat_id)
 
     try:
-        profile = get_user_profile(ctx.client, chat_id)
+        subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
     except Exception as e:
-        log.warning("Не вдалось прочитати профіль: %s", e)
-        profile = None
+        log.warning("Не вдалось прочитати підписки: %s", e)
+        subs = []
 
-    if profile:
-        status = "✅ увімкнено" if profile.enabled else "🔕 вимкнено"
+    if subs:
+        enabled = any(s.enabled for s in subs)
         text = (
             "🌾 *TumbleWeed*\n\n"
-            f"🔔 Сповіщення: *{status}*\n\n"
-            f"{_profile_summary_text(profile)}\n\n"
+            f"{_subscriptions_summary_text(subs)}\n\n"
             "📍 Обери дію нижче 👇"
         )
-        # 1) Reply-клавіатура
+        # Reply-клавіатура
         ctx.notifier.send_message(
             chat_id,
             "⌨️ Меню — знизу 👇",
-            keyboard=main_reply_keyboard(profile.enabled),
+            keyboard=main_reply_keyboard(enabled),
         )
-        # 2) Основне повідомлення
-        ctx.notifier.send_message(chat_id, text)
+        # Список підписок + inline-кнопки
+        ctx.notifier.send_message(
+            chat_id,
+            text,
+            keyboard=subscriptions_list_keyboard(subs) if subs else None,
+        )
         return
 
-    # Новий користувач — почати діалог фільтрів
-    text = (
+    # Новий користувач — почати flow "Знайти роботу"
+    ctx.notifier.send_message(
+        chat_id,
         "🌾 *Вітаю у TumbleWeed!*\n\n"
-        "Я допоможу знайти роботу та житло в обраній країні.\n\n"
-        "🌍 *Обери країну:*"
+        "Я шукатиму вакансії за твоїми фільтрами і надсилатиму "
+        "тільки нові — щоб ти не сидів на сайтах.\n\n"
+        "🌍 *Обери країну для пошуку:*",
+        keyboard=country_keyboard(),
     )
-    ctx.notifier.send_message(chat_id, text, keyboard=country_keyboard())
     states.set_state(chat_id, states.STATE_CHOOSING_COUNTRY)
 
 
@@ -177,30 +198,28 @@ def handle_help(chat_id: str, ctx) -> None:
         "*━━━ 📋 Меню (знизу екрана) ━━━*\n\n"
 
         "📄 *Моє резюме*\n"
-        "  Відкриває онлайн-конструктор резюме. Створи резюме "
-        "за 5 хвилин, експортуй у PDF і надсилай роботодавцям.\n\n"
+        "  Відкриває онлайн-конструктор резюме.\n\n"
 
-        "👤 *Мій профіль*\n"
-        "  Переглянути свої фільтри: країна, місто, професія, "
-        "тип зайнятості, досвід. Показує статус сповіщень.\n\n"
+        "📋 *Мої пошуки*\n"
+        "  Список твоїх збережених пошуків. Можна видалити "
+        "або призупинити кожен.\n\n"
 
         "🔍 *Знайти роботу*\n"
-        "  Налаштувати фільтри пошуку заново: обрати країну, "
-        "місто, сферу роботи та підкатегорії.\n\n"
+        "  Налаштувати новий пошук: країна, місто, професія, "
+        "тип зайнятості, досвід.\n\n"
 
         "🏠 *Житло*\n"
         "  Перейти у RentAlert — окремий бот для оренди "
         "житла. Місто передається автоматично.\n\n"
 
         "🔔 *Сповіщення*\n"
-        "  Увімкнути або вимкнути автоматичні сповіщення "
-        "про нові вакансії.\n\n"
+        "  Увімкнути або вимкнути всі сповіщення одразу.\n\n"
 
         "*━━━ ⚙️ Команди ━━━*\n\n"
-        "/start — почати налаштування або переглянути профіль\n"
-        "/settings — переглянути поточні налаштування\n"
-        "/stop — вимкнути сповіщення\n"
-        "/resume — увімкнути сповіщення\n"
+        "/start — почати налаштування або переглянути пошуки\n"
+        "/settings — те саме, що «📋 Мої пошуки»\n"
+        "/stop — вимкнути всі сповіщення\n"
+        "/resume — увімкнути всі сповіщення\n"
         "/help — ця довідка\n\n"
 
         "💡 *Порада:* просто чекай — я надішлю нові вакансії "
@@ -209,33 +228,17 @@ def handle_help(chat_id: str, ctx) -> None:
 
 
 def handle_settings(chat_id: str, ctx) -> None:
-    """Обробка /settings."""
-    try:
-        profile = get_user_profile(ctx.client, chat_id)
-    except Exception as e:
-        ctx.notifier.send_message(chat_id, f"❌ {e}")
-        return
-
-    if not profile:
-        ctx.notifier.send_message(
-            chat_id,
-            "👋 Ще немає налаштувань.\nНатисни /start.",
-        )
-        return
-
-    ctx.notifier.send_message(
-        chat_id,
-        "⚙️ *Твої налаштування:*\n\n" + _profile_summary_text(profile),
-    )
+    """Обробка /settings — alias для «📋 Мої пошуки»."""
+    on_btn_my_subs(chat_id, ctx)
 
 
 def handle_stop(chat_id: str, ctx) -> None:
-    """Обробка /stop — вимкнути сповіщення."""
+    """Обробка /stop — вимкнути всі сповіщення."""
     try:
-        set_user_enabled(ctx.client, chat_id, False)
+        n = set_all_subscriptions_enabled(ctx.client, chat_id, False)
+        msg = "🔕 Всі сповіщення вимкнено." if n else "👋 У тебе ще немає пошуків."
         ctx.notifier.send_message(
-            chat_id,
-            "🔕 Вимкнено. /resume — увімкнути.",
+            chat_id, msg,
             keyboard=main_reply_keyboard(enabled=False),
         )
     except Exception as e:
@@ -243,12 +246,12 @@ def handle_stop(chat_id: str, ctx) -> None:
 
 
 def handle_resume(chat_id: str, ctx) -> None:
-    """Обробка /resume — увімкнути сповіщення."""
+    """Обробка /resume — увімкнути всі сповіщення."""
     try:
-        set_user_enabled(ctx.client, chat_id, True)
+        n = set_all_subscriptions_enabled(ctx.client, chat_id, True)
+        msg = "🔔 Всі сповіщення увімкнено." if n else "👋 У тебе ще немає пошуків."
         ctx.notifier.send_message(
-            chat_id,
-            "🔔 Увімкнено.",
+            chat_id, msg,
             keyboard=main_reply_keyboard(enabled=True),
         )
     except Exception as e:
@@ -276,7 +279,7 @@ def on_btn_my_vacancies(chat_id: str, ctx) -> None:
         "✅ Безкоштовно\n"
         "✅ Експорт у PDF\n"
         "✅ Готове для відправки роботодавцям\n\n"
-        "👉 [Створити резюме]({url})".format(url=url),
+        f"👉 [Створити резюме]({url})",
         keyboard={
             "inline_keyboard": [
                 [{"text": "📄 Відкрити конструктор", "url": url}],
@@ -284,44 +287,59 @@ def on_btn_my_vacancies(chat_id: str, ctx) -> None:
         },
     )
 
-def on_btn_my_profile(chat_id: str, ctx) -> None:
-    """👤 Мій профіль."""
+
+def on_btn_my_subs(chat_id: str, ctx) -> None:
+    """📋 Мої пошуки."""
     try:
-        profile = get_user_profile(ctx.client, chat_id)
+        subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
     except Exception as e:
         ctx.notifier.send_message(chat_id, f"❌ {e}")
         return
 
-    if not profile:
-        ctx.notifier.send_message(
-            chat_id,
-            "👋 Ще немає профілю.\nНатисни /start.",
-        )
-        return
+    enabled = any(s.enabled for s in subs) if subs else True
 
-    status = "✅ увімкнено" if profile.enabled else "🔕 вимкнено"
     ctx.notifier.send_message(
         chat_id,
-        "👤 *Мій профіль*\n\n"
-        f"{_profile_summary_text(profile)}\n\n"
-        f"🔔 Сповіщення: *{status}*",
-        keyboard=main_reply_keyboard(profile.enabled),
+        _subscriptions_summary_text(subs),
+        keyboard=subscriptions_list_keyboard(subs) if subs else None,
+    )
+    # Оновлюємо reply-клавіатуру (тумблер сповіщень)
+    ctx.notifier.send_message(
+        chat_id,
+        "⌨️ Меню — знизу 👇",
+        keyboard=main_reply_keyboard(enabled),
     )
 
 
+def on_btn_find_job(chat_id: str, ctx) -> None:
+    """🔍 Знайти роботу — почати flow нової підписки."""
+    states.clear_state(chat_id)
+    ctx.notifier.send_message(
+        chat_id,
+        "🔍 *Новий пошук*\n\n"
+        "Оберемо країну, місто та професію — я шукатиму вакансії "
+        "і надсилатиму тільки нові.\n\n"
+        "🌍 *Обери країну:*",
+        keyboard=country_keyboard(),
+    )
+    states.set_state(chat_id, states.STATE_CHOOSING_COUNTRY)
+
+
 def on_btn_toggle(chat_id: str, ctx) -> None:
-    """🔔 Сповіщення — toggle."""
+    """🔔 Сповіщення — глобальний toggle всіх підписок."""
     try:
-        profile = get_user_profile(ctx.client, chat_id)
-        if not profile:
+        subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
+        if not subs:
             ctx.notifier.send_message(
                 chat_id,
-                "👋 Ще немає налаштувань.\nНатисни /start.",
+                "👋 У тебе ще немає пошуків.\n"
+                "Натисни «🔍 Знайти роботу», щоб додати перший.",
             )
             return
 
-        new_state = not profile.enabled
-        set_user_enabled(ctx.client, chat_id, new_state)
+        currently_enabled = any(s.enabled for s in subs)
+        new_state = not currently_enabled
+        set_all_subscriptions_enabled(ctx.client, chat_id, new_state)
 
         status = "✅ увімкнено" if new_state else "🔕 вимкнено"
         ctx.notifier.send_message(
@@ -340,14 +358,12 @@ def on_btn_help(chat_id: str, ctx) -> None:
 
 def on_btn_rent_reply(chat_id: str, ctx) -> None:
     """🏠 Житло — перехід у RentAlert з передачею міста."""
-    from tumbleweed.db.queries_jobs import get_user_profile
-
-    # Отримуємо перше місто з профілю
+    # Беремо перше місто з першої підписки
     city_slug = ""
     try:
-        profile = get_user_profile(ctx.client, chat_id)
-        if profile and profile.cities:
-            city_slug = profile.cities[0]
+        subs = list_subscriptions(ctx.client, chat_id, only_enabled=True)
+        if subs and subs[0].city_slug:
+            city_slug = subs[0].city_slug
     except Exception:
         pass
 
@@ -356,24 +372,11 @@ def on_btn_rent_reply(chat_id: str, ctx) -> None:
     text = "🏠 *Пошук житла*\n\n"
     text += "RentAlert — окремий сервіс для оренди.\n\n"
     if city_slug:
-        text += f"📍 Передам місто: *{city_slug}*\n\n"
+        city_name = _city_label("ua", city_slug)  # FIXME: країна з підписки
+        text += f"📍 Передам місто: *{city_name}*\n\n"
     text += f"👉 [Відкрити RentAlert]({url})"
 
     ctx.notifier.send_message(chat_id, text)
-
-
-def on_btn_change_filters(chat_id: str, ctx) -> None:
-    """🔍 Знайти роботу — почати діалог заново."""
-    states.clear_state(chat_id)
-    ctx.notifier.send_message(
-        chat_id,
-        "🔍 *Знайти роботу*\n\n"
-        "Оберемо країну, місто та професію — "
-        "я шукатиму вакансії для тебе.\n\n"
-        "🌍 *Обери країну:*",
-        keyboard=country_keyboard(),
-    )
-    states.set_state(chat_id, states.STATE_CHOOSING_COUNTRY)
 
 
 # ───────────────────────────────────────────────────────
@@ -388,9 +391,7 @@ def handle_city_query(chat_id: str, text: str, ctx) -> None:
         ctx.notifier.send_message(chat_id, "⚠️ Введи мінімум 2 символи. Спробуй ще раз.")
         return
 
-    # Країну беремо зі стану
-    country = ctx.user_data.get(chat_id, {}).get("country", "ua") if hasattr(ctx, "user_data") else "ua"
-
+    country = states.get_user_data(chat_id).get("country", "ua")
     results = search_cities(country, text, limit=3)
 
     if not results:
@@ -444,8 +445,8 @@ def is_reply_button(text: str) -> bool:
     """Чи це reply-кнопка з меню?"""
     return text in {
         BTN_MY_VACANCIES,
-        BTN_MY_PROFILE,
-        BTN_CHANGE,
+        BTN_MY_SUBS,
+        BTN_FIND_JOB,
         BTN_RENT,
         BTN_TOGGLE_ON,
         BTN_TOGGLE_OFF,
@@ -457,10 +458,10 @@ def handle_reply_button(chat_id: str, text: str, ctx) -> None:
     """Диспетчер reply-кнопок."""
     if text == BTN_MY_VACANCIES:
         on_btn_my_vacancies(chat_id, ctx)
-    elif text == BTN_MY_PROFILE:
-        on_btn_my_profile(chat_id, ctx)
-    elif text == BTN_CHANGE:
-        on_btn_change_filters(chat_id, ctx)
+    elif text == BTN_MY_SUBS:
+        on_btn_my_subs(chat_id, ctx)
+    elif text == BTN_FIND_JOB:
+        on_btn_find_job(chat_id, ctx)
     elif text == BTN_RENT:
         on_btn_rent_reply(chat_id, ctx)
     elif text in (BTN_TOGGLE_ON, BTN_TOGGLE_OFF):
@@ -474,12 +475,12 @@ def handle_reply_button(chat_id: str, text: str, ctx) -> None:
 def send_main_menu(chat_id: str, ctx) -> None:
     """Надсилає головне меню (коли невідомий текст)."""
     try:
-        profile = get_user_profile(ctx.client, chat_id)
+        subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
     except Exception:
-        profile = None
+        subs = []
 
-    if profile:
-        on_btn_my_profile(chat_id, ctx)
+    if subs:
+        on_btn_my_subs(chat_id, ctx)
     else:
         ctx.notifier.send_message(
             chat_id,

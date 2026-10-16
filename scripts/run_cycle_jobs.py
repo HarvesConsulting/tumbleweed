@@ -1,11 +1,13 @@
 """Один цикл агрегації вакансій: парсинг → збереження в Turso.
 
-НОВИЙ ПІДХІД: парсимо ТІЛЬКИ те, що шукають активні користувачі.
-Запити формуються динамічно з user_jobs.
+НОВИЙ ПІДХІД (v2): парсимо ТІЛЬКИ те, що шукають активні підписки
+(user_subscriptions). Запити дедуплікуються — якщо 5 користувачів
+підписані на "Київ + Кухар", парсимо ОДИН раз.
 """
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -13,106 +15,69 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from tumbleweed.config import settings
 from tumbleweed.db.client import TursoClient
-from tumbleweed.db.queries_jobs import list_active_profiles, save_and_mark
+from tumbleweed.db.queries_jobs import (
+    list_active_subscriptions,
+    save_and_mark,
+)
 from tumbleweed.parsers.registry import get_parsers
 from tumbleweed.services.subcategory_search import get_subcategory
 
 
-# ───────────────────────────────────────────────────────
-# «Холодний старт» — що парсити, навіть якщо немає підписок
-# ───────────────────────────────────────────────────────
-
-# COLD_START вимкнено — БД уже достатньо наповнена.
-# Парсимо тільки те, що шукають користувачі.
-COLD_START: list[tuple[str, str, str]] = []
+USE_WORKUA = os.getenv("USE_WORKUA", "1") == "1"
 
 
 # ───────────────────────────────────────────────────────
-# Динамічна генерація запитів з профілів користувачів
+# Хелпер: profession_key → query для парсера
 # ───────────────────────────────────────────────────────
 
-def build_jobs_from_users(client: TursoClient) -> list[tuple[str, str, str]]:
-    """Формує запити ТІЛЬКИ з активних профілів користувачів.
+def _query_from_profession_key(profession_key: str, country: str) -> str:
+    """Перетворює ключ підписки у пошуковий запит.
 
-    Читає user_jobs, для кожної підкатегорії бере перше keyword,
-    формує (country, city, query) для кожного міста.
-
-    Returns:
-        Список унікальних (country, city_slug, query).
+    - ""                → "" (будь-яка професія)
+    - "custom:водій"    → "водій"
+    - "agro_tractor"    → перше keyword з professions_{country}.json
     """
-    profiles = list_active_profiles(client)
+    if not profession_key:
+        return ""
+
+    if profession_key.startswith("custom:"):
+        return profession_key[len("custom:"):].strip()
+
+    # sub_key вигляду "agro_tractor" → cat_key="agro", sub_key="agro_tractor"
+    cat_key, _, _ = profession_key.partition("_")
+    sub = get_subcategory(cat_key, profession_key)
+    if not sub or not sub.keywords:
+        return ""
+    return sub.keywords[0]
+
+
+# ───────────────────────────────────────────────────────
+# Динамічна генерація запитів з підписок
+# ───────────────────────────────────────────────────────
+
+def build_jobs(client: TursoClient) -> list[tuple[str, str, str]]:
+    """Формує унікальні (country, city_slug, query) з активних підписок.
+
+    Дедуплікує: якщо 5 підписок на (ua, kyiv, "кухар") — один запит.
+    """
+    subs = list_active_subscriptions(client)
     seen: set[tuple[str, str, str]] = set()
     jobs: list[tuple[str, str, str]] = []
 
-    for p in profiles:
-        cities = p.cities or [""]
-
-        # ── Профіль без professions ──────────────────────
-        # Користувач обрав "будь-яка професія" — парсимо ВСІ
-        # вакансії у його місті (OLX обходить усі категорії).
-        if not p.professions:
-            for city in cities:
-                job = (p.country, city, "")
-                if job not in seen:
-                    seen.add(job)
-                    jobs.append(job)
+    for sub in subs:
+        query = _query_from_profession_key(sub.profession_key, sub.country)
+        job = (sub.country, sub.city_slug, query)
+        if job in seen:
             continue
-
-        # ── Профіль з конкретними професіями ─────────────
-        for sub_key in p.professions:            
-            # sub_key може бути "agro_tractor" або "custom:водій"
-            if sub_key.startswith("custom:"):
-                query = sub_key[len("custom:"):].strip()
-                if not query:
-                    continue
-            else:
-                cat_key, _, _ = sub_key.partition("_")
-                sub = get_subcategory(cat_key, sub_key)
-                if not sub or not sub.keywords:
-                    continue
-                # Перше keyword — найважливіше
-                query = sub.keywords[0]
-
-            for city in cities:
-                job = (p.country, city, query)
-                if job not in seen:
-                    seen.add(job)
-                    jobs.append(job)
+        seen.add(job)
+        jobs.append(job)
 
     return jobs
 
 
-def build_jobs(client: TursoClient) -> list[tuple[str, str, str]]:
-    """Об'єднує запити з профілів.
-
-    COLD_START додається ТІЛЬКИ якщо в БД мало вакансій (< 1000).
-    """
-    from_users = build_jobs_from_users(client)
-
-    # Перевіряємо, скільки вакансій у БД
-    try:
-        raw = client.execute("SELECT COUNT(*) FROM vacancies")[0][0]
-        count = int(raw) if raw is not None else 0
-    except Exception:
-        count = 0
-
-    combined: set[tuple[str, str, str]] = set(from_users)
-
-    # COLD_START тільки для холодного старту
-    if count < 1000:
-        print(f"ℹ️  Холодний старт (БД: {count} вакансій < 1000)", flush=True)
-        for j in COLD_START:
-            combined.add(j)
-
-    return list(combined)
-
-
 # ───────────────────────────────────────────────────────
-# Основна логіка
+# Парсинг
 # ───────────────────────────────────────────────────────
-
-import os
-USE_WORKUA = os.getenv("USE_WORKUA", "1") == "1"
 
 async def run_one(
     country: str,
@@ -126,7 +91,6 @@ async def run_one(
         print(f"⚠️  Немає парсерів для {country}")
         return (0, 0)
 
-    # Фільтруємо Work.ua, якщо він вимкнений
     if not USE_WORKUA:
         parsers = [p for p in parsers if p.source_key != "workua_ua"]
 
@@ -134,7 +98,7 @@ async def run_one(
     total_new = 0
 
     for parser in parsers:
-        print(f"\n→ [{parser.display_name} | {city or 'вся країна'}] query={query!r}", flush=True)        
+        print(f"\n→ [{parser.display_name} | {city or 'вся країна'}] query={query!r}", flush=True)
         try:
             vacancies = await parser.fetch(
                 city_slug=city or None,
@@ -164,27 +128,23 @@ async def main() -> None:
     client = TursoClient(settings.turso_url, settings.turso_token)
 
     print("=" * 60, flush=True)
-    print("СТАРТ ЦИКЛУ АГРЕГАЦІЇ", flush=True)
+    print("СТАРТ ЦИКЛУ АГРЕГАЦІЇ (v2: user_subscriptions)", flush=True)
     print("=" * 60, flush=True)
 
-    # 1. Скільки активних профілів
-    profiles = list_active_profiles(client)
-    print(f"\n📊 Активних профілів: {len(profiles)}", flush=True)
+    subs = list_active_subscriptions(client)
+    print(f"\n📊 Активних підписок: {len(subs)}", flush=True)
 
-    # 2. Скільки запитів треба зробити
     jobs = build_jobs(client)
-    print(f"📊 Унікальних запитів: {len(jobs)}", flush=True)
+    print(f"📊 Унікальних запитів (дедупліковано): {len(jobs)}", flush=True)
 
     if not jobs:
-        print("ℹ️  Немає активних підписок і холодного старту — виходимо.", flush=True)
+        print("ℹ️  Немає активних підписок — виходимо.", flush=True)
         return
 
-    # 3. Показуємо список
     print("\nЗапити:", flush=True)
     for country, city, query in jobs:
-        print(f"  → {country}/{city or '—'}: {query}", flush=True)
+        print(f"  → {country}/{city or '—'}: {query!r}", flush=True)
 
-    # 4. Парсимо
     print(f"\n{'=' * 60}", flush=True)
     total_found = 0
     total_new = 0
@@ -193,7 +153,6 @@ async def main() -> None:
         total_found += found
         total_new += new
 
-    # 5. Підсумок
     print(f"\n{'=' * 60}", flush=True)
     print(f"✅ Знайдено всього: {total_found}", flush=True)
     print(f"✅ Нових збережено: {total_new}", flush=True)

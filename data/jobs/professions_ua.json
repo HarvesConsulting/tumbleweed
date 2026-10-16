@@ -161,7 +161,7 @@
         {"key": "agro_tractor", "label": "Тракторист", "keywords": ["тракторист", "трактор", "tractor"]},
         {"key": "agro_combine", "label": "Комбайнер", "keywords": ["комбайнер", "комбайн", "combine"]},
         {"key": "agro_machine", "label": "Механізатор", "keywords": ["механізатор", "механизатор"]},
-        {"key": "agro_agronom", "label": "Агроном", "keywords": ["агроном", "agronomist"]},
+        {"key": "agro_agronom", "label": "Агроном", "keywords": ["агроном", "agronomist", "овочівник"]},
         {"key": "agro_fermer", "label": "Фермер", "keywords": ["фермер", "ферма", "фермерство", "farmer"]},
         {"key": "agro_animal", "label": "Тваринник", "keywords": ["тваринник", "скотник", "свинар", "птичниця", "доярка"]},
         {"key": "agro_gardener", "label": "Садівник / Городник", "keywords": ["садівник", "городник", "сад", "город", "garden"]},

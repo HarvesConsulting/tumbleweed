@@ -10,11 +10,13 @@ Callback_data формат: "<action>:<value>"
   country:ua        — обрана країна
   city:kyiv         — обране місто
   cat:it            — обрана сфера
-  sub:it_python     — обрана підкатегорія (toggle)
+  sub:it_backend    — обрана підкатегорія (фінальний вибір)
   jobtype:full      — тип зайнятості
   exp:no            — досвід
   skip:<step>       — пропустити крок
   action:<cmd>      — службові команди
+  sub_del:<id>      — видалити підписку
+  sub_toggle:<id>   — увімкнути/вимкнути підписку
 """
 from __future__ import annotations
 
@@ -25,8 +27,8 @@ from typing import Any
 # ───────────────────────────────────────────────────────
 
 BTN_MY_VACANCIES = "📄 Моє резюме"
-BTN_MY_PROFILE = "👤 Мій профіль"
-BTN_CHANGE = "🔍 Знайти роботу"
+BTN_FIND_JOB = "🔍 Знайти роботу"          # NEW: почати новий пошук (підписку)
+BTN_MY_SUBS = "📋 Мої пошуки"              # NEW: список підписок
 BTN_RENT = "🏠 Житло"
 BTN_TOGGLE_ON = "🔔 Сповіщення: УВІМК"
 BTN_TOGGLE_OFF = "🔕 Сповіщення: ВИМК"
@@ -38,8 +40,8 @@ def main_reply_keyboard(enabled: bool) -> dict[str, Any]:
     toggle_label = BTN_TOGGLE_ON if enabled else BTN_TOGGLE_OFF
     return {
         "keyboard": [
-            [{"text": BTN_MY_VACANCIES}, {"text": BTN_MY_PROFILE}],
-            [{"text": BTN_CHANGE}, {"text": BTN_RENT}],
+            [{"text": BTN_MY_VACANCIES}, {"text": BTN_MY_SUBS}],
+            [{"text": BTN_FIND_JOB}, {"text": BTN_RENT}],
             [{"text": toggle_label}, {"text": BTN_HELP}],
         ],
         "resize_keyboard": True,
@@ -157,27 +159,39 @@ def category_keyboard() -> dict[str, Any]:
 
 def subcategory_results_keyboard(
     results: list,
-    selected: set[str],
     category_key: str,
     category_label: str,
+    selected: str = "",
 ) -> dict[str, Any]:
-    """Inline: результати пошуку підкатегорій з toggle ✅/⬜."""
+    """Inline: результати пошуку підкатегорій — ОДНА підкатегорія.
+
+    Args:
+        results: список Subcategory
+        category_key: ключ сфери
+        category_label: людська назва сфери
+        selected: ключ обраної підкатегорії (для візуального ✅)
+    """
     rows: list[list[dict[str, str]]] = []
 
     for sub in results:
-        mark = "✅" if sub.key in selected else "⬜"
-        rows.append([{"text": f"{mark} {sub.label}", "callback_data": f"sub:{sub.key}"}])
+        mark = "✅" if sub.key == selected else "◻️"
+        rows.append([
+            {"text": f"{mark} {sub.label}", "callback_data": f"sub:{sub.key}"},
+        ])
 
-    if selected:
-        rows.append([{"text": f"— Обрано: {len(selected)} —", "callback_data": "noop"}])
-        rows.append([{"text": f"✅ Завершити вибір ({len(selected)})  →", "callback_data": "action:sub_done"}])
-    else:
-        rows.append([{"text": "⏭ Пропустити (будь-яка)", "callback_data": "action:sub_done"}])
-
-    rows.append([{"text": "🔍 Додати ще підкатегорію", "callback_data": "action:search_again"}])
     cat_short = category_label.split(" ", 1)[-1]
-    rows.append([{"text": f"🌍 Будь-яка в {cat_short}", "callback_data": "skip:sub"}])
-    rows.append([{"text": "⬅️ Назад до сфер", "callback_data": "action:back_category"}])
+    rows.append([
+        {"text": f"🌍 Будь-яка в {cat_short}",
+         "callback_data": "skip:sub"},
+    ])
+    rows.append([
+        {"text": "🔍 Новий пошук",
+         "callback_data": "action:search_again"},
+    ])
+    rows.append([
+        {"text": "⬅️ Назад до сфер",
+         "callback_data": "action:back_category"},
+    ])
     return {"inline_keyboard": rows}
 
 
@@ -204,17 +218,20 @@ JOB_TYPES = [
 ]
 
 
-def job_type_keyboard() -> dict[str, Any]:
-    """Inline: тип зайнятості."""
-    rows = [
-        [{"text": label, "callback_data": f"jobtype:{key}"}]
-        for key, label in JOB_TYPES
-    ]
+def job_type_keyboard(selected: list[str] | None = None) -> dict[str, Any]:
+    """Inline: тип зайнятості (мультивибір ✅/⬜ + Далі)."""
+    selected = selected or []
+    rows: list[list[dict[str, str]]] = []
+    for key, label in JOB_TYPES:
+        mark = "✅" if key in selected else "⬜"
+        rows.append([{"text": f"{mark} {label}", "callback_data": f"jobtype:{key}"}])
+    rows.append([{"text": "➡️ Далі", "callback_data": "action:jobtype_done"}])
     rows.append([{"text": "🌍 Будь-який", "callback_data": "skip:jobtype"}])
     return {"inline_keyboard": rows}
 
 
 EXPERIENCE = [
+    ("all", "🌍 Будь-який"),
     ("no", "🌱 Без досвіду"),
     ("1-3", "🌿 1-3 роки"),
     ("3+", "🌳 3+ роки"),
@@ -222,13 +239,54 @@ EXPERIENCE = [
 
 
 def experience_keyboard() -> dict[str, Any]:
-    """Inline: досвід."""
+    """Inline: досвід (один вибір)."""
     rows = [
         [{"text": label, "callback_data": f"exp:{key}"}]
         for key, label in EXPERIENCE
     ]
-    rows.append([{"text": "🌍 Будь-який", "callback_data": "skip:exp"}])
     return {"inline_keyboard": rows}
+
+
+# ───────────────────────────────────────────────────────
+# Inline: Список підписок ("Мої пошуки")
+# ───────────────────────────────────────────────────────
+
+def subscriptions_list_keyboard(subs: list) -> dict[str, Any]:
+    """Inline: список підписок з діями.
+
+    Args:
+        subs: список Subscription
+
+    Returns:
+        Inline-клавіатура. Для кожної підписки:
+          - рядок [🗑 Видалити N] [⏸/▶️ N]
+        В кінці — [➕ Додати ще] (він же початок flow).
+    """
+    rows: list[list[dict[str, str]]] = []
+
+    for i, sub in enumerate(subs, start=1):
+        toggle_label = "⏸ Пауза" if sub.enabled else "▶️ Увімкнути"
+        rows.append([
+            {"text": f"🗑 Видалити {i}", "callback_data": f"sub_del:{sub.id}"},
+            {"text": f"{toggle_label} {i}", "callback_data": f"sub_toggle:{sub.id}"},
+        ])
+
+    rows.append([
+        {"text": "➕ Додати ще", "callback_data": "action:add_sub"},
+    ])
+    return {"inline_keyboard": rows}
+
+
+def subscription_created_keyboard(sub_id: int) -> dict[str, Any]:
+    """Inline: після створення підписки."""
+    return {
+        "inline_keyboard": [
+            [
+                {"text": "📋 Мої пошуки", "callback_data": "action:show_subs"},
+                {"text": "➕ Ще один", "callback_data": "action:add_sub"},
+            ],
+        ]
+    }
 
 
 # ───────────────────────────────────────────────────────

@@ -6,17 +6,13 @@
     country:ua              — обрана країна
     city:kyiv               — обране місто
     cat:it                  — обрана сфера
-    sub:it_python           — toggle підкатегорії
-    jobtype:full            — тип зайнятості
-    exp:no                  — досвід
-    skip:city               — пропустити крок
-    action:enter_city       — службові дії
-    action:back_country
-    action:back_city
-    action:back_category
-    action:search_again
-    action:sub_done
-    action:ignore_vacancy:VACANCY_ID
+    sub:it_backend          — обрана підкатегорія (фінальний вибір, одразу → job_type)
+    jobtype:full            — toggle типу зайнятості (мультивибір)
+    exp:1-3                 — обраний досвід (фінальний, → finalize)
+    skip:city|cat|sub|jobtype|exp — пропустити крок
+    action:...              — службові дії
+    sub_del:<id>            — видалити підписку
+    sub_toggle:<id>         — пауза/увімкнути підписку
 """
 from __future__ import annotations
 
@@ -24,9 +20,12 @@ import logging
 from typing import Any
 
 from tumbleweed.db.queries_jobs import (
-    get_user_profile,
-    mark_sent,
-    upsert_user_profile,
+    Subscription,
+    add_subscription,
+    get_subscription,
+    list_subscriptions,
+    remove_subscription,
+    set_subscription_enabled,
 )
 from tumbleweed.services.city_search import get_city, search_cities
 from tumbleweed.services.subcategory_search import (
@@ -40,8 +39,6 @@ from . import keyboards as kb
 from . import states
 
 log = logging.getLogger(__name__)
-
-MAX_SUBCATEGORIES = 5
 
 
 # ───────────────────────────────────────────────────────
@@ -88,13 +85,17 @@ def _dispatch(
     elif action == "cat":
         _handle_category(args[0], chat_id, message_id, cb_id, ctx)
     elif action == "sub":
-        _handle_subcategory_toggle(args[0], chat_id, message_id, cb_id, ctx)
+        _handle_subcategory(args[0], chat_id, message_id, cb_id, ctx)
     elif action == "jobtype":
-        _handle_job_type(args[0], chat_id, message_id, cb_id, ctx)
+        _handle_job_type_toggle(args[0], chat_id, message_id, cb_id, ctx)
     elif action == "exp":
         _handle_experience(args[0], chat_id, message_id, cb_id, ctx)
     elif action == "skip":
         _handle_skip(args[0], chat_id, message_id, cb_id, ctx)
+    elif action == "sub_del":
+        _handle_sub_del(args[0], chat_id, cb_id, ctx)
+    elif action == "sub_toggle":
+        _handle_sub_toggle(args[0], chat_id, cb_id, ctx)
     elif action == "action":
         _handle_action(args, chat_id, message_id, cb_id, ctx)
     else:
@@ -119,7 +120,6 @@ def _handle_country(
         ctx.notifier.answer_callback(cb_id, "❌")
         return
 
-    # Зберігаємо країну в user_data
     states.set_user_data(chat_id, {"country": country, "cities": []})
     states.set_state(chat_id, states.STATE_CHOOSING_CITY)
 
@@ -155,7 +155,6 @@ def _handle_city(
         ctx.notifier.answer_callback(cb_id, "❌ Місто не знайдено")
         return
 
-    # Оновлюємо user_data
     states.update_user_data(chat_id, cities=[city_slug])
     states.set_state(chat_id, states.STATE_CHOOSING_CATEGORY)
 
@@ -181,13 +180,14 @@ def _handle_category(
     cb_id: str,
     ctx,
 ) -> None:
-    """Вибір сфери → запитати пошук підкатегорій."""
+    """Вибір сфери → запитати пошук підкатегорії."""
     cat_label = get_category_label(cat_key)
 
     states.update_user_data(
         chat_id,
         category=cat_key,
-        selected_subs=set(),
+        selected_sub="",
+        last_results=[],
     )
     states.set_state(chat_id, states.STATE_WAITING_SUBCATEGORY_QUERY)
 
@@ -198,45 +198,71 @@ def _handle_category(
             chat_id,
             message_id,
             f"*{cat_label}*\n\n"
-            f"✏️ Введи слово для пошуку підкатегорії (мін. {MIN_QUERY_LEN} символи).\n"
-            "Наприклад: `трак`, `водій`, `python`, `кух`\n\n"
-            f"Можна обрати до {MAX_SUBCATEGORIES} підкатегорій.",
+            f"✏️ Введи слово для пошуку професії (мін. {MIN_QUERY_LEN} символи).\n"
+            "Наприклад: `трак`, `водій`, `python`, `кух`",
         )
 
 
 # ───────────────────────────────────────────────────────
-# sub:it_python — toggle
+# sub:agro_tractor — фінальний вибір підкатегорії
 # ───────────────────────────────────────────────────────
 
-def _handle_subcategory_toggle(
+def _handle_subcategory(
     sub_key: str,
     chat_id: str,
     message_id: int | None,
     cb_id: str,
     ctx,
 ) -> None:
-    """Toggle підкатегорії ✅/⬜."""
+    """Вибір підкатегорії → одразу перехід до job_type."""
     data = states.get_user_data(chat_id)
-    selected: set = data.get("selected_subs") or set()
-    if not isinstance(selected, set):
-        selected = set(selected)
-
     category = data.get("category", "")
     results = data.get("last_results") or []
 
-    if sub_key in selected:
-        selected.discard(sub_key)
-    else:
-        if len(selected) >= MAX_SUBCATEGORIES:
-            ctx.notifier.answer_callback(
-                cb_id,
-                f"⚠️ Максимум {MAX_SUBCATEGORIES}",
-                show_alert=True,
-            )
-            return
-        selected.add(sub_key)
+    # Знайти label для повідомлення
+    sub_label = sub_key
+    for s in results:
+        if getattr(s, "key", None) == sub_key:
+            sub_label = s.label
+            break
 
-    states.update_user_data(chat_id, selected_subs=selected)
+    states.update_user_data(chat_id, selected_sub=sub_key)
+    states.update_user_data(chat_id, job_types=[], experience="all")
+    states.set_state(chat_id, states.STATE_CHOOSING_JOB_TYPE)
+
+    ctx.notifier.answer_callback(cb_id, f"✅ {sub_label}")
+
+    if message_id:
+        ctx.notifier.edit_message(
+            chat_id,
+            message_id,
+            f"✅ Обрано: *{sub_label}*\n\n"
+            "⏰ *Який тип зайнятості?* (можна кілька)",
+            keyboard=kb.job_type_keyboard(selected=[]),
+        )
+
+
+# ───────────────────────────────────────────────────────
+# jobtype:full — toggle у мультивиборі
+# ───────────────────────────────────────────────────────
+
+def _handle_job_type_toggle(
+    jt: str,
+    chat_id: str,
+    message_id: int | None,
+    cb_id: str,
+    ctx,
+) -> None:
+    """Toggle типу зайнятості (мультивибір)."""
+    data = states.get_user_data(chat_id)
+    selected: list[str] = list(data.get("job_types") or [])
+
+    if jt in selected:
+        selected.remove(jt)
+    else:
+        selected.append(jt)
+
+    states.update_user_data(chat_id, job_types=selected)
 
     ctx.notifier.answer_callback(cb_id)
 
@@ -244,43 +270,12 @@ def _handle_subcategory_toggle(
         ctx.notifier.edit_reply_markup(
             chat_id,
             message_id,
-            kb.subcategory_results_keyboard(
-                results=results,
-                selected=selected,
-                category_key=category,
-                category_label=get_category_label(category),
-            ),
+            kb.job_type_keyboard(selected=selected),
         )
 
 
 # ───────────────────────────────────────────────────────
-# jobtype:full
-# ───────────────────────────────────────────────────────
-
-def _handle_job_type(
-    jt: str,
-    chat_id: str,
-    message_id: int | None,
-    cb_id: str,
-    ctx,
-) -> None:
-    """Тип зайнятості → перейти до досвіду."""
-    states.update_user_data(chat_id, job_types=[jt])
-    states.set_state(chat_id, states.STATE_CHOOSING_EXPERIENCE)
-
-    ctx.notifier.answer_callback(cb_id)
-
-    if message_id:
-        ctx.notifier.edit_message(
-            chat_id,
-            message_id,
-            "🎓 *Який досвід?*",
-            keyboard=kb.experience_keyboard(),
-        )
-
-
-# ───────────────────────────────────────────────────────
-# exp:no — фінал
+# exp:1-3 — фінал
 # ───────────────────────────────────────────────────────
 
 def _handle_experience(
@@ -290,69 +285,97 @@ def _handle_experience(
     cb_id: str,
     ctx,
 ) -> None:
-    """Досвід → зберегти профіль (фінал)."""
+    """Досвід → зберегти підписку (фінал)."""
     states.update_user_data(chat_id, experience=exp)
     ctx.notifier.answer_callback(cb_id)
     _finalize(chat_id, message_id, ctx)
 
 
 def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
-    """Зберігає профіль і показує фінал."""
+    """Створює підписку на основі user_data."""
     data = states.get_user_data(chat_id)
 
     country = data.get("country") or "ua"
     cities = data.get("cities") or []
-    selected = data.get("selected_subs") or set()
-    professions = list(selected) if selected else []
+    city_slug = cities[0] if cities else ""
+    profession_key = data.get("selected_sub") or ""
     job_types = data.get("job_types") or []
     experience = data.get("experience") or "all"
 
+    # Створюємо підписку
     try:
-        upsert_user_profile(
+        sub = add_subscription(
             ctx.client,
             chat_id=chat_id,
             country=country,
-            cities=cities,
-            professions=professions,
+            city_slug=city_slug,
+            profession_key=profession_key,
             job_types=job_types,
             experience=experience,
         )
     except Exception as e:
-        log.exception("Помилка збереження профілю: %s", e)
+        log.exception("add_subscription: %s", e)
         ctx.notifier.send_message(chat_id, f"❌ Помилка: {e}")
+        states.clear_state(chat_id)
+        states.clear_user_data(chat_id)
         return
 
-    # Перечитуємо для канонічного summary
-    from .handlers import _profile_summary_text
+    if not sub:
+        ctx.notifier.send_message(chat_id, "❌ Не вдалось створити пошук.")
+        states.clear_state(chat_id)
+        states.clear_user_data(chat_id)
+        return
 
+    # Читаємо свіжий список для summary
     try:
-        profile = get_user_profile(ctx.client, chat_id)
-        summary = _profile_summary_text(profile) if profile else "✅ Збережено."
+        all_subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
     except Exception:
-        summary = "✅ Збережено."
+        all_subs = [sub]
 
-    # Reply-клавіатура
-    ctx.notifier.send_message(
-        chat_id,
-        "🔍 *Розпочинаю пошук!*\n\n"
-        "Знизу 👇 — кнопки:\n"
-        "📄 *Моє резюме* — створити резюме\n"
-        "👤 *Мій профіль* — налаштування\n"
-        "🔍 *Знайти роботу* — змінити сферу/місто\n"
-        "🏠 *Житло* — RentAlert\n"
-        "🔔 *Сповіщення* — увімк/вимк\n"
-        "❓ *Допомога* — довідка\n\n"
-        "Перші вакансії надійдуть автоматично.",
-        keyboard=kb.main_reply_keyboard(enabled=True),
+    # Формуємо summary
+    from .handlers import _profession_label, _city_label
+    city_name = _city_label(country, city_slug)
+    prof_label = _profession_label(profession_key, country)
+
+    text = (
+        "✅ *Пошук додано!*\n\n"
+        f"🏙 {city_name}\n"
+        f"💼 {prof_label}\n"
+    )
+    if job_types:
+        labels = {"full": "Повна", "part": "Часткова", "remote": "Віддалена"}
+        text += f"⏰ {', '.join(labels.get(j, j) for j in job_types)}\n"
+    if experience and experience != "all":
+        exp_labels = {"no": "Без досвіду", "1-3": "1-3 роки", "3+": "3+ роки"}
+        text += f"🎓 {exp_labels.get(experience, experience)}\n"
+
+    text += (
+        "\n━━━━━━━━━━━━━━━━━━━\n"
+        "🔍 *Що далі?*\n\n"
+        "Я перевіряю нові вакансії *кожні 30 хвилин*.\n\n"
+        "📬 *Перші результати* надійдуть протягом 30 хвилин — "
+        "топ-10 з усіх джерел (OLX, Work.ua, Robota.ua, Pidbir.ua).\n\n"
+        "🔔 *Далі* — тільки нові, миттєво.\n\n"
+        "💡 Можеш закрити Telegram — я напишу сам, коли щось знайду.\n"
+        "━━━━━━━━━━━━━━━━━━━"
     )
 
-    # Фінальний текст (без inline)
     if message_id:
-        ctx.notifier.edit_message(
-            chat_id,
-            message_id,
-            f"✅ *Готово!*\n\n{summary}\n\n🔔 *Сповіщення увімкнено.*",
-        )
+        ctx.notifier.edit_message(chat_id, message_id, text)
+    else:
+        ctx.notifier.send_message(chat_id, text)
+
+    # Reply-клавіатура + inline зі списком
+    ctx.notifier.send_message(
+        chat_id,
+        f"📋 *Всього пошуків: {len(all_subs)}*",
+        keyboard=kb.subscriptions_list_keyboard(all_subs),
+    )
+    ctx.notifier.send_message(
+        chat_id,
+        "⌨️ Меню — знизу 👇",
+        keyboard=kb.main_reply_keyboard(enabled=True),
+    )
 
     states.clear_state(chat_id)
     states.clear_user_data(chat_id)
@@ -384,25 +407,27 @@ def _handle_skip(
             )
 
     elif step == "cat":
-        states.update_user_data(chat_id, professions=[], selected_subs=set())
+        states.update_user_data(chat_id, selected_sub="", category="")
         states.set_state(chat_id, states.STATE_CHOOSING_JOB_TYPE)
         if message_id:
             ctx.notifier.edit_message(
                 chat_id,
                 message_id,
-                "⏰ *Який тип зайнятості?*",
-                keyboard=kb.job_type_keyboard(),
+                "🌍 Будеш отримувати всі вакансії.\n\n"
+                "⏰ *Який тип зайнятості?* (можна кілька)",
+                keyboard=kb.job_type_keyboard(selected=[]),
             )
 
     elif step == "sub":
-        states.update_user_data(chat_id, selected_subs=set())
+        states.update_user_data(chat_id, selected_sub="")
         states.set_state(chat_id, states.STATE_CHOOSING_JOB_TYPE)
         if message_id:
             ctx.notifier.edit_message(
                 chat_id,
                 message_id,
-                "🌍 Будеш отримувати всі вакансії цієї сфери.\n\n⏰ *Який тип зайнятості?*",
-                keyboard=kb.job_type_keyboard(),
+                "🌍 Будеш отримувати всі вакансії цієї сфери.\n\n"
+                "⏰ *Який тип зайнятості?* (можна кілька)",
+                keyboard=kb.job_type_keyboard(selected=[]),
             )
 
     elif step == "jobtype":
@@ -419,6 +444,75 @@ def _handle_skip(
     elif step == "exp":
         states.update_user_data(chat_id, experience="all")
         _finalize(chat_id, message_id, ctx)
+
+
+# ───────────────────────────────────────────────────────
+# sub_del:N / sub_toggle:N
+# ───────────────────────────────────────────────────────
+
+def _handle_sub_del(
+    sub_id_str: str,
+    chat_id: str,
+    cb_id: str,
+    ctx,
+) -> None:
+    """Видалити підписку."""
+    try:
+        sub_id = int(sub_id_str)
+    except ValueError:
+        ctx.notifier.answer_callback(cb_id, "❌")
+        return
+
+    ok = remove_subscription(ctx.client, chat_id, sub_id)
+    if ok:
+        ctx.notifier.answer_callback(cb_id, "🗑 Видалено")
+    else:
+        ctx.notifier.answer_callback(cb_id, "⚠️ Не знайдено")
+
+    # Оновлюємо список
+    _refresh_subs_list(chat_id, ctx)
+
+
+def _handle_sub_toggle(
+    sub_id_str: str,
+    chat_id: str,
+    cb_id: str,
+    ctx,
+) -> None:
+    """Пауза/увімкнення підписки."""
+    try:
+        sub_id = int(sub_id_str)
+    except ValueError:
+        ctx.notifier.answer_callback(cb_id, "❌")
+        return
+
+    sub = get_subscription(ctx.client, sub_id)
+    if not sub or sub.chat_id != chat_id:
+        ctx.notifier.answer_callback(cb_id, "⚠️ Не знайдено")
+        return
+
+    new_state = not sub.enabled
+    set_subscription_enabled(ctx.client, sub_id, new_state)
+    ctx.notifier.answer_callback(cb_id, "▶️ Увімкнено" if new_state else "⏸ Пауза")
+
+    _refresh_subs_list(chat_id, ctx)
+
+
+def _refresh_subs_list(chat_id: str, ctx) -> None:
+    """Перемальовує список підписок."""
+    try:
+        subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
+    except Exception as e:
+        log.warning("list_subscriptions: %s", e)
+        return
+
+    from .handlers import _subscriptions_summary_text
+    text = _subscriptions_summary_text(subs)
+    keyboard = kb.subscriptions_list_keyboard(subs) if subs else None
+
+    # Надсилаємо нове повідомлення (бо в inline edit-reply-markup
+    # не змінює текст — треба перемалювати повідомлення)
+    ctx.notifier.send_message(chat_id, text, keyboard=keyboard)
 
 
 # ───────────────────────────────────────────────────────
@@ -441,7 +535,6 @@ def _handle_action(
     ctx.notifier.answer_callback(cb_id)
 
     if action == "enter_city":
-        # Перейти у стан очікування міста
         states.set_state(chat_id, states.STATE_WAITING_CITY_QUERY)
         if message_id:
             data = states.get_user_data(chat_id)
@@ -478,7 +571,7 @@ def _handle_action(
             )
 
     elif action == "back_category":
-        states.update_user_data(chat_id, selected_subs=set())
+        states.update_user_data(chat_id, selected_sub="", last_results=[])
         states.set_state(chat_id, states.STATE_CHOOSING_CATEGORY)
         if message_id:
             ctx.notifier.edit_message(
@@ -501,36 +594,32 @@ def _handle_action(
                 f"✏️ Введи нове слово для пошуку (мін. {MIN_QUERY_LEN} символи).",
             )
 
-    elif action == "sub_done":
-        # Завершити вибір підкатегорій
-        data = states.get_user_data(chat_id)
-        selected: set = data.get("selected_subs") or set()
-        states.update_user_data(chat_id, professions=list(selected) if selected else [])
-        states.set_state(chat_id, states.STATE_CHOOSING_JOB_TYPE)
-
+    elif action == "jobtype_done":
+        # Завершити вибір job_types → перейти до досвіду
+        states.set_state(chat_id, states.STATE_CHOOSING_EXPERIENCE)
         if message_id:
-            if selected:
-                labels = []
-                category = data.get("category", "")
-                for sk in selected:
-                    sub = get_subcategory(category, sk)
-                    labels.append(f"✅ {sub.label}" if sub else f"✅ {sk}")
-                text = "Обрано:\n" + "\n".join(labels) + "\n\n⏰ *Який тип зайнятості?*"
-            else:
-                text = "🌍 Будеш отримувати всі вакансії цієї сфери.\n\n⏰ *Який тип зайнятості?*"
-
             ctx.notifier.edit_message(
                 chat_id,
                 message_id,
-                text,
-                keyboard=kb.job_type_keyboard(),
+                "🎓 *Який досвід?*",
+                keyboard=kb.experience_keyboard(),
             )
+
+    elif action == "add_sub":
+        # Почати flow нової підписки (з reply-кнопки)
+        from .handlers import on_btn_find_job
+        on_btn_find_job(chat_id, ctx)
+
+    elif action == "show_subs":
+        from .handlers import on_btn_my_subs
+        on_btn_my_subs(chat_id, ctx)
 
     elif action == "ignore_vacancy":
         # args: ["ignore_vacancy", vacancy_id]
         if len(args) >= 2:
             vacancy_id = args[1]
             try:
+                from tumbleweed.db.queries_jobs import mark_sent
                 mark_sent(ctx.client, chat_id, vacancy_id)
                 ctx.notifier.answer_callback(cb_id, "🚫 Ігноровано")
             except Exception as e:
@@ -538,7 +627,7 @@ def _handle_action(
 
 
 # ───────────────────────────────────────────────────────
-# FSM: обробка тексту міста (викликається з dispatcher)
+# FSM: обробка тексту
 # ───────────────────────────────────────────────────────
 
 def handle_city_text(chat_id: str, text: str, ctx) -> None:
@@ -590,15 +679,14 @@ def handle_subcategory_text(chat_id: str, text: str, ctx) -> None:
         )
         return
 
-    selected = data.get("selected_subs") or set()
     ctx.notifier.send_message(
         chat_id,
         f"🔍 За запитом *{text}* знайдено:\n\n"
-        f"Клікни, щоб обрати (✅) або зняти (⬜). Максимум {MAX_SUBCATEGORIES}.",
+        "Клікни професію, щоб обрати її для цього пошуку.",
         keyboard=kb.subcategory_results_keyboard(
             results=results,
-            selected=selected,
             category_key=category,
             category_label=cat_label,
+            selected="",
         ),
     )
