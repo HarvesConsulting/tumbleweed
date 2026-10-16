@@ -134,9 +134,8 @@ class OlxJobParser(JobParser):
                         all_vacancies.append(v)
                         new_on_page += 1
 
-                print(
-                    f"  📄 offset={offset}: отримано {len(batch)}, "
-                    f"нових {new_on_page} (всього: {len(all_vacancies)})"
+                print(f"  📄 offset={offset}: отримано {len(batch)}, "
+                      f"унікальних {new_on_page} (всього: {len(all_vacancies)})"
                 )
 
                 if len(all_vacancies) >= total_wanted:
@@ -289,13 +288,7 @@ class OlxJobParser(JobParser):
             photo = photos[0].get("link")
 
         # --- локація ---
-        location = item.get("location") or {}
-
-        # ── DEBUG (тимчасово!) ──
-        import json as _json
-        print(f"    🔍 DEBUG '{title[:40]}':")
-        print(f"       location = {_json.dumps(location, ensure_ascii=False)}")
-        # ── /DEBUG ──
+        location = item.get("location") or {}        
 
         city_obj = location.get("city") or {}
         region_obj = location.get("region") or {}
