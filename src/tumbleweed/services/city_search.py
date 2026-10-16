@@ -85,9 +85,10 @@ def _load_cities(country: str) -> list[City]:
                 continue
             seen_slugs.add(slug)
 
-            # olx_id з refs.olx_ua
+            # Витягуємо olx_id залежно від країни
             refs = item.get("refs") or {}
-            olx_id = refs.get("olx_ua") if isinstance(refs, dict) else None
+            olx_key = f"olx_{country}"
+            olx_id = refs.get(olx_key) if isinstance(refs, dict) else None
 
             # workua_id (якщо є у JSON)
             workua_id = item.get("workua_id")

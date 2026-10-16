@@ -22,10 +22,10 @@ log = logging.getLogger(__name__)
 # Мапа підкатегорій: "agro_tractor" → ["тракторист", "трактор", "tractor"]
 # ───────────────────────────────────────────────────────
 
-@lru_cache(maxsize=1)
-def _load_subcategories() -> dict[str, list[str]]:
-    """Повертає мапу: sub_key → [keywords]."""
-    path = DATA_DIR / "jobs" / "professions_ua.json"
+@lru_cache(maxsize=3)
+def _load_subcategories(country: str = "ua") -> dict[str, list[str]]:
+    """Повертає мапу: sub_key → [keywords] для країни."""
+    path = DATA_DIR / "jobs" / f"professions_{country}.json"
     if not path.exists():
         log.warning("Не знайдено %s", path)
         return {}
@@ -37,7 +37,7 @@ def _load_subcategories() -> dict[str, list[str]]:
             key = sub.get("key")
             if key:
                 result[key] = [k.lower() for k in sub.get("keywords", [])]
-    log.info("Завантажено %d підкатегорій", len(result))
+    log.info("Завантажено %d підкатегорій для %s", len(result), country)
     return result
 
 
@@ -45,15 +45,20 @@ def _load_subcategories() -> dict[str, list[str]]:
 # Фільтри
 # ───────────────────────────────────────────────────────
 
-def _title_matches_professions(title: str, professions: list[str]) -> bool:
+def _title_matches_professions(
+    title: str,
+    professions: list[str],
+    country: str = "ua",
+) -> bool:
     """Чи містить title keywords обраних підкатегорій?
 
     professions містить ключі типу "agro_tractor" або "custom:водій".
+    country — для вибору professions_{country}.json.
     """
     if not professions:
         return True   # без фільтра — усі підходять
 
-    subs_map = _load_subcategories()
+    subs_map = _load_subcategories(country)
     title_lower = title.lower()
 
     for prof in professions:
@@ -64,7 +69,7 @@ def _title_matches_professions(title: str, professions: list[str]) -> bool:
                 return True
             continue
 
-        # Підкатегорія з professions_ua.json
+        # Підкатегорія з professions_{country}.json
         for kw in subs_map.get(prof, []):
             if kw in title_lower:
                 return True
@@ -124,7 +129,9 @@ def find_vacancies_for_profile(
 
     for v in candidates:
         # Фільтри
-        if not _title_matches_professions(v["title"], profile.professions):
+        if not _title_matches_professions(
+            v["title"], profile.professions, profile.country
+        ):
             continue
         if not _job_type_matches(v.get("job_type"), profile.job_types):
             continue

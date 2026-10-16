@@ -1,0 +1,154 @@
+{
+  "categories": [
+    {
+      "key": "it",
+      "label": "💻 IT / Programowanie",
+      "subcategories": [
+        {
+          "key": "it_programista",
+          "label": "Programista",
+          "keywords": ["programista", "developer", "python", "java", "programowanie"]
+        },
+        {
+          "key": "it_tester",
+          "label": "Tester / QA",
+          "keywords": ["tester", "qa", "testowanie"]
+        },
+        {
+          "key": "it_devops",
+          "label": "DevOps / Sysadmin",
+          "keywords": ["devops", "sysadmin", "administrator"]
+        }
+      ]
+    },
+    {
+      "key": "bud",
+      "label": "🏗 Budownictwo",
+      "subcategories": [
+        {
+          "key": "bud_budowlaniec",
+          "label": "Budowlaniec",
+          "keywords": ["budowlaniec", "budowa", "murarz"]
+        },
+        {
+          "key": "bud_elektryk",
+          "label": "Elektryk",
+          "keywords": ["elektryk", "elektryka"]
+        },
+        {
+          "key": "bud_hydraulik",
+          "label": "Hydraulik",
+          "keywords": ["hydraulik", "wodno-kanalizacyjne"]
+        }
+      ]
+    },
+    {
+      "key": "driver",
+      "label": "🚗 Kierowca / Kurier",
+      "subcategories": [
+        {
+          "key": "driver_kierowca",
+          "label": "Kierowca",
+          "keywords": ["kierowca", "kierowca ce", "kierowca c"]
+        },
+        {
+          "key": "driver_kurier",
+          "label": "Kurier / Dostawca",
+          "keywords": ["kurier", "dostawca", "dostawa"]
+        }
+      ]
+    },
+    {
+      "key": "food",
+      "label": "🍳 Kuchnia / Restauracja",
+      "subcategories": [
+        {
+          "key": "food_kucharz",
+          "label": "Kucharz",
+          "keywords": ["kucharz", "kuchnia", "szef kuchni"]
+        },
+        {
+          "key": "food_kelner",
+          "label": "Kelner / Barman",
+          "keywords": ["kelner", "barman", "kelnerka"]
+        },
+        {
+          "key": "food_pomoc",
+          "label": "Pomoc kuchenna",
+          "keywords": ["pomoc kuchenna", "zmywak"]
+        }
+      ]
+    },
+    {
+      "key": "sales",
+      "label": "🛒 Sprzedaż / Obsługa",
+      "subcategories": [
+        {
+          "key": "sales_sprzedawca",
+          "label": "Sprzedawca / Kasjer",
+          "keywords": ["sprzedawca", "kasjer", "obsługa klienta"]
+        }
+      ]
+    },
+    {
+      "key": "factory",
+      "label": "🏭 Produkcja / Magazyn",
+      "subcategories": [
+        {
+          "key": "factory_magazynier",
+          "label": "Magazynier",
+          "keywords": ["magazynier", "magazyn", "pakowacz"]
+        },
+        {
+          "key": "factory_operator",
+          "label": "Operator produkcji",
+          "keywords": ["operator", "produkcja", "pracownik produkcji"]
+        }
+      ]
+    },
+    {
+      "key": "clean",
+      "label": "🧹 Sprzątanie",
+      "subcategories": [
+        {
+          "key": "clean_sprzatanie",
+          "label": "Sprzątanie",
+          "keywords": ["sprzątanie", "sprzątaczka", "utrzymanie czystości"]
+        }
+      ]
+    },
+    {
+      "key": "care",
+      "label": "👶 Opieka",
+      "subcategories": [
+        {
+          "key": "care_opiekun",
+          "label": "Opiekun / Niania",
+          "keywords": ["opiekun", "niania", "opiekunka", "opieka"]
+        }
+      ]
+    },
+    {
+      "key": "agro",
+      "label": "🌾 Rolnictwo",
+      "subcategories": [
+        {
+          "key": "agro_rolnik",
+          "label": "Rolnik / Ogrodnik",
+          "keywords": ["rolnik", "ogrodnik", "rolnictwo"]
+        }
+      ]
+    },
+    {
+      "key": "med",
+      "label": "🏥 Medycyna",
+      "subcategories": [
+        {
+          "key": "med_pielegniarka",
+          "label": "Pielęgniarka",
+          "keywords": ["pielęgniarka", "pielęgniarz"]
+        }
+      ]
+    }
+  ]
+}
