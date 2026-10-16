@@ -24,7 +24,7 @@ from typing import Any
 # Reply-клавіатура (знизу екрана) — ГОЛОВНЕ МЕНЮ
 # ───────────────────────────────────────────────────────
 
-BTN_MY_VACANCIES = "📊 Мої вакансії"
+BTN_MY_VACANCIES = "📄 Моє резюме"
 BTN_MY_PROFILE = "👤 Мій профіль"
 BTN_CHANGE = "🔍 Знайти роботу"
 BTN_RENT = "🏠 Житло"
