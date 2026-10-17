@@ -1,0 +1,546 @@
+{
+  "grudziadz": {
+    "id": 6653,
+    "name": "Grudziądz"
+  },
+  "katowice": {
+    "id": 7691,
+    "name": "Katowice"
+  },
+  "bolszewo": {
+    "id": 78561,
+    "name": "Bolszewo"
+  },
+  "radom": {
+    "id": 14673,
+    "name": "Radom"
+  },
+  "tomaszow-mazowiecki": {
+    "id": 56509,
+    "name": "Tomaszów Mazowiecki"
+  },
+  "zakopane": {
+    "id": 59535,
+    "name": "Zakopane"
+  },
+  "warszawa": {
+    "id": 17871,
+    "name": "Warszawa"
+  },
+  "krotoszyn": {
+    "id": 66605,
+    "name": "Krotoszyn"
+  },
+  "slubice": {
+    "id": 106407,
+    "name": "Słubice"
+  },
+  "legnica": {
+    "id": 9775,
+    "name": "Legnica"
+  },
+  "pruszkow": {
+    "id": 14389,
+    "name": "Pruszków"
+  },
+  "poznan": {
+    "id": 13983,
+    "name": "Poznań"
+  },
+  "chrzanow": {
+    "id": 4437,
+    "name": "Chrzanów"
+  },
+  "lomianki": {
+    "id": 67763,
+    "name": "Łomianki"
+  },
+  "wroclaw": {
+    "id": 19701,
+    "name": "Wrocław"
+  },
+  "rawa-mazowiecka": {
+    "id": 93993,
+    "name": "Rawa Mazowiecka"
+  },
+  "sosnowiec": {
+    "id": 16027,
+    "name": "Sosnowiec"
+  },
+  "brodnica": {
+    "id": 21803,
+    "name": "Brodnica"
+  },
+  "lodz": {
+    "id": 10609,
+    "name": "Łódź"
+  },
+  "czestochowa": {
+    "id": 4765,
+    "name": "Częstochowa"
+  },
+  "chynow": {
+    "id": 22705,
+    "name": "Chynów"
+  },
+  "ozarow-mazowiecki": {
+    "id": 13243,
+    "name": "Ożarów Mazowiecki"
+  },
+  "krakow": {
+    "id": 8959,
+    "name": "Kraków"
+  },
+  "rzeszow": {
+    "id": 15241,
+    "name": "Rzeszów"
+  },
+  "goliszow": {
+    "id": 81181,
+    "name": "Goliszów"
+  },
+  "polaniec": {
+    "id": 93127,
+    "name": "Połaniec"
+  },
+  "zegrze": {
+    "id": 129577,
+    "name": "Zegrze"
+  },
+  "kielce": {
+    "id": 7971,
+    "name": "Kielce"
+  },
+  "gdynia": {
+    "id": 5849,
+    "name": "Gdynia"
+  },
+  "wyszkow": {
+    "id": 20257,
+    "name": "Wyszków"
+  },
+  "olsztyn": {
+    "id": 12673,
+    "name": "Olsztyn"
+  },
+  "pleszew": {
+    "id": 13627,
+    "name": "Pleszew"
+  },
+  "chylice": {
+    "id": 61689,
+    "name": "Chylice"
+  },
+  "sulejowek": {
+    "id": 107141,
+    "name": "Sulejówek"
+  },
+  "bystrzyca-klodzka": {
+    "id": 25263,
+    "name": "Bystrzyca Kłodzka"
+  },
+  "warka": {
+    "id": 17867,
+    "name": "Warka"
+  },
+  "nowy-sacz": {
+    "id": 33369,
+    "name": "Nowy Sącz"
+  },
+  "gdansk": {
+    "id": 5659,
+    "name": "Gdańsk"
+  },
+  "modlniczka": {
+    "id": 32645,
+    "name": "Modlniczka"
+  },
+  "szczecin": {
+    "id": 16705,
+    "name": "Szczecin"
+  },
+  "tychy": {
+    "id": 17705,
+    "name": "Tychy"
+  },
+  "barcin": {
+    "id": 561,
+    "name": "Barcin"
+  },
+  "nowa-wola": {
+    "id": 33159,
+    "name": "Nowa Wola"
+  },
+  "wierzchowiska-pierwsze": {
+    "id": 40041,
+    "name": "Wierzchowiska Pierwsze"
+  },
+  "dabrowka-wielka": {
+    "id": 80057,
+    "name": "Dąbrówka Wielka"
+  },
+  "kowalewo-pomorskie": {
+    "id": 47905,
+    "name": "Kowalewo Pomorskie"
+  },
+  "konin-zaganski": {
+    "id": 8529,
+    "name": "Konin Żagański"
+  },
+  "pila": {
+    "id": 52515,
+    "name": "Piła"
+  },
+  "koluszki": {
+    "id": 83403,
+    "name": "Koluszki"
+  },
+  "sadlogoszcz": {
+    "id": 94595,
+    "name": "Sadłogoszcz"
+  },
+  "kalisz": {
+    "id": 7509,
+    "name": "Kalisz"
+  },
+  "winnica": {
+    "id": 40143,
+    "name": "Winnica"
+  },
+  "nowy-targ": {
+    "id": 12505,
+    "name": "Nowy Targ"
+  },
+  "rumia": {
+    "id": 105703,
+    "name": "Rumia"
+  },
+  "mikolow": {
+    "id": 11631,
+    "name": "Mikołów"
+  },
+  "pultusk": {
+    "id": 14597,
+    "name": "Pułtusk"
+  },
+  "lubon": {
+    "id": 67521,
+    "name": "Luboń"
+  },
+  "linia": {
+    "id": 30985,
+    "name": "Linia"
+  },
+  "ostrowiec-swietokrzyski": {
+    "id": 13159,
+    "name": "Ostrowiec Świętokrzyski"
+  },
+  "zielona-gora": {
+    "id": 20787,
+    "name": "Zielona Góra"
+  },
+  "gorlowko": {
+    "id": 45349,
+    "name": "Gorłówko"
+  },
+  "wisznia-mala": {
+    "id": 146569,
+    "name": "Wisznia Mała"
+  },
+  "mszczonow": {
+    "id": 69071,
+    "name": "Mszczonów"
+  },
+  "lozienica": {
+    "id": 119465,
+    "name": "Łozienica"
+  },
+  "golcza": {
+    "id": 114999,
+    "name": "Gołcza"
+  },
+  "odolanow": {
+    "id": 103065,
+    "name": "Odolanów"
+  },
+  "sieradz": {
+    "id": 15533,
+    "name": "Sieradz"
+  },
+  "ciecierzyn": {
+    "id": 22733,
+    "name": "Ciecierzyn"
+  },
+  "ostrzeszow": {
+    "id": 122107,
+    "name": "Ostrzeszów"
+  },
+  "plonsk": {
+    "id": 92951,
+    "name": "Płońsk"
+  },
+  "kobylka": {
+    "id": 65569,
+    "name": "Kobyłka"
+  },
+  "steszew": {
+    "id": 106929,
+    "name": "Stęszew"
+  },
+  "zabrze": {
+    "id": 20327,
+    "name": "Zabrze"
+  },
+  "losice": {
+    "id": 89937,
+    "name": "Łosice"
+  },
+  "kolbiel": {
+    "id": 117291,
+    "name": "Kołbiel"
+  },
+  "rybnik": {
+    "id": 15167,
+    "name": "Rybnik"
+  },
+  "mazancowice": {
+    "id": 138627,
+    "name": "Mazańcowice"
+  },
+  "opole": {
+    "id": 12885,
+    "name": "Opole"
+  },
+  "jelcz-laskowice": {
+    "id": 64467,
+    "name": "Jelcz-Laskowice"
+  },
+  "szczyrk": {
+    "id": 37945,
+    "name": "Szczyrk"
+  },
+  "trzcinica": {
+    "id": 126527,
+    "name": "Trzcinica"
+  },
+  "bielsko-biala": {
+    "id": 3231,
+    "name": "Bielsko-Biała"
+  },
+  "wieliczka": {
+    "id": 128097,
+    "name": "Wieliczka"
+  },
+  "zdunska-wola": {
+    "id": 41415,
+    "name": "Zduńska Wola"
+  },
+  "gostyn": {
+    "id": 27385,
+    "name": "Gostyń"
+  },
+  "piaseczno": {
+    "id": 52381,
+    "name": "Piaseczno"
+  },
+  "przytocznica": {
+    "id": 105137,
+    "name": "Przytocznica"
+  },
+  "rzuchow": {
+    "id": 54405,
+    "name": "Rzuchów"
+  },
+  "slupca": {
+    "id": 15815,
+    "name": "Słupca"
+  },
+  "myslin": {
+    "id": 120905,
+    "name": "Myślin"
+  },
+  "janki": {
+    "id": 7039,
+    "name": "Janki"
+  },
+  "lazy": {
+    "id": 119311,
+    "name": "Łazy"
+  },
+  "wieruszow": {
+    "id": 58273,
+    "name": "Wieruszów"
+  },
+  "elblag": {
+    "id": 5453,
+    "name": "Elbląg"
+  },
+  "baranowo": {
+    "id": 553,
+    "name": "Baranowo"
+  },
+  "jozefow": {
+    "id": 7381,
+    "name": "Józefów"
+  },
+  "zielonka": {
+    "id": 129737,
+    "name": "Zielonka"
+  },
+  "albertow": {
+    "id": 1421,
+    "name": "Albertów"
+  },
+  "gorzow-wielkopolski": {
+    "id": 6331,
+    "name": "Gorzów Wielkopolski"
+  },
+  "dzierzoniow": {
+    "id": 26541,
+    "name": "Dzierżoniów"
+  },
+  "bialystok": {
+    "id": 1079,
+    "name": "Białystok"
+  },
+  "zory": {
+    "id": 21141,
+    "name": "Żory"
+  },
+  "police": {
+    "id": 13857,
+    "name": "Police"
+  },
+  "jelenia-gora": {
+    "id": 7257,
+    "name": "Jelenia Góra"
+  },
+  "goleniow": {
+    "id": 63433,
+    "name": "Goleniów"
+  },
+  "milanowek": {
+    "id": 90951,
+    "name": "Milanówek"
+  },
+  "stary-majdan": {
+    "id": 16295,
+    "name": "Stary Majdan"
+  },
+  "gliwice": {
+    "id": 6091,
+    "name": "Gliwice"
+  },
+  "slupsk": {
+    "id": 15833,
+    "name": "Słupsk"
+  },
+  "sroda-slaska": {
+    "id": 17225,
+    "name": "Środa Śląska"
+  },
+  "torun": {
+    "id": 38395,
+    "name": "Toruń"
+  },
+  "koronowo": {
+    "id": 83513,
+    "name": "Koronowo"
+  },
+  "wola-mrokowska": {
+    "id": 98703,
+    "name": "Wola Mrokowska"
+  },
+  "swidno": {
+    "id": 17243,
+    "name": "Świdno"
+  },
+  "olszyna": {
+    "id": 92159,
+    "name": "Olszyna"
+  },
+  "tarnow": {
+    "id": 17369,
+    "name": "Tarnów"
+  },
+  "buszewo": {
+    "id": 22149,
+    "name": "Buszewo"
+  },
+  "leszno": {
+    "id": 9827,
+    "name": "Leszno"
+  },
+  "lowicz": {
+    "id": 10603,
+    "name": "Łowicz"
+  },
+  "miechow": {
+    "id": 11533,
+    "name": "Miechów"
+  },
+  "walbrzych": {
+    "id": 17829,
+    "name": "Wałbrzych"
+  },
+  "starachowice": {
+    "id": 16157,
+    "name": "Starachowice"
+  },
+  "plock": {
+    "id": 13663,
+    "name": "Płock"
+  },
+  "aleksandrow-lodzki": {
+    "id": 53,
+    "name": "Aleksandrów Łódzki"
+  },
+  "dabrowa-gornicza": {
+    "id": 4905,
+    "name": "Dąbrowa Górnicza"
+  },
+  "rawicz": {
+    "id": 14787,
+    "name": "Rawicz"
+  },
+  "lebork": {
+    "id": 9879,
+    "name": "Lębork"
+  },
+  "chorzow": {
+    "id": 22611,
+    "name": "Chorzów"
+  },
+  "bytom": {
+    "id": 4197,
+    "name": "Bytom"
+  },
+  "busko-zdroj": {
+    "id": 3997,
+    "name": "Busko-Zdrój"
+  },
+  "dobrowo": {
+    "id": 26261,
+    "name": "Dobrowo"
+  },
+  "bydgoszcz": {
+    "id": 4019,
+    "name": "Bydgoszcz"
+  },
+  "bielany-wroclawskie": {
+    "id": 21325,
+    "name": "Bielany Wrocławskie"
+  },
+  "boryszew-stefanowka": {
+    "id": 42621,
+    "name": "Boryszew-Stefanówka"
+  },
+  "gora": {
+    "id": 6391,
+    "name": "Góra"
+  },
+  "radzyn-podlaski": {
+    "id": 14721,
+    "name": "Radzyń Podlaski"
+  }
+}

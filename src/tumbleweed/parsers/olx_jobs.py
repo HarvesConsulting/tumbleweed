@@ -17,12 +17,37 @@ from curl_cffi import requests as cffi_requests
 
 from .base_job import JobParser, Vacancy
 
+import json
+
+from tumbleweed.config import DATA_DIR
+
+
+def _load_pl_cities() -> dict[str, int]:
+    """Завантажити city_ids для Польщі з data/jobs/pl_cities.json.
+
+    Формат: {"warszawa": {"id": 17871, "name": "Warszawa"}, ...}
+    Повертає: {"warszawa": 17871, ...}
+    """
+    path = DATA_DIR / "jobs" / "pl_cities.json"
+    if not path.exists():
+        print(f"⚠️ pl_cities.json не знайдено: {path}")
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        return {slug: info["id"] for slug, info in raw.items() if "id" in info}
+    except Exception as e:
+        print(f"⚠️ Помилка завантаження pl_cities.json: {e}")
+        return {}
+
+
+_PL_CITIES = _load_pl_cities()
+
 
 @dataclass(frozen=True)
 class OlxCountryConfig:
     country: str
     domain: str
-    category_ids: list[int]         # список категорій (для UA — багато)
+    category_ids: list[int]
     city_ids: dict[str, int]
 
 
@@ -54,14 +79,8 @@ OLX_COUNTRIES: dict[str, OlxCountryConfig] = {
     "pl": OlxCountryConfig(
         country="pl",
         domain="olx.pl",
-        category_ids=[4],                   # у PL «Робота» — одна категорія
-        city_ids={
-            "warszawa": 17871,
-            "krakow": 8959,
-            "wroclaw": 9462,
-            "gdansk": 2853,
-            "poznan": 10011,
-        },
+        category_ids=[4],
+        city_ids=_PL_CITIES,
     ),
     "ro": OlxCountryConfig(
         country="ro",
@@ -215,12 +234,13 @@ class OlxJobParser(JobParser):
                     city = get_city(self.country, city_slug)
                     if city and city.olx_id:
                         city_id = city.olx_id
-                        # print прибрано — шумить при обході категорій
                 except Exception as e:
                     print(f"  ⚠️ {self.display_name}: fallback lookup failed: {e}")
 
             if city_id:
                 params["city_id"] = city_id
+            else:
+                print(f"  ⚠️ {self.display_name}: невідомий city_slug={city_slug!r} → пошук по всій країні")
 
         await asyncio.sleep(random.uniform(2.0, 4.0))
 
