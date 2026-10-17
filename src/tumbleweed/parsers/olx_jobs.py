@@ -60,6 +60,21 @@ def _load_ro_cities() -> dict[str, int]:
 _RO_CITIES = _load_ro_cities()
 
 
+def _load_pt_cities() -> dict[str, int]:
+    """Завантажити city_ids для Португалії."""
+    path = DATA_DIR / "jobs" / "pt_cities.json"
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        return {slug: info["id"] for slug, info in raw.items() if "id" in info}
+    except Exception:
+        return {}
+
+
+_PT_CITIES = _load_pt_cities()
+
+
 @dataclass(frozen=True)
 class OlxCountryConfig:
     country: str
@@ -104,6 +119,13 @@ OLX_COUNTRIES: dict[str, OlxCountryConfig] = {
         domain="olx.ro",
         category_ids=[4],
         city_ids=_RO_CITIES,    
+    ),
+    # У OLX_COUNTRIES:
+    "pt": OlxCountryConfig(
+        country="pt",
+        domain="olx.pt",
+        category_ids=[190],   # ← Emprego
+        city_ids=_PT_CITIES,
     ),
 }
 

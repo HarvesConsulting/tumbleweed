@@ -85,14 +85,17 @@ class TelegramClient:
         title_display = title
         title_original = None
 
-        if country in ("pl", "ro") and title:
+        if country in ("pl", "ro", "pt") and title:
             try:
                 if country == "pl":
                     from tumbleweed.services.translate import translate_pl_to_uk
                     title_uk = translate_pl_to_uk(title)
-                else:
+                elif country == "ro":
                     from tumbleweed.services.translate import translate_ro_to_uk
                     title_uk = translate_ro_to_uk(title)
+                else:  # pt
+                    from tumbleweed.services.translate import translate_pt_to_uk
+                    title_uk = translate_pt_to_uk(title)
 
                 if title_uk and title_uk != title:
                     title_display = title_uk
@@ -104,7 +107,7 @@ class TelegramClient:
                 )
 
         # Прапор країни
-        FLAGS = {"ua": "🇺🇦", "pl": "🇵🇱", "ro": "🇷🇴"}
+        FLAGS = {"ua": "🇺🇦", "pl": "🇵🇱", "ro": "🇷🇴", "pt": "🇵🇹"}
         flag = FLAGS.get(country, "")
 
         lines = [f"💼 *{title_display}*"]

@@ -70,6 +70,7 @@ def _translate_with_mymemory(text: str, source: str, target: str) -> str | None:
             "uk": "uk-UA",
             "en": "en-GB",
             "ru": "ru-RU",
+            "pt": "pt-PT",
         }
         src = LANG_CODES.get(source, f"{source}-{source.upper()}")
         tgt = LANG_CODES.get(target, f"{target}-{target.upper()}")
@@ -138,6 +139,11 @@ def translate_pl_to_uk(text: str) -> str:
 def translate_ro_to_uk(text: str) -> str:
     """RO → UA."""
     return _translate(text, source="ro", target="uk")
+
+
+def translate_pt_to_uk(text: str) -> str:
+    """PT → UA."""
+    return _translate(text, source="pt", target="uk")
 
 
 def translate_batch(texts: list[str], source: str = "pl") -> list[str]:

@@ -1,0 +1,442 @@
+{
+  "odivelas": {
+    "id": 11550720,
+    "name": "Odivelas"
+  },
+  "avintes": {
+    "id": 13648898,
+    "name": "Avintes"
+  },
+  "pontinha-e-famoes": {
+    "id": 11550728,
+    "name": "Pontinha E Famões"
+  },
+  "rio-tinto": {
+    "id": 13635592,
+    "name": "Rio Tinto"
+  },
+  "sintra-(santa-maria-e-sao-miguel-sao-martinho-e-sao-pedro-de-penaferrim)": {
+    "id": 11545628,
+    "name": "Sintra (Santa Maria E São Miguel, São Martinho E São Pedro De Penaferrim)"
+  },
+  "avenidas-novas": {
+    "id": 11540537,
+    "name": "Avenidas Novas"
+  },
+  "oeiras-e-sao-juliao-da-barra-paco-de-arcos-e-caxias": {
+    "id": 11544590,
+    "name": "Oeiras E São Julião Da Barra, Paço De Arcos E Caxias"
+  },
+  "mafamude-e-vilar-do-paraiso": {
+    "id": 13648923,
+    "name": "Mafamude E Vilar Do Paraíso"
+  },
+  "castelo-(sesimbra)": {
+    "id": 15739905,
+    "name": "Castelo (Sesimbra)"
+  },
+  "belem": {
+    "id": 11540538,
+    "name": "Belém"
+  },
+  "sao-mamede-de-infesta-e-senhora-da-hora": {
+    "id": 13639694,
+    "name": "São Mamede De Infesta E Senhora Da Hora"
+  },
+  "cascais-e-estoril": {
+    "id": 11539464,
+    "name": "Cascais E Estoril"
+  },
+  "agualva-e-mira-sintra": {
+    "id": 11545622,
+    "name": "Agualva E Mira-Sintra"
+  },
+  "vila-do-bispo-e-raposeira": {
+    "id": 8403974,
+    "name": "Vila Do Bispo E Raposeira"
+  },
+  "sao-clemente": {
+    "id": 8396808,
+    "name": "São Clemente"
+  },
+  "lordelo-do-ouro-e-massarelos": {
+    "id": 13643794,
+    "name": "Lordelo Do Ouro E Massarelos"
+  },
+  "moscavide-e-portela": {
+    "id": 11541530,
+    "name": "Moscavide E Portela"
+  },
+  "carnaxide-e-queijas": {
+    "id": 11544589,
+    "name": "Carnaxide E Queijas"
+  },
+  "oliveira-do-hospital-e-sao-paio-de-gramacos": {
+    "id": 6302744,
+    "name": "Oliveira Do Hospital E São Paio De Gramaços"
+  },
+  "matosinhos-e-leca-da-palmeira": {
+    "id": 13639692,
+    "name": "Matosinhos E Leça Da Palmeira"
+  },
+  "gondomar-(sao-cosme)-valbom-e-jovim": {
+    "id": 13635599,
+    "name": "Gondomar (São Cosme), Valbom E Jovim"
+  },
+  "paranhos": {
+    "id": 13643786,
+    "name": "Paranhos"
+  },
+  "massama-e-monte-abraao": {
+    "id": 11545625,
+    "name": "Massamá E Monte Abraão"
+  },
+  "sao-domingos-de-benfica": {
+    "id": 11540519,
+    "name": "São Domingos de Benfica"
+  },
+  "nazare": {
+    "id": 10497024,
+    "name": "Nazaré"
+  },
+  "canidelo": {
+    "id": 13648900,
+    "name": "Canidelo"
+  },
+  "sandim-olival-lever-e-crestuma": {
+    "id": 13648925,
+    "name": "Sandim, Olival, Lever E Crestuma"
+  },
+  "foz-do-sousa-e-covelo": {
+    "id": 13635598,
+    "name": "Foz Do Sousa E Covelo"
+  },
+  "vila-nova-de-famalicao-e-calendario": {
+    "id": 3158076,
+    "name": "Vila Nova De Famalicão E Calendário"
+  },
+  "povoa-de-santa-iria-e-forte-da-casa": {
+    "id": 11548687,
+    "name": "Póvoa De Santa Iria E Forte Da Casa"
+  },
+  "carcavelos-e-parede": {
+    "id": 11539463,
+    "name": "Carcavelos E Parede"
+  },
+  "ramalde": {
+    "id": 13643787,
+    "name": "Ramalde"
+  },
+  "lourinha-e-atalaia": {
+    "id": 11542540,
+    "name": "Lourinhã E Atalaia"
+  },
+  "queluz-e-belas": {
+    "id": 11545626,
+    "name": "Queluz E Belas"
+  },
+  "loures": {
+    "id": 11541504,
+    "name": "Loures"
+  },
+  "sacavem-e-prior-velho": {
+    "id": 11541531,
+    "name": "Sacavém E Prior Velho"
+  },
+  "viseu": {
+    "id": 18897920,
+    "name": "Viseu"
+  },
+  "algueirao-mem-martins": {
+    "id": 11545602,
+    "name": "Algueirão-Mem Martins"
+  },
+  "cacem-e-sao-marcos": {
+    "id": 11545624,
+    "name": "Cacém E São Marcos"
+  },
+  "bonfim": {
+    "id": 13643778,
+    "name": "Bonfim"
+  },
+  "benfica": {
+    "id": 11540488,
+    "name": "Benfica"
+  },
+  "custoias-leca-do-balio-e-guifoes": {
+    "id": 13639691,
+    "name": "Custóias, Leça Do Balio E Guifões"
+  },
+  "baixa-da-banheira-e-vale-da-amoreira": {
+    "id": 15734791,
+    "name": "Baixa Da Banheira E Vale Da Amoreira"
+  },
+  "camarate-unhos-e-apelacao": {
+    "id": 11541535,
+    "name": "Camarate, Unhos E Apelação"
+  },
+  "ribafria-e-pereiro-de-palhacana": {
+    "id": 11535381,
+    "name": "Ribafria E Pereiro De Palhacana"
+  },
+  "igreja-nova-e-cheleiros": {
+    "id": 11543572,
+    "name": "Igreja Nova E Cheleiros"
+  },
+  "encosta-do-sol": {
+    "id": 51381251,
+    "name": "Encosta do Sol"
+  },
+  "faro-(se-e-sao-pedro)": {
+    "id": 8393736,
+    "name": "Faro (Sé E São Pedro)"
+  },
+  "alvalade": {
+    "id": 11540534,
+    "name": "Alvalade"
+  },
+  "falagueira-venda-nova": {
+    "id": 11549711,
+    "name": "Falagueira-Venda Nova"
+  },
+  "vilar-de-andorinho": {
+    "id": 13648919,
+    "name": "Vilar de Andorinho"
+  },
+  "penha-de-franca": {
+    "id": 11540543,
+    "name": "Penha De França"
+  },
+  "santo-antonio": {
+    "id": 11540546,
+    "name": "Santo António"
+  },
+  "cedofeita-santo-ildefonso-se-miragaia-sao-nicolau-e-vitoria": {
+    "id": 13643793,
+    "name": "Cedofeita, Santo Ildefonso, Sé, Miragaia, São Nicolau E Vitória"
+  },
+  "guia": {
+    "id": 8389634,
+    "name": "Guia"
+  },
+  "silvares": {
+    "id": 3153988,
+    "name": "Silvares"
+  },
+  "rebordoes": {
+    "id": 13645840,
+    "name": "Rebordões"
+  },
+  "almada-cova-da-piedade-pragal-e-cacilhas": {
+    "id": 15731724,
+    "name": "Almada, Cova Da Piedade, Pragal E Cacilhas"
+  },
+  "arroios": {
+    "id": 11540536,
+    "name": "Arroios"
+  },
+  "alges-linda-a-velha-e-cruz-quebrada-dafundo": {
+    "id": 11544588,
+    "name": "Algés, Linda-A-Velha E Cruz Quebrada-Dafundo"
+  },
+  "olivais": {
+    "id": 11540513,
+    "name": "Olivais"
+  },
+  "marrazes-e-barosa": {
+    "id": 10495010,
+    "name": "Marrazes E Barosa"
+  },
+  "marvila": {
+    "id": 11540501,
+    "name": "Marvila"
+  },
+  "misericordia": {
+    "id": 11540541,
+    "name": "Misericórdia"
+  },
+  "oliveira-do-douro": {
+    "id": 13648908,
+    "name": "Oliveira do Douro"
+  },
+  "casal-de-cambra": {
+    "id": 11545615,
+    "name": "Casal de Cambra"
+  },
+  "aldoar-foz-do-douro-e-nevogilde": {
+    "id": 13643792,
+    "name": "Aldoar, Foz Do Douro E Nevogilde"
+  },
+  "almancil": {
+    "id": 8396801,
+    "name": "Almancil"
+  },
+  "lumiar": {
+    "id": 11540498,
+    "name": "Lumiar"
+  },
+  "castelo-da-maia": {
+    "id": 13637650,
+    "name": "Castêlo Da Maia"
+  },
+  "parque-das-nacoes": {
+    "id": 11540542,
+    "name": "Parque das Nações"
+  },
+  "corroios": {
+    "id": 15738885,
+    "name": "Corroios"
+  },
+  "setubal-(sao-juliao-nossa-senhora-da-anunciada-e-santa-maria-da-graca)": {
+    "id": 15740938,
+    "name": "Setúbal (São Julião, Nossa Senhora Da Anunciada E Santa Maria Da Graça)"
+  },
+  "areeiro": {
+    "id": 11540535,
+    "name": "Areeiro"
+  },
+  "mindelo": {
+    "id": 13647888,
+    "name": "Mindelo"
+  },
+  "carnide": {
+    "id": 11540491,
+    "name": "Carnide"
+  },
+  "santo-tirso-couto-(santa-cristina-e-sao-miguel)-e-burgaes": {
+    "id": 13645861,
+    "name": "Santo Tirso, Couto (Santa Cristina E São Miguel) E Burgães"
+  },
+  "costa-da-caparica": {
+    "id": 15731715,
+    "name": "Costa Da Caparica"
+  },
+  "águas-livres": {
+    "id": 51381255,
+    "name": "Águas Livres"
+  },
+  "santa-iria-de-azoia-sao-joao-da-talha-e-bobadela": {
+    "id": 11541532,
+    "name": "Santa Iria De Azoia, São João Da Talha E Bobadela"
+  },
+  "moita": {
+    "id": 15734784,
+    "name": "Moita"
+  },
+  "sao-vicente": {
+    "id": 11540547,
+    "name": "São Vicente"
+  },
+  "leiria-pousos-barreira-e-cortes": {
+    "id": 10495009,
+    "name": "Leiria, Pousos, Barreira E Cortes"
+  },
+  "alcantara": {
+    "id": 11540482,
+    "name": "Alcântara"
+  },
+  "saldanha": {
+    "id": 4202511,
+    "name": "Saldanha"
+  },
+  "campanha": {
+    "id": 13643779,
+    "name": "Campanhã"
+  },
+  "alcabideche": {
+    "id": 11539457,
+    "name": "Alcabideche"
+  },
+  "malveira-e-sao-miguel-de-alcainca": {
+    "id": 11543573,
+    "name": "Malveira E São Miguel De Alcainça"
+  },
+  "quinta-do-anjo": {
+    "id": 15736836,
+    "name": "Quinta do Anjo"
+  },
+  "campo-de-ourique": {
+    "id": 11540539,
+    "name": "Campo De Ourique"
+  },
+  "gaeiras": {
+    "id": 10498056,
+    "name": "Gaeiras"
+  },
+  "canelas": {
+    "id": 13648899,
+    "name": "Canelas"
+  },
+  "moreira": {
+    "id": 13637641,
+    "name": "Moreira"
+  },
+  "cidade-da-maia": {
+    "id": 13637651,
+    "name": "Cidade Da Maia"
+  },
+  "alfena": {
+    "id": 13646849,
+    "name": "Alfena"
+  },
+  "monte-gordo": {
+    "id": 8404995,
+    "name": "Monte Gordo"
+  },
+  "amora": {
+    "id": 15738882,
+    "name": "Amora"
+  },
+  "rio-de-mouro": {
+    "id": 11545608,
+    "name": "Rio de Mouro"
+  },
+  "ermesinde": {
+    "id": 13646851,
+    "name": "Ermesinde"
+  },
+  "aljubarrota": {
+    "id": 10486804,
+    "name": "Aljubarrota"
+  },
+  "sao-domingos-de-rana": {
+    "id": 11539462,
+    "name": "São Domingos de Rana"
+  },
+  "seixal-arrentela-e-aldeia-de-paio-pires": {
+    "id": 15738887,
+    "name": "Seixal, Arrentela E Aldeia De Paio Pires"
+  },
+  "carregado-e-cadafais": {
+    "id": 11535380,
+    "name": "Carregado E Cadafais"
+  },
+  "albufeira-e-olhos-de-água": {
+    "id": 8389638,
+    "name": "Albufeira E Olhos De Água"
+  },
+  "alhandra-sao-joao-dos-montes-e-calhandriz": {
+    "id": 11548684,
+    "name": "Alhandra, São João Dos Montes E Calhandriz"
+  },
+  "estrela": {
+    "id": 11540540,
+    "name": "Estrela"
+  },
+  "lousa": {
+    "id": 11541512,
+    "name": "Lousa"
+  },
+  "louredo": {
+    "id": 3157001,
+    "name": "Louredo"
+  },
+  "santa-marinha-e-sao-pedro-da-afurada": {
+    "id": 13648926,
+    "name": "Santa Marinha E São Pedro Da Afurada"
+  },
+  "coruche-fajarda-e-erra": {
+    "id": 14689289,
+    "name": "Coruche, Fajarda E Erra"
+  }
+}
