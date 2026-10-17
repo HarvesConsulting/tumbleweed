@@ -64,40 +64,33 @@ def _title_matches_professions(
     title: str,
     professions: list[str],
     country: str = "ua",
-) -> bool:
-    """Чи містить title keywords обраних підкатегорій?
-
-    professions містить ключі типу "agro_tractor" або "custom:водій".
-    country — для вибору professions_{country}.json.
-    """
+) -> tuple[bool, float]:
+    """Повертає (чи підходить, найкращий score)."""
     if not professions:
-        return True   # без фільтра — усі підходять
+        return True, 0.0
 
     if not title or not title.strip():
-        return False
+        return False, 0.0
 
     subs_map = _load_subcategories(country)
+    best = 0.0
 
     for prof in professions:
-        # Кастомна професія: "custom:водій"
         if prof.startswith("custom:"):
             custom = prof[len("custom:"):].strip()
             if custom and has_word(title, custom):
-                return True
+                best = max(best, 1.0)
             continue
 
-        # Підкатегорія з professions_{country}.json
         sub = subs_map.get(prof)
         if not sub:
             continue
-
         for kw in sub.keywords:
-            # has_word нормалізує обидві сторони всередині,
-            # тому додатково normalize(title) не потрібен
             if has_word(title, kw):
-                return True
+                w = 1.0 if len(kw) >= 5 else 0.7
+                best = max(best, w)
 
-    return False
+    return best > 0, best
 
 
 def _job_type_matches(vacancy_job_type: str | None, wanted: list[str]) -> bool:
@@ -152,9 +145,10 @@ def find_vacancies_for_profile(
 
     for v in candidates:
         # 1) Фільтр по професії (title)
-        if not _title_matches_professions(
+        ok, _ = _title_matches_professions(
             v["title"], profile.professions, profile.country
-        ):
+        )
+        if not ok:
             continue
 
         # 2) Фільтр по типу зайнятості

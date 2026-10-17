@@ -299,7 +299,15 @@ def _handle_experience(
 
 
 def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
-    """Створює підписку на основі user_data."""
+    """Створює підписку + миттєвий baseline з фідбеком."""
+    from tumbleweed.db.queries_jobs import (
+        list_recent_vacancies,
+        mark_baseline_done,
+        mark_sent,
+    )
+    from tumbleweed.services.matcher import _title_matches_professions
+    from .handlers import _profession_label, _city_label
+
     data = states.get_user_data(chat_id)
 
     country = data.get("country") or "ua"
@@ -309,7 +317,7 @@ def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
     job_types = data.get("job_types") or []
     experience = data.get("experience") or "all"
 
-    # Створюємо підписку
+    # 1. Створюємо підписку
     try:
         sub = add_subscription(
             ctx.client,
@@ -333,46 +341,97 @@ def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
         states.clear_user_data(chat_id)
         return
 
-    # Читаємо свіжий список для summary
+    # 2. Читаємо свіжий список для summary
     try:
         all_subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
     except Exception:
         all_subs = [sub]
 
-    # Формуємо summary
-    from .handlers import _profession_label, _city_label
+    # 3. Формуємо summary
     city_name = _city_label(country, city_slug)
     prof_label = _profession_label(profession_key, country)
 
-    text = (
+    base_text = (
         "✅ *Пошук додано!*\n\n"
         f"🏙 {city_name}\n"
         f"💼 {prof_label}\n"
     )
     if job_types:
         labels = {"full": "Повна", "part": "Часткова", "remote": "Віддалена"}
-        text += f"⏰ {', '.join(labels.get(j, j) for j in job_types)}\n"
+        base_text += f"⏰ {', '.join(labels.get(j, j) for j in job_types)}\n"
     if experience and experience != "all":
         exp_labels = {"no": "Без досвіду", "1-3": "1-3 роки", "3+": "3+ роки"}
-        text += f"🎓 {exp_labels.get(experience, experience)}\n"
+        base_text += f"🎓 {exp_labels.get(experience, experience)}\n"
 
-    text += (
-        "\n━━━━━━━━━━━━━━━━━━━\n"
-        "🔍 *Що далі?*\n\n"
-        "Я перевіряю нові вакансії *кожні 30 хвилин*.\n\n"
-        "📬 *Перші результати* надійдуть протягом 30 хвилин — "
-        "топ-10 з усіх джерел (OLX, Work.ua, Robota.ua, Pidbir.ua).\n\n"
-        "🔔 *Далі* — тільки нові, миттєво.\n\n"
-        "💡 Можеш закрити Telegram — я напишу сам, коли щось знайду.\n"
-        "━━━━━━━━━━━━━━━━━━━"
-    )
+    # 4. Перевіряємо БД: чи є вакансії за 7 днів?
+    try:
+        recent = list_recent_vacancies(
+            ctx.client,
+            country=country,
+            city_slugs=[city_slug] if city_slug else [],
+            since_hours=24 * 7,
+            limit=500,
+        )
+    except Exception as e:
+        log.warning("_finalize: list_recent_vacancies failed: %s", e)
+        recent = []
 
-    if message_id:
-        ctx.notifier.edit_message(chat_id, message_id, text)
+    matching = []
+    for v in recent:
+        ok, score = _title_matches_professions(
+            v["title"], [profession_key] if profession_key else [], country
+        )
+        if ok:
+            matching.append((score, v))
+
+    # Сортуємо: score DESC, потім за датою
+    matching.sort(key=lambda x: (-x[0], x[1].get("created_at") or ""))
+    top5 = [v for _, v in matching[:5]]
+
+    # 5. Надсилаємо топ-5 АБО фідбек "немає вакансій"
+    if top5:
+        base_text += f"\n📬 *Ось топ-{len(top5)} вакансій зараз:*"
+
+        if message_id:
+            ctx.notifier.edit_message(chat_id, message_id, base_text)
+        else:
+            ctx.notifier.send_message(chat_id, base_text)
+
+        # Надсилаємо вакансії
+        sent_count = 0
+        for v in top5:
+            ok = ctx.notifier.send_vacancy(chat_id, v)
+            if ok:
+                mark_sent(ctx.client, chat_id, v["id"])
+                sent_count += 1
+
+        mark_baseline_done(ctx.client, sub.id)
+
+        if sent_count > 0:
+            ctx.notifier.send_message(
+                chat_id,
+                "🔔 *Далі я надсилатиму тільки нові вакансії* — миттєво, "
+                "як тільки вони з'являться.\n\n"
+                "💡 Можеш закрити Telegram — я напишу сам.",
+            )
     else:
-        ctx.notifier.send_message(chat_id, text)
+        base_text += (
+            "\n😔 *На жаль, зараз на сайтах немає вакансій за твоїм запитом.*\n\n"
+            "🔔 Я повідомлю, як тільки з'являться — просто чекай.\n\n"
+            "💡 Поки що можеш:\n"
+            "  • Обрати іншу професію\n"
+            "  • Обрати «Будь-яку» в цій сфері\n"
+            "  • Обрати інше місто"
+        )
 
-    # Reply-клавіатура + inline зі списком
+        if message_id:
+            ctx.notifier.edit_message(chat_id, message_id, base_text)
+        else:
+            ctx.notifier.send_message(chat_id, base_text)
+
+        mark_baseline_done(ctx.client, sub.id)
+
+    # 6. Показуємо список підписок
     ctx.notifier.send_message(
         chat_id,
         f"📋 *Всього пошуків: {len(all_subs)}*",
