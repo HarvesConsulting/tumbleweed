@@ -1,17 +1,16 @@
 """Диспетчер Telegram update'ів (sync, без PTB Application).
 
 Приймає update (dict від Telegram), викликає потрібний обробник.
-Замінює PTB Application + ConversationHandler.
 
 Точка входу: handle_update(update_dict, ctx).
 
 Логіка:
   1. callback_query → callbacks.handle_callback
   2. message:
-     a. Якщо це reply-кнопка → скинути стан і обробити
-     b. Якщо FSM-стан очікування тексту → обробити текст
-     c. Якщо команда (/start, ...) → handlers.handle_command
-     d. Невідомий текст → handlers.send_main_menu
+     a. Reply-кнопка → скинути стан і обробити
+     b. Команда (/start, /help, ...) → скинути FSM і обробити
+     c. FSM-стан очікування тексту → обробити текст
+     d. Невідомий текст → головне меню
 """
 from __future__ import annotations
 
@@ -79,7 +78,14 @@ def handle_update(update_dict: dict[str, Any], ctx: BotContext) -> None:
         handlers.handle_reply_button(chat_id, text, ctx)
         return
 
-    # 2b. FSM: чи користувач у стані очікування тексту?
+    # 2b. Команда — ПЕРЕД FSM (щоб /start працював з будь-якого стану)
+    if text.startswith("/"):
+        states.clear_state(chat_id)
+        states.clear_user_data(chat_id)
+        handlers.handle_command(chat_id, text, ctx)
+        return
+
+    # 2c. FSM: чи користувач у стані очікування тексту?
     state = states.get_state(chat_id)
     if state is not None:
         if state == states.STATE_WAITING_CITY_QUERY:
@@ -92,11 +98,6 @@ def handle_update(update_dict: dict[str, Any], ctx: BotContext) -> None:
             handlers.handle_feedback(chat_id, text, ctx)
             return
         # Інші стани — просто ігноруємо текст (чекаємо кліку по кнопці)
-
-    # 2c. Команда
-    if text.startswith("/"):
-        handlers.handle_command(chat_id, text, ctx)
-        return
 
     # 2d. Невідомий текст → головне меню
     handlers.send_main_menu(chat_id, ctx)
