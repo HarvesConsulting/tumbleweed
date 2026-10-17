@@ -1,78 +1,58 @@
-"""Парсер вакансій OLX (UA, PL, RO).
+"""Парсер вакансій OLX (UA, PL, RO, PT).
 
 Використовує внутрішній API olx.{domain}/api/v1/offers/.
 Кожна країна має СПИСОК category_id (бо OLX.ua розбиває «Роботу»
-на ~50 підкатегорій; OLX.pl/ro має одну категорію 4).
+на ~50 підкатегорій; OLX.pl/ro/pt має одну категорію).
 
-category_id для OLX.ua перевірено 2026-10-13: діапазон 1800–1850,
-плюс 6 (кур'єри) і 7 (вантажники).
+Підтримка міст: для UA/PL/RO — city_id, для PT — region_id (Lisboa, Porto).
 """
 from __future__ import annotations
 
 import asyncio
+import json
 import random
 from dataclasses import dataclass
 
 from curl_cffi import requests as cffi_requests
 
-from .base_job import JobParser, Vacancy
-
-import json
-
 from tumbleweed.config import DATA_DIR
 
+from .base_job import JobParser, Vacancy
 
-def _load_pl_cities() -> dict[str, int]:
-    """Завантажити city_ids для Польщі з data/jobs/pl_cities.json.
 
-    Формат: {"warszawa": {"id": 17871, "name": "Warszawa"}, ...}
-    Повертає: {"warszawa": 17871, ...}
+# ───────────────────────────────────────────────────────
+# Завантаження city_ids з data/cities/{country}.json
+# ───────────────────────────────────────────────────────
+
+def _load_city_refs(country: str) -> dict[str, int]:
+    """Завантажити city_ids з data/cities/{country}.json.
+
+    Формат: {"cities": [{"slug": "kyiv", "refs": {"olx_ua": 268}}, ...]}
     """
-    path = DATA_DIR / "jobs" / "pl_cities.json"
+    path = DATA_DIR / "cities" / f"{country}.json"
     if not path.exists():
-        print(f"⚠️ pl_cities.json не знайдено: {path}")
         return {}
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
-        return {slug: info["id"] for slug, info in raw.items() if "id" in info}
+        items = raw.get("cities", [])
+        result = {}
+        for item in items:
+            slug = item.get("slug")
+            refs = item.get("refs") or {}
+            olx_id = refs.get(f"olx_{country}")
+            if slug and olx_id:
+                result[slug] = olx_id
+        return result
     except Exception as e:
-        print(f"⚠️ Помилка завантаження pl_cities.json: {e}")
+        print(f"⚠️ Помилка завантаження міст для {country}: {e}")
         return {}
 
 
-_PL_CITIES = _load_pl_cities()
-
-
-def _load_ro_cities() -> dict[str, int]:
-    """Завантажити city_ids для Румунії з data/jobs/ro_cities.json."""
-    path = DATA_DIR / "jobs" / "ro_cities.json"
-    if not path.exists():
-        print(f"⚠️ ro_cities.json не знайдено: {path}")
-        return {}
-    try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-        return {slug: info["id"] for slug, info in raw.items() if "id" in info}
-    except Exception as e:
-        print(f"⚠️ Помилка завантаження ro_cities.json: {e}")
-        return {}
-
-
-_RO_CITIES = _load_ro_cities()
-
-
-def _load_pt_cities() -> dict[str, int]:
-    """Завантажити city_ids для Португалії."""
-    path = DATA_DIR / "jobs" / "pt_cities.json"
-    if not path.exists():
-        return {}
-    try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-        return {slug: info["id"] for slug, info in raw.items() if "id" in info}
-    except Exception:
-        return {}
-
-
-_PT_CITIES = _load_pt_cities()
+# Ініціалізуємо ДО створення OLX_COUNTRIES
+_UA_CITIES = _load_city_refs("ua")
+_PL_CITIES = _load_city_refs("pl")
+_RO_CITIES = _load_city_refs("ro")
+_PT_CITIES = _load_city_refs("pt")
 
 
 @dataclass(frozen=True)
@@ -81,11 +61,13 @@ class OlxCountryConfig:
     domain: str
     category_ids: list[int]
     city_ids: dict[str, int]
+    # Для країн, де OLX API використовує region_id замість city_id (PT)
+    region_ids: dict[str, int] | None = None
 
 
 # ~50 підкатегорій «Роботи» OLX.ua
 UA_JOB_CATEGORIES = [
-    6, 7,                                   # кур'єри, вантажники
+    6, 7,  # кур'єри, вантажники
     1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1809,
     1810, 1811, 1812, 1813, 1814, 1815, 1816, 1817, 1818, 1819,
     1820, 1821, 1822, 1823, 1824, 1825, 1826, 1827, 1828, 1829,
@@ -94,13 +76,19 @@ UA_JOB_CATEGORIES = [
     1850,
 ]
 
+# Для PT: region_id (Лісабон=11, Порту=13)
+_PT_REGIONS = {
+    "lisboa": 11,
+    "porto": 13,
+}
+
 
 OLX_COUNTRIES: dict[str, OlxCountryConfig] = {
     "ua": OlxCountryConfig(
         country="ua",
         domain="olx.ua",
         category_ids=UA_JOB_CATEGORIES,
-        city_ids={
+        city_ids=_UA_CITIES or {
             "kyiv": 268,
             "lviv": 273,
             "odesa": 271,
@@ -118,14 +106,14 @@ OLX_COUNTRIES: dict[str, OlxCountryConfig] = {
         country="ro",
         domain="olx.ro",
         category_ids=[4],
-        city_ids=_RO_CITIES,    
+        city_ids=_RO_CITIES,
     ),
-    # У OLX_COUNTRIES:
     "pt": OlxCountryConfig(
         country="pt",
         domain="olx.pt",
-        category_ids=[190],   # ← Emprego
+        category_ids=[190],   # Emprego
         city_ids=_PT_CITIES,
+        region_ids=_PT_REGIONS,
     ),
 }
 
@@ -152,7 +140,6 @@ class OlxJobParser(JobParser):
     ) -> list[Vacancy]:
         """Якщо є query — швидкий шлях (один запит).
         Якщо немає — обхід усіх категорій."""
-
         if query:
             # ── Швидкий шлях з пагінацією ────────────────────────
             print(f"  → {self.display_name} (query={query!r}, з пагінацією)")
@@ -191,14 +178,12 @@ class OlxJobParser(JobParser):
                         new_on_page += 1
 
                 print(f"  📄 offset={offset}: отримано {len(batch)}, "
-                      f"унікальних {new_on_page} (всього: {len(all_vacancies)})"
-                )
+                      f"унікальних {new_on_page} (всього: {len(all_vacancies)})")
 
                 if len(all_vacancies) >= total_wanted:
                     break
 
                 if len(batch) < PAGE_SIZE:
-                    # неповна сторінка — далі не йдемо
                     break
 
                 offset += PAGE_SIZE
@@ -265,7 +250,12 @@ class OlxJobParser(JobParser):
             elif city_slug in self.cfg.city_ids:
                 city_id = self.cfg.city_ids[city_slug]
 
-            if city_id is None:
+            # Гілка 3: region_id (для PT — Lisboa, Porto)
+            if city_id is None and self.cfg.region_ids and city_slug in self.cfg.region_ids:
+                params["region_id"] = self.cfg.region_ids[city_slug]
+
+            # Гілка 4: fallback через city_search
+            if city_id is None and "region_id" not in params:
                 try:
                     from ..services.city_search import get_city
                     city = get_city(self.country, city_slug)
@@ -276,7 +266,7 @@ class OlxJobParser(JobParser):
 
             if city_id:
                 params["city_id"] = city_id
-            else:
+            elif "region_id" not in params:
                 print(f"  ⚠️ {self.display_name}: невідомий city_slug={city_slug!r} → пошук по всій країні")
 
         await asyncio.sleep(random.uniform(2.0, 4.0))
@@ -341,13 +331,10 @@ class OlxJobParser(JobParser):
             photo = photos[0].get("link")
 
         # --- локація ---
-        location = item.get("location") or {}        
+        location = item.get("location") or {}
 
         city_obj = location.get("city") or {}
-        region_obj = location.get("region") or {}
         real_city_name = (city_obj.get("name") or "").strip()
-        real_city_id = city_obj.get("id")
-        real_region_name = (region_obj.get("name") or "").strip()
 
         return Vacancy(
             id=Vacancy.make_id(self.source_key, raw_id),

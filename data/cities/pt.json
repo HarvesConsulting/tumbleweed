@@ -37,7 +37,7 @@
       "region": "Lisboa",
       "priority": true,
       "refs": {
-        "olx_pt": null
+        "olx_pt": 11
       }
     },
     {
@@ -57,7 +57,7 @@
       "region": "Porto",
       "priority": true,
       "refs": {
-        "olx_pt": null
+        "olx_pt": 13
       }
     },
     {
