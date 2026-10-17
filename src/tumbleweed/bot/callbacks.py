@@ -115,7 +115,12 @@ def _handle_country(
     ctx,
 ) -> None:
     """Вибір країни → показати міста."""
-    labels = {"ua": "🇺🇦 Україна", "pl": "🇵🇱 Польща", "ro": "🇷🇴 Румунія"}
+    labels = {
+        "ua": "🇺🇦 Україна",
+        "pl": "🇵🇱 Польща",
+        "ro": "🇷🇴 Румунія",
+        "pt": "🇵🇹 Португалія",
+    }
     if country not in labels:
         ctx.notifier.answer_callback(cb_id, "❌")
         return
