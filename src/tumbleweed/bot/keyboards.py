@@ -84,15 +84,12 @@ def country_keyboard() -> dict[str, Any]:
 # ───────────────────────────────────────────────────────
 
 def city_keyboard(country: str) -> dict[str, Any]:
-    """Inline: топ-6 міст + «Ввести місто» + «Будь-яке» + «Назад»."""
     from tumbleweed.services.city_search import popular_cities
-
     cities = popular_cities(country, limit=6)
-    rows: list[list[dict[str, str]]] = []
-
+    rows = []
     for i in range(0, len(cities), 2):
         row = [
-            {"text": c.name, "callback_data": f"city:{c.slug}"}
+            {"text": c.name_uk or c.name, "callback_data": f"city:{c.slug}"}
             for c in cities[i : i + 2]
         ]
         rows.append(row)
@@ -107,7 +104,7 @@ def city_results_keyboard(results: list, query: str) -> dict[str, Any]:
     """Inline: результати пошуку міста."""
     rows: list[list[dict[str, str]]] = []
     for city in results:
-        label = city.name
+        label = city.name_uk or city.name   # ← name_uk якщо є
         if city.region:
             label += f" ({city.region})"
         rows.append([{"text": label, "callback_data": f"city:{city.slug}"}])

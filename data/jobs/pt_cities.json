@@ -1,442 +1,552 @@
 {
   "odivelas": {
     "id": 11550720,
-    "name": "Odivelas"
+    "name": "Odivelas",
+    "name_uk": "Одівелас"
   },
   "avintes": {
     "id": 13648898,
-    "name": "Avintes"
+    "name": "Avintes",
+    "name_uk": "Авінтес"
   },
   "pontinha-e-famoes": {
     "id": 11550728,
-    "name": "Pontinha E Famões"
+    "name": "Pontinha E Famões",
+    "name_uk": "Pontinha E Famões"
   },
   "rio-tinto": {
     "id": 13635592,
-    "name": "Rio Tinto"
+    "name": "Rio Tinto",
+    "name_uk": "Ріо Тінто"
   },
   "sintra-(santa-maria-e-sao-miguel-sao-martinho-e-sao-pedro-de-penaferrim)": {
     "id": 11545628,
-    "name": "Sintra (Santa Maria E São Miguel, São Martinho E São Pedro De Penaferrim)"
+    "name": "Sintra (Santa Maria E São Miguel, São Martinho E São Pedro De Penaferrim)",
+    "name_uk": "Сінтра (Санта-Марія і Сан-Мігель, Сан-Мартіну і Сан-Педру-де-Пенаферрім)"
   },
   "avenidas-novas": {
     "id": 11540537,
-    "name": "Avenidas Novas"
+    "name": "Avenidas Novas",
+    "name_uk": "Avenidas Novas"
   },
   "oeiras-e-sao-juliao-da-barra-paco-de-arcos-e-caxias": {
     "id": 11544590,
-    "name": "Oeiras E São Julião Da Barra, Paço De Arcos E Caxias"
+    "name": "Oeiras E São Julião Da Barra, Paço De Arcos E Caxias",
+    "name_uk": "Oeiras And São Julião Da Barra, Paço De Arcos And Caxias"
   },
   "mafamude-e-vilar-do-paraiso": {
     "id": 13648923,
-    "name": "Mafamude E Vilar Do Paraíso"
+    "name": "Mafamude E Vilar Do Paraíso",
+    "name_uk": "Мафамуде і Вілар-ду-Парайсу"
   },
   "castelo-(sesimbra)": {
     "id": 15739905,
-    "name": "Castelo (Sesimbra)"
+    "name": "Castelo (Sesimbra)",
+    "name_uk": "Castelo (Sesimbra)"
   },
   "belem": {
     "id": 11540538,
-    "name": "Belém"
+    "name": "Belém",
+    "name_uk": "Белен"
   },
   "sao-mamede-de-infesta-e-senhora-da-hora": {
     "id": 13639694,
-    "name": "São Mamede De Infesta E Senhora Da Hora"
+    "name": "São Mamede De Infesta E Senhora Da Hora",
+    "name_uk": "Сан-Мамеде-де-Інфеста і Сеньйора-да-Хора"
   },
   "cascais-e-estoril": {
     "id": 11539464,
-    "name": "Cascais E Estoril"
+    "name": "Cascais E Estoril",
+    "name_uk": "Кашкайш і Ешторіл"
   },
   "agualva-e-mira-sintra": {
     "id": 11545622,
-    "name": "Agualva E Mira-Sintra"
+    "name": "Agualva E Mira-Sintra",
+    "name_uk": "Агуальва і Міра-Сінтра"
   },
   "vila-do-bispo-e-raposeira": {
     "id": 8403974,
-    "name": "Vila Do Bispo E Raposeira"
+    "name": "Vila Do Bispo E Raposeira",
+    "name_uk": "Віла-ду-Бішпу і Рапосейра"
   },
   "sao-clemente": {
     "id": 8396808,
-    "name": "São Clemente"
+    "name": "São Clemente",
+    "name_uk": "Сан-Клементе"
   },
   "lordelo-do-ouro-e-massarelos": {
     "id": 13643794,
-    "name": "Lordelo Do Ouro E Massarelos"
+    "name": "Lordelo Do Ouro E Massarelos",
+    "name_uk": "Lordello Of Gold And Massarelos"
   },
   "moscavide-e-portela": {
     "id": 11541530,
-    "name": "Moscavide E Portela"
+    "name": "Moscavide E Portela",
+    "name_uk": "Москавід і Портела"
   },
   "carnaxide-e-queijas": {
     "id": 11544589,
-    "name": "Carnaxide E Queijas"
+    "name": "Carnaxide E Queijas",
+    "name_uk": "Карнаксид і сири"
   },
   "oliveira-do-hospital-e-sao-paio-de-gramacos": {
     "id": 6302744,
-    "name": "Oliveira Do Hospital E São Paio De Gramaços"
+    "name": "Oliveira Do Hospital E São Paio De Gramaços",
+    "name_uk": "Oliveira Do Hospital And São Paio De Gramaços"
   },
   "matosinhos-e-leca-da-palmeira": {
     "id": 13639692,
-    "name": "Matosinhos E Leça Da Palmeira"
+    "name": "Matosinhos E Leça Da Palmeira",
+    "name_uk": "Матосіньюш і Леса-да-Пальмейра"
   },
   "gondomar-(sao-cosme)-valbom-e-jovim": {
     "id": 13635599,
-    "name": "Gondomar (São Cosme), Valbom E Jovim"
+    "name": "Gondomar (São Cosme), Valbom E Jovim",
+    "name_uk": "Гондомар (Сан-Косме), Вальбом і Йовім"
   },
   "paranhos": {
     "id": 13643786,
-    "name": "Paranhos"
+    "name": "Paranhos",
+    "name_uk": "Параньос"
   },
   "massama-e-monte-abraao": {
     "id": 11545625,
-    "name": "Massamá E Monte Abraão"
+    "name": "Massamá E Monte Abraão",
+    "name_uk": "Массама і гора Авраам"
   },
   "sao-domingos-de-benfica": {
     "id": 11540519,
-    "name": "São Domingos de Benfica"
+    "name": "São Domingos de Benfica",
+    "name_uk": "Сан-Домінгос-де-Бенфіка"
   },
   "nazare": {
     "id": 10497024,
-    "name": "Nazaré"
+    "name": "Nazaré",
+    "name_uk": "Назаре"
   },
   "canidelo": {
     "id": 13648900,
-    "name": "Canidelo"
+    "name": "Canidelo",
+    "name_uk": "Канідело"
   },
   "sandim-olival-lever-e-crestuma": {
     "id": 13648925,
-    "name": "Sandim, Olival, Lever E Crestuma"
+    "name": "Sandim, Olival, Lever E Crestuma",
+    "name_uk": "Сандім, оливковий гай, левер і крестума"
   },
   "foz-do-sousa-e-covelo": {
     "id": 13635598,
-    "name": "Foz Do Sousa E Covelo"
+    "name": "Foz Do Sousa E Covelo",
+    "name_uk": "Фос-ду-Суза і Ковелу"
   },
   "vila-nova-de-famalicao-e-calendario": {
     "id": 3158076,
-    "name": "Vila Nova De Famalicão E Calendário"
+    "name": "Vila Nova De Famalicão E Calendário",
+    "name_uk": "Віла-Нова-де-Фамалікан і календар"
   },
   "povoa-de-santa-iria-e-forte-da-casa": {
     "id": 11548687,
-    "name": "Póvoa De Santa Iria E Forte Da Casa"
+    "name": "Póvoa De Santa Iria E Forte Da Casa",
+    "name_uk": "Póvoa De Santa Iria And Fort Of The House"
   },
   "carcavelos-e-parede": {
     "id": 11539463,
-    "name": "Carcavelos E Parede"
+    "name": "Carcavelos E Parede",
+    "name_uk": "Каркавелос і стіна"
   },
   "ramalde": {
     "id": 13643787,
-    "name": "Ramalde"
+    "name": "Ramalde",
+    "name_uk": "Рамальде"
   },
   "lourinha-e-atalaia": {
     "id": 11542540,
-    "name": "Lourinhã E Atalaia"
+    "name": "Lourinhã E Atalaia",
+    "name_uk": "Lourinhã and Atalaia"
   },
   "queluz-e-belas": {
     "id": 11545626,
-    "name": "Queluz E Belas"
+    "name": "Queluz E Belas",
+    "name_uk": "Келуш Е Белас"
   },
   "loures": {
     "id": 11541504,
-    "name": "Loures"
+    "name": "Loures",
+    "name_uk": "Лурес"
   },
   "sacavem-e-prior-velho": {
     "id": 11541531,
-    "name": "Sacavém E Prior Velho"
+    "name": "Sacavém E Prior Velho",
+    "name_uk": "Sacavém і Prior Velho"
   },
   "viseu": {
     "id": 18897920,
-    "name": "Viseu"
+    "name": "Viseu",
+    "name_uk": "Визеу"
   },
   "algueirao-mem-martins": {
     "id": 11545602,
-    "name": "Algueirão-Mem Martins"
+    "name": "Algueirão-Mem Martins",
+    "name_uk": "Algueirão-Mem Martins"
   },
   "cacem-e-sao-marcos": {
     "id": 11545624,
-    "name": "Cacém E São Marcos"
+    "name": "Cacém E São Marcos",
+    "name_uk": "Касем і Сан-Маркос"
   },
   "bonfim": {
     "id": 13643778,
-    "name": "Bonfim"
+    "name": "Bonfim",
+    "name_uk": "Бонфім"
   },
   "benfica": {
     "id": 11540488,
-    "name": "Benfica"
+    "name": "Benfica",
+    "name_uk": "Бенфіка"
   },
   "custoias-leca-do-balio-e-guifoes": {
     "id": 13639691,
-    "name": "Custóias, Leça Do Balio E Guifões"
+    "name": "Custóias, Leça Do Balio E Guifões",
+    "name_uk": "Custóias, Leça do Balio та Guifões"
   },
   "baixa-da-banheira-e-vale-da-amoreira": {
     "id": 15734791,
-    "name": "Baixa Da Banheira E Vale Da Amoreira"
+    "name": "Baixa Da Banheira E Vale Da Amoreira",
+    "name_uk": "Байша-да-Банхейра і Вале-да-Аморейра"
   },
   "camarate-unhos-e-apelacao": {
     "id": 11541535,
-    "name": "Camarate, Unhos E Apelação"
+    "name": "Camarate, Unhos E Apelação",
+    "name_uk": "Камарате, нігті та апеляція"
   },
   "ribafria-e-pereiro-de-palhacana": {
     "id": 11535381,
-    "name": "Ribafria E Pereiro De Palhacana"
+    "name": "Ribafria E Pereiro De Palhacana",
+    "name_uk": "Ribafria та Pereiro De Palhacana"
   },
   "igreja-nova-e-cheleiros": {
     "id": 11543572,
-    "name": "Igreja Nova E Cheleiros"
+    "name": "Igreja Nova E Cheleiros",
+    "name_uk": "Igreja Nova E Cheleiros"
   },
   "encosta-do-sol": {
     "id": 51381251,
-    "name": "Encosta do Sol"
+    "name": "Encosta do Sol",
+    "name_uk": "Нахил Сонця"
   },
   "faro-(se-e-sao-pedro)": {
     "id": 8393736,
-    "name": "Faro (Sé E São Pedro)"
+    "name": "Faro (Sé E São Pedro)",
+    "name_uk": "Фару (Се і Сан-Педру)"
   },
   "alvalade": {
     "id": 11540534,
-    "name": "Alvalade"
+    "name": "Alvalade",
+    "name_uk": "Альваладе"
   },
   "falagueira-venda-nova": {
     "id": 11549711,
-    "name": "Falagueira-Venda Nova"
+    "name": "Falagueira-Venda Nova",
+    "name_uk": "Фалагейра-Венда-Нова"
   },
   "vilar-de-andorinho": {
     "id": 13648919,
-    "name": "Vilar de Andorinho"
+    "name": "Vilar de Andorinho",
+    "name_uk": "Вілар-де-Андорінью"
   },
   "penha-de-franca": {
     "id": 11540543,
-    "name": "Penha De França"
+    "name": "Penha De França",
+    "name_uk": "Пенья-де-Франса"
   },
   "santo-antonio": {
     "id": 11540546,
-    "name": "Santo António"
+    "name": "Santo António",
+    "name_uk": "Санту-Антоніу"
   },
   "cedofeita-santo-ildefonso-se-miragaia-sao-nicolau-e-vitoria": {
     "id": 13643793,
-    "name": "Cedofeita, Santo Ildefonso, Sé, Miragaia, São Nicolau E Vitória"
+    "name": "Cedofeita, Santo Ildefonso, Sé, Miragaia, São Nicolau E Vitória",
+    "name_uk": "Cedofeita, Santo Ildefonso, Sé, Miragaia, São Nicolau E Vitória"
   },
   "guia": {
     "id": 8389634,
-    "name": "Guia"
+    "name": "Guia",
+    "name_uk": "Путівник"
   },
   "silvares": {
     "id": 3153988,
-    "name": "Silvares"
+    "name": "Silvares",
+    "name_uk": "Сілварес"
   },
   "rebordoes": {
     "id": 13645840,
-    "name": "Rebordões"
+    "name": "Rebordões",
+    "name_uk": "Rebordões"
   },
   "almada-cova-da-piedade-pragal-e-cacilhas": {
     "id": 15731724,
-    "name": "Almada, Cova Da Piedade, Pragal E Cacilhas"
+    "name": "Almada, Cova Da Piedade, Pragal E Cacilhas",
+    "name_uk": "Almada, Cova Da Piedade, Pragal та Cacilhas"
   },
   "arroios": {
     "id": 11540536,
-    "name": "Arroios"
+    "name": "Arroios",
+    "name_uk": "Арройос"
   },
   "alges-linda-a-velha-e-cruz-quebrada-dafundo": {
     "id": 11544588,
-    "name": "Algés, Linda-A-Velha E Cruz Quebrada-Dafundo"
+    "name": "Algés, Linda-A-Velha E Cruz Quebrada-Dafundo",
+    "name_uk": "Algés, Linda-A-Velha та Cruz Quebrada-Dafundo"
   },
   "olivais": {
     "id": 11540513,
-    "name": "Olivais"
+    "name": "Olivais",
+    "name_uk": "Оливкові гаї"
   },
   "marrazes-e-barosa": {
     "id": 10495010,
-    "name": "Marrazes E Barosa"
+    "name": "Marrazes E Barosa",
+    "name_uk": "Марразес і Бароса"
   },
   "marvila": {
     "id": 11540501,
-    "name": "Marvila"
+    "name": "Marvila",
+    "name_uk": "Марвіла"
   },
   "misericordia": {
     "id": 11540541,
-    "name": "Misericórdia"
+    "name": "Misericórdia",
+    "name_uk": "Милосердя"
   },
   "oliveira-do-douro": {
     "id": 13648908,
-    "name": "Oliveira do Douro"
+    "name": "Oliveira do Douro",
+    "name_uk": "Олівейра-ду-Дору"
   },
   "casal-de-cambra": {
     "id": 11545615,
-    "name": "Casal de Cambra"
+    "name": "Casal de Cambra",
+    "name_uk": "Касаль-де-Камбра"
   },
   "aldoar-foz-do-douro-e-nevogilde": {
     "id": 13643792,
-    "name": "Aldoar, Foz Do Douro E Nevogilde"
+    "name": "Aldoar, Foz Do Douro E Nevogilde",
+    "name_uk": "Альдоар, Фос-ду-Дору і Невогільда"
   },
   "almancil": {
     "id": 8396801,
-    "name": "Almancil"
+    "name": "Almancil",
+    "name_uk": "Almancil"
   },
   "lumiar": {
     "id": 11540498,
-    "name": "Lumiar"
+    "name": "Lumiar",
+    "name_uk": "Lumiar"
   },
   "castelo-da-maia": {
     "id": 13637650,
-    "name": "Castêlo Da Maia"
+    "name": "Castêlo Da Maia",
+    "name_uk": "Кастело-да-Майя"
   },
   "parque-das-nacoes": {
     "id": 11540542,
-    "name": "Parque das Nações"
+    "name": "Parque das Nações",
+    "name_uk": "Parque das Nações"
   },
   "corroios": {
     "id": 15738885,
-    "name": "Corroios"
+    "name": "Corroios",
+    "name_uk": "Корройос"
   },
   "setubal-(sao-juliao-nossa-senhora-da-anunciada-e-santa-maria-da-graca)": {
     "id": 15740938,
-    "name": "Setúbal (São Julião, Nossa Senhora Da Anunciada E Santa Maria Da Graça)"
+    "name": "Setúbal (São Julião, Nossa Senhora Da Anunciada E Santa Maria Da Graça)",
+    "name_uk": "Сетубал (São Julião, Nossa Senhora Da Anunciada та Santa Maria Da Graça)"
   },
   "areeiro": {
     "id": 11540535,
-    "name": "Areeiro"
+    "name": "Areeiro",
+    "name_uk": "Мегрім"
   },
   "mindelo": {
     "id": 13647888,
-    "name": "Mindelo"
+    "name": "Mindelo",
+    "name_uk": "Міндело"
   },
   "carnide": {
     "id": 11540491,
-    "name": "Carnide"
+    "name": "Carnide",
+    "name_uk": "Карнід"
   },
   "santo-tirso-couto-(santa-cristina-e-sao-miguel)-e-burgaes": {
     "id": 13645861,
-    "name": "Santo Tirso, Couto (Santa Cristina E São Miguel) E Burgães"
+    "name": "Santo Tirso, Couto (Santa Cristina E São Miguel) E Burgães",
+    "name_uk": "Санту-Тірсу, Куту (Санта-Крістіна та Сан-Мігель) та Бургайнш"
   },
   "costa-da-caparica": {
     "id": 15731715,
-    "name": "Costa Da Caparica"
+    "name": "Costa Da Caparica",
+    "name_uk": "Коста-да-Капаріка"
   },
   "águas-livres": {
     "id": 51381255,
-    "name": "Águas Livres"
+    "name": "Águas Livres",
+    "name_uk": "Águas Livres"
   },
   "santa-iria-de-azoia-sao-joao-da-talha-e-bobadela": {
     "id": 11541532,
-    "name": "Santa Iria De Azoia, São João Da Talha E Bobadela"
+    "name": "Santa Iria De Azoia, São João Da Talha E Bobadela",
+    "name_uk": "Санта-Ірія-де-Азойя, Сан-Жуан-да-Талья та Бобадела"
   },
   "moita": {
     "id": 15734784,
-    "name": "Moita"
+    "name": "Moita",
+    "name_uk": "Мойта"
   },
   "sao-vicente": {
     "id": 11540547,
-    "name": "São Vicente"
+    "name": "São Vicente",
+    "name_uk": "Сан-Вісенте"
   },
   "leiria-pousos-barreira-e-cortes": {
     "id": 10495009,
-    "name": "Leiria, Pousos, Barreira E Cortes"
+    "name": "Leiria, Pousos, Barreira E Cortes",
+    "name_uk": "Лейрія, посадки, бар 'єр і порізи"
   },
   "alcantara": {
     "id": 11540482,
-    "name": "Alcântara"
+    "name": "Alcântara",
+    "name_uk": "Алкантара"
   },
   "saldanha": {
     "id": 4202511,
-    "name": "Saldanha"
+    "name": "Saldanha",
+    "name_uk": "Салдана"
   },
   "campanha": {
     "id": 13643779,
-    "name": "Campanhã"
+    "name": "Campanhã",
+    "name_uk": "Кампанья"
   },
   "alcabideche": {
     "id": 11539457,
-    "name": "Alcabideche"
+    "name": "Alcabideche",
+    "name_uk": "Alcabideche"
   },
   "malveira-e-sao-miguel-de-alcainca": {
     "id": 11543573,
-    "name": "Malveira E São Miguel De Alcainça"
+    "name": "Malveira E São Miguel De Alcainça",
+    "name_uk": "Мальвейра і Сан-Мігель-ДЕ-Алькайна"
   },
   "quinta-do-anjo": {
     "id": 15736836,
-    "name": "Quinta do Anjo"
+    "name": "Quinta do Anjo",
+    "name_uk": "Кінта-ду-Анжу"
   },
   "campo-de-ourique": {
     "id": 11540539,
-    "name": "Campo De Ourique"
+    "name": "Campo De Ourique",
+    "name_uk": "Кампо-де-Уріке"
   },
   "gaeiras": {
     "id": 10498056,
-    "name": "Gaeiras"
+    "name": "Gaeiras",
+    "name_uk": "Гаейрас"
   },
   "canelas": {
     "id": 13648899,
-    "name": "Canelas"
+    "name": "Canelas",
+    "name_uk": "Кориця"
   },
   "moreira": {
     "id": 13637641,
-    "name": "Moreira"
+    "name": "Moreira",
+    "name_uk": "Морейра"
   },
   "cidade-da-maia": {
     "id": 13637651,
-    "name": "Cidade Da Maia"
+    "name": "Cidade Da Maia",
+    "name_uk": "Cidade Da Maia"
   },
   "alfena": {
     "id": 13646849,
-    "name": "Alfena"
+    "name": "Alfena",
+    "name_uk": "Альфена"
   },
   "monte-gordo": {
     "id": 8404995,
-    "name": "Monte Gordo"
+    "name": "Monte Gordo",
+    "name_uk": "Монте-Гордо"
   },
   "amora": {
     "id": 15738882,
-    "name": "Amora"
+    "name": "Amora",
+    "name_uk": "смородина"
   },
   "rio-de-mouro": {
     "id": 11545608,
-    "name": "Rio de Mouro"
+    "name": "Rio de Mouro",
+    "name_uk": "Ріо-де-Муро"
   },
   "ermesinde": {
     "id": 13646851,
-    "name": "Ermesinde"
+    "name": "Ermesinde",
+    "name_uk": "Ермесінде"
   },
   "aljubarrota": {
     "id": 10486804,
-    "name": "Aljubarrota"
+    "name": "Aljubarrota",
+    "name_uk": "Aljubarrota"
   },
   "sao-domingos-de-rana": {
     "id": 11539462,
-    "name": "São Domingos de Rana"
+    "name": "São Domingos de Rana",
+    "name_uk": "Сан-Домінгос-де-Рана"
   },
   "seixal-arrentela-e-aldeia-de-paio-pires": {
     "id": 15738887,
-    "name": "Seixal, Arrentela E Aldeia De Paio Pires"
+    "name": "Seixal, Arrentela E Aldeia De Paio Pires",
+    "name_uk": "Seixal, Arrentela та Aldeia De Paio Pires"
   },
   "carregado-e-cadafais": {
     "id": 11535380,
-    "name": "Carregado E Cadafais"
+    "name": "Carregado E Cadafais",
+    "name_uk": "Завантажені риштування"
   },
   "albufeira-e-olhos-de-água": {
     "id": 8389638,
-    "name": "Albufeira E Olhos De Água"
+    "name": "Albufeira E Olhos De Água",
+    "name_uk": "Албуфейра та водяні очі"
   },
   "alhandra-sao-joao-dos-montes-e-calhandriz": {
     "id": 11548684,
-    "name": "Alhandra, São João Dos Montes E Calhandriz"
+    "name": "Alhandra, São João Dos Montes E Calhandriz",
+    "name_uk": "Алхандра, Сан-Жуан-дус-Монтіс і Калхандріз"
   },
   "estrela": {
     "id": 11540540,
-    "name": "Estrela"
+    "name": "Estrela",
+    "name_uk": "Зірка"
   },
   "lousa": {
     "id": 11541512,
-    "name": "Lousa"
+    "name": "Lousa",
+    "name_uk": "Шифер"
   },
   "louredo": {
     "id": 3157001,
-    "name": "Louredo"
+    "name": "Louredo",
+    "name_uk": "Луредо"
   },
   "santa-marinha-e-sao-pedro-da-afurada": {
     "id": 13648926,
-    "name": "Santa Marinha E São Pedro Da Afurada"
+    "name": "Santa Marinha E São Pedro Da Afurada",
+    "name_uk": "Санта-Марінья і Сан-Педру-да-Афурада"
   },
   "coruche-fajarda-e-erra": {
     "id": 14689289,
-    "name": "Coruche, Fajarda E Erra"
+    "name": "Coruche, Fajarda E Erra",
+    "name_uk": "Coruche, Fajarda E Erra"
   }
 }

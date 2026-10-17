@@ -1,253 +1,1123 @@
 {
-  "country": "pt",
   "cities": [
     {
-      "slug": "faro",
-      "name": "Faro",
-      "region": "",
+      "slug": "cascais-e-estoril",
+      "name": "Cascais E Estoril",
+      "name_uk": "Кашкайш",
+      "region": null,
       "priority": true,
       "refs": {
-        "olx_pt": 8,
-        "spotahome_pt": "faro"
+        "olx_pt": 11539464
+      }
+    },
+    {
+      "slug": "faro-(se-e-sao-pedro)",
+      "name": "Faro (Sé E São Pedro)",
+      "name_uk": "Фару",
+      "region": null,
+      "priority": true,
+      "refs": {
+        "olx_pt": 8393736
+      }
+    },
+    {
+      "slug": "leiria-pousos-barreira-e-cortes",
+      "name": "Leiria, Pousos, Barreira E Cortes",
+      "name_uk": "Лейрія",
+      "region": null,
+      "priority": true,
+      "refs": {
+        "olx_pt": 10495009
       }
     },
     {
       "slug": "lisboa",
       "name": "Lisboa",
-      "region": "",
+      "name_uk": "Лісабон",
+      "region": "Lisboa",
       "priority": true,
       "refs": {
-        "olx_pt": 11,
-        "spotahome_pt": "lisbon"
+        "olx_pt": null
+      }
+    },
+    {
+      "slug": "odivelas",
+      "name": "Odivelas",
+      "name_uk": "Одівелаш",
+      "region": null,
+      "priority": true,
+      "refs": {
+        "olx_pt": 11550720
       }
     },
     {
       "slug": "porto",
       "name": "Porto",
-      "region": "",
+      "name_uk": "Порту",
+      "region": "Porto",
       "priority": true,
       "refs": {
-        "olx_pt": 13,
-        "spotahome_pt": "porto"
+        "olx_pt": null
       }
     },
     {
-      "slug": "aveiro",
-      "name": "Aveiro",
-      "region": "",
-      "priority": false,
+      "slug": "setubal-(sao-juliao-nossa-senhora-da-anunciada-e-santa-maria-da-graca)",
+      "name": "Setúbal (São Julião, Nossa Senhora Da Anunciada E Santa Maria Da Graça)",
+      "name_uk": "Сетубал",
+      "region": null,
+      "priority": true,
       "refs": {
-        "olx_pt": 1,
-        "spotahome_pt": "aveiro"
+        "olx_pt": 15740938
       }
     },
     {
-      "slug": "beja",
-      "name": "Beja",
-      "region": "",
-      "priority": false,
+      "slug": "sintra-(santa-maria-e-sao-miguel-sao-martinho-e-sao-pedro-de-penaferrim)",
+      "name": "Sintra (Santa Maria E São Miguel, São Martinho E São Pedro De Penaferrim)",
+      "name_uk": "Сінтра",
+      "region": null,
+      "priority": true,
       "refs": {
-        "olx_pt": 2,
-        "spotahome_pt": "beja"
-      }
-    },
-    {
-      "slug": "braga",
-      "name": "Braga",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 3,
-        "spotahome_pt": "braga"
-      }
-    },
-    {
-      "slug": "braganca",
-      "name": "Bragança",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 4,
-        "spotahome_pt": "braganca"
-      }
-    },
-    {
-      "slug": "castelo-branco",
-      "name": "Castelo Branco",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 5
-      }
-    },
-    {
-      "slug": "coimbra",
-      "name": "Coimbra",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 6,
-        "spotahome_pt": "coimbra"
-      }
-    },
-    {
-      "slug": "guarda",
-      "name": "Guarda",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 9,
-        "spotahome_pt": "guarda"
-      }
-    },
-    {
-      "slug": "terceira",
-      "name": "Ilha Terceira",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 43
-      }
-    },
-    {
-      "slug": "madeira",
-      "name": "Ilha da Madeira",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 31,
-        "spotahome_pt": "funchal"
-      }
-    },
-    {
-      "slug": "flores",
-      "name": "Ilha das Flores",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 48
-      }
-    },
-    {
-      "slug": "porto-santo",
-      "name": "Ilha de Porto Santo",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 32
-      }
-    },
-    {
-      "slug": "santa-maria",
-      "name": "Ilha de Santa Maria",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 41
-      }
-    },
-    {
-      "slug": "sao-jorge",
-      "name": "Ilha de São Jorge",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 45
-      }
-    },
-    {
-      "slug": "sao-miguel",
-      "name": "Ilha de São Miguel",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 42
-      }
-    },
-    {
-      "slug": "pico",
-      "name": "Ilha do Pico",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 46
-      }
-    },
-    {
-      "slug": "leiria",
-      "name": "Leiria",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 10,
-        "spotahome_pt": "leiria"
-      }
-    },
-    {
-      "slug": "portalegre",
-      "name": "Portalegre",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 12
-      }
-    },
-    {
-      "slug": "santarem",
-      "name": "Santarém",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 14,
-        "spotahome_pt": "santarem"
-      }
-    },
-    {
-      "slug": "setubal",
-      "name": "Setúbal",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 15,
-        "spotahome_pt": "setubal"
-      }
-    },
-    {
-      "slug": "viana-do-castelo",
-      "name": "Viana do Castelo",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 16
-      }
-    },
-    {
-      "slug": "vila-real",
-      "name": "Vila Real",
-      "region": "",
-      "priority": false,
-      "refs": {
-        "olx_pt": 17
+        "olx_pt": 11545628
       }
     },
     {
       "slug": "viseu",
       "name": "Viseu",
-      "region": "",
-      "priority": false,
+      "name_uk": "Візеу",
+      "region": null,
+      "priority": true,
       "refs": {
-        "olx_pt": 18,
-        "spotahome_pt": "viseu"
+        "olx_pt": 18897920
       }
     },
     {
-      "slug": "evora",
-      "name": "Évora",
-      "region": "",
+      "slug": "agualva-e-mira-sintra",
+      "name": "Agualva E Mira-Sintra",
+      "name_uk": "Agualva E Mira-Sintra",
+      "region": null,
       "priority": false,
       "refs": {
-        "olx_pt": 7,
-        "spotahome_pt": "evora"
+        "olx_pt": 11545622
+      }
+    },
+    {
+      "slug": "albufeira-e-olhos-de-água",
+      "name": "Albufeira E Olhos De Água",
+      "name_uk": "Albufeira E Olhos De Água",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 8389638
+      }
+    },
+    {
+      "slug": "alcabideche",
+      "name": "Alcabideche",
+      "name_uk": "Alcabideche",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11539457
+      }
+    },
+    {
+      "slug": "alcantara",
+      "name": "Alcântara",
+      "name_uk": "Alcântara",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540482
+      }
+    },
+    {
+      "slug": "aldoar-foz-do-douro-e-nevogilde",
+      "name": "Aldoar, Foz Do Douro E Nevogilde",
+      "name_uk": "Aldoar, Foz Do Douro E Nevogilde",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643792
+      }
+    },
+    {
+      "slug": "alfena",
+      "name": "Alfena",
+      "name_uk": "Alfena",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13646849
+      }
+    },
+    {
+      "slug": "algueirao-mem-martins",
+      "name": "Algueirão-Mem Martins",
+      "name_uk": "Algueirão-Mem Martins",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11545602
+      }
+    },
+    {
+      "slug": "alges-linda-a-velha-e-cruz-quebrada-dafundo",
+      "name": "Algés, Linda-A-Velha E Cruz Quebrada-Dafundo",
+      "name_uk": "Algés, Linda-A-Velha E Cruz Quebrada-Dafundo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11544588
+      }
+    },
+    {
+      "slug": "alhandra-sao-joao-dos-montes-e-calhandriz",
+      "name": "Alhandra, São João Dos Montes E Calhandriz",
+      "name_uk": "Alhandra, São João Dos Montes E Calhandriz",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11548684
+      }
+    },
+    {
+      "slug": "aljubarrota",
+      "name": "Aljubarrota",
+      "name_uk": "Aljubarrota",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 10486804
+      }
+    },
+    {
+      "slug": "almada-cova-da-piedade-pragal-e-cacilhas",
+      "name": "Almada, Cova Da Piedade, Pragal E Cacilhas",
+      "name_uk": "Almada, Cova Da Piedade, Pragal E Cacilhas",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15731724
+      }
+    },
+    {
+      "slug": "almancil",
+      "name": "Almancil",
+      "name_uk": "Almancil",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 8396801
+      }
+    },
+    {
+      "slug": "alvalade",
+      "name": "Alvalade",
+      "name_uk": "Alvalade",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540534
+      }
+    },
+    {
+      "slug": "amora",
+      "name": "Amora",
+      "name_uk": "Amora",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15738882
+      }
+    },
+    {
+      "slug": "areeiro",
+      "name": "Areeiro",
+      "name_uk": "Areeiro",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540535
+      }
+    },
+    {
+      "slug": "arroios",
+      "name": "Arroios",
+      "name_uk": "Арройош",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540536
+      }
+    },
+    {
+      "slug": "avenidas-novas",
+      "name": "Avenidas Novas",
+      "name_uk": "Avenidas Novas",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540537
+      }
+    },
+    {
+      "slug": "avintes",
+      "name": "Avintes",
+      "name_uk": "Avintes",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648898
+      }
+    },
+    {
+      "slug": "baixa-da-banheira-e-vale-da-amoreira",
+      "name": "Baixa Da Banheira E Vale Da Amoreira",
+      "name_uk": "Baixa Da Banheira E Vale Da Amoreira",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15734791
+      }
+    },
+    {
+      "slug": "belem",
+      "name": "Belém",
+      "name_uk": "Белен",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540538
+      }
+    },
+    {
+      "slug": "benfica",
+      "name": "Benfica",
+      "name_uk": "Benfica",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540488
+      }
+    },
+    {
+      "slug": "bonfim",
+      "name": "Bonfim",
+      "name_uk": "Bonfim",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643778
+      }
+    },
+    {
+      "slug": "cacem-e-sao-marcos",
+      "name": "Cacém E São Marcos",
+      "name_uk": "Cacém E São Marcos",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11545624
+      }
+    },
+    {
+      "slug": "camarate-unhos-e-apelacao",
+      "name": "Camarate, Unhos E Apelação",
+      "name_uk": "Camarate, Unhos E Apelação",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11541535
+      }
+    },
+    {
+      "slug": "campanha",
+      "name": "Campanhã",
+      "name_uk": "Кампанья",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643779
+      }
+    },
+    {
+      "slug": "campo-de-ourique",
+      "name": "Campo De Ourique",
+      "name_uk": "Campo De Ourique",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540539
+      }
+    },
+    {
+      "slug": "canelas",
+      "name": "Canelas",
+      "name_uk": "Canelas",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648899
+      }
+    },
+    {
+      "slug": "canidelo",
+      "name": "Canidelo",
+      "name_uk": "Canidelo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648900
+      }
+    },
+    {
+      "slug": "carcavelos-e-parede",
+      "name": "Carcavelos E Parede",
+      "name_uk": "Carcavelos E Parede",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11539463
+      }
+    },
+    {
+      "slug": "carnaxide-e-queijas",
+      "name": "Carnaxide E Queijas",
+      "name_uk": "Carnaxide E Queijas",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11544589
+      }
+    },
+    {
+      "slug": "carnide",
+      "name": "Carnide",
+      "name_uk": "Carnide",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540491
+      }
+    },
+    {
+      "slug": "carregado-e-cadafais",
+      "name": "Carregado E Cadafais",
+      "name_uk": "Carregado E Cadafais",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11535380
+      }
+    },
+    {
+      "slug": "casal-de-cambra",
+      "name": "Casal de Cambra",
+      "name_uk": "Casal de Cambra",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11545615
+      }
+    },
+    {
+      "slug": "castelo-(sesimbra)",
+      "name": "Castelo (Sesimbra)",
+      "name_uk": "Castelo (Sesimbra)",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15739905
+      }
+    },
+    {
+      "slug": "castelo-da-maia",
+      "name": "Castêlo Da Maia",
+      "name_uk": "Castêlo Da Maia",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13637650
+      }
+    },
+    {
+      "slug": "cedofeita-santo-ildefonso-se-miragaia-sao-nicolau-e-vitoria",
+      "name": "Cedofeita, Santo Ildefonso, Sé, Miragaia, São Nicolau E Vitória",
+      "name_uk": "Cedofeita, Santo Ildefonso, Sé, Miragaia, São Nicolau E Vitória",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643793
+      }
+    },
+    {
+      "slug": "cidade-da-maia",
+      "name": "Cidade Da Maia",
+      "name_uk": "Cidade Da Maia",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13637651
+      }
+    },
+    {
+      "slug": "corroios",
+      "name": "Corroios",
+      "name_uk": "Corroios",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15738885
+      }
+    },
+    {
+      "slug": "coruche-fajarda-e-erra",
+      "name": "Coruche, Fajarda E Erra",
+      "name_uk": "Coruche, Fajarda E Erra",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 14689289
+      }
+    },
+    {
+      "slug": "costa-da-caparica",
+      "name": "Costa Da Caparica",
+      "name_uk": "Costa Da Caparica",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15731715
+      }
+    },
+    {
+      "slug": "custoias-leca-do-balio-e-guifoes",
+      "name": "Custóias, Leça Do Balio E Guifões",
+      "name_uk": "Custóias, Leça Do Balio E Guifões",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13639691
+      }
+    },
+    {
+      "slug": "encosta-do-sol",
+      "name": "Encosta do Sol",
+      "name_uk": "Encosta do Sol",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 51381251
+      }
+    },
+    {
+      "slug": "ermesinde",
+      "name": "Ermesinde",
+      "name_uk": "Ermesinde",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13646851
+      }
+    },
+    {
+      "slug": "estrela",
+      "name": "Estrela",
+      "name_uk": "Estrela",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540540
+      }
+    },
+    {
+      "slug": "falagueira-venda-nova",
+      "name": "Falagueira-Venda Nova",
+      "name_uk": "Falagueira-Venda Nova",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11549711
+      }
+    },
+    {
+      "slug": "foz-do-sousa-e-covelo",
+      "name": "Foz Do Sousa E Covelo",
+      "name_uk": "Foz Do Sousa E Covelo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13635598
+      }
+    },
+    {
+      "slug": "gaeiras",
+      "name": "Gaeiras",
+      "name_uk": "Gaeiras",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 10498056
+      }
+    },
+    {
+      "slug": "gondomar-(sao-cosme)-valbom-e-jovim",
+      "name": "Gondomar (São Cosme), Valbom E Jovim",
+      "name_uk": "Gondomar (São Cosme), Valbom E Jovim",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13635599
+      }
+    },
+    {
+      "slug": "guia",
+      "name": "Guia",
+      "name_uk": "Guia",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 8389634
+      }
+    },
+    {
+      "slug": "igreja-nova-e-cheleiros",
+      "name": "Igreja Nova E Cheleiros",
+      "name_uk": "Igreja Nova E Cheleiros",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11543572
+      }
+    },
+    {
+      "slug": "lordelo-do-ouro-e-massarelos",
+      "name": "Lordelo Do Ouro E Massarelos",
+      "name_uk": "Lordelo Do Ouro E Massarelos",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643794
+      }
+    },
+    {
+      "slug": "louredo",
+      "name": "Louredo",
+      "name_uk": "Louredo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 3157001
+      }
+    },
+    {
+      "slug": "loures",
+      "name": "Loures",
+      "name_uk": "Loures",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11541504
+      }
+    },
+    {
+      "slug": "lourinha-e-atalaia",
+      "name": "Lourinhã E Atalaia",
+      "name_uk": "Lourinhã E Atalaia",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11542540
+      }
+    },
+    {
+      "slug": "lousa",
+      "name": "Lousa",
+      "name_uk": "Lousa",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11541512
+      }
+    },
+    {
+      "slug": "lumiar",
+      "name": "Lumiar",
+      "name_uk": "Lumiar",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540498
+      }
+    },
+    {
+      "slug": "mafamude-e-vilar-do-paraiso",
+      "name": "Mafamude E Vilar Do Paraíso",
+      "name_uk": "Mafamude E Vilar Do Paraíso",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648923
+      }
+    },
+    {
+      "slug": "malveira-e-sao-miguel-de-alcainca",
+      "name": "Malveira E São Miguel De Alcainça",
+      "name_uk": "Malveira E São Miguel De Alcainça",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11543573
+      }
+    },
+    {
+      "slug": "marrazes-e-barosa",
+      "name": "Marrazes E Barosa",
+      "name_uk": "Marrazes E Barosa",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 10495010
+      }
+    },
+    {
+      "slug": "marvila",
+      "name": "Marvila",
+      "name_uk": "Marvila",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540501
+      }
+    },
+    {
+      "slug": "massama-e-monte-abraao",
+      "name": "Massamá E Monte Abraão",
+      "name_uk": "Massamá E Monte Abraão",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11545625
+      }
+    },
+    {
+      "slug": "matosinhos-e-leca-da-palmeira",
+      "name": "Matosinhos E Leça Da Palmeira",
+      "name_uk": "Matosinhos E Leça Da Palmeira",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13639692
+      }
+    },
+    {
+      "slug": "mindelo",
+      "name": "Mindelo",
+      "name_uk": "Mindelo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13647888
+      }
+    },
+    {
+      "slug": "misericordia",
+      "name": "Misericórdia",
+      "name_uk": "Misericórdia",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540541
+      }
+    },
+    {
+      "slug": "moita",
+      "name": "Moita",
+      "name_uk": "Moita",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15734784
+      }
+    },
+    {
+      "slug": "monte-gordo",
+      "name": "Monte Gordo",
+      "name_uk": "Monte Gordo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 8404995
+      }
+    },
+    {
+      "slug": "moreira",
+      "name": "Moreira",
+      "name_uk": "Moreira",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13637641
+      }
+    },
+    {
+      "slug": "moscavide-e-portela",
+      "name": "Moscavide E Portela",
+      "name_uk": "Moscavide E Portela",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11541530
+      }
+    },
+    {
+      "slug": "nazare",
+      "name": "Nazaré",
+      "name_uk": "Nazaré",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 10497024
+      }
+    },
+    {
+      "slug": "oeiras-e-sao-juliao-da-barra-paco-de-arcos-e-caxias",
+      "name": "Oeiras E São Julião Da Barra, Paço De Arcos E Caxias",
+      "name_uk": "Oeiras E São Julião Da Barra, Paço De Arcos E Caxias",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11544590
+      }
+    },
+    {
+      "slug": "olivais",
+      "name": "Olivais",
+      "name_uk": "Olivais",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540513
+      }
+    },
+    {
+      "slug": "oliveira-do-hospital-e-sao-paio-de-gramacos",
+      "name": "Oliveira Do Hospital E São Paio De Gramaços",
+      "name_uk": "Oliveira Do Hospital E São Paio De Gramaços",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 6302744
+      }
+    },
+    {
+      "slug": "oliveira-do-douro",
+      "name": "Oliveira do Douro",
+      "name_uk": "Oliveira do Douro",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648908
+      }
+    },
+    {
+      "slug": "paranhos",
+      "name": "Paranhos",
+      "name_uk": "Paranhos",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643786
+      }
+    },
+    {
+      "slug": "parque-das-nacoes",
+      "name": "Parque das Nações",
+      "name_uk": "Parque das Nações",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540542
+      }
+    },
+    {
+      "slug": "penha-de-franca",
+      "name": "Penha De França",
+      "name_uk": "Penha De França",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540543
+      }
+    },
+    {
+      "slug": "pontinha-e-famoes",
+      "name": "Pontinha E Famões",
+      "name_uk": "Pontinha E Famões",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11550728
+      }
+    },
+    {
+      "slug": "povoa-de-santa-iria-e-forte-da-casa",
+      "name": "Póvoa De Santa Iria E Forte Da Casa",
+      "name_uk": "Póvoa De Santa Iria E Forte Da Casa",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11548687
+      }
+    },
+    {
+      "slug": "queluz-e-belas",
+      "name": "Queluz E Belas",
+      "name_uk": "Queluz E Belas",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11545626
+      }
+    },
+    {
+      "slug": "quinta-do-anjo",
+      "name": "Quinta do Anjo",
+      "name_uk": "Quinta do Anjo",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15736836
+      }
+    },
+    {
+      "slug": "ramalde",
+      "name": "Ramalde",
+      "name_uk": "Рамалде",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13643787
+      }
+    },
+    {
+      "slug": "rebordoes",
+      "name": "Rebordões",
+      "name_uk": "Rebordões",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13645840
+      }
+    },
+    {
+      "slug": "ribafria-e-pereiro-de-palhacana",
+      "name": "Ribafria E Pereiro De Palhacana",
+      "name_uk": "Ribafria E Pereiro De Palhacana",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11535381
+      }
+    },
+    {
+      "slug": "rio-tinto",
+      "name": "Rio Tinto",
+      "name_uk": "Rio Tinto",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13635592
+      }
+    },
+    {
+      "slug": "rio-de-mouro",
+      "name": "Rio de Mouro",
+      "name_uk": "Rio de Mouro",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11545608
+      }
+    },
+    {
+      "slug": "sacavem-e-prior-velho",
+      "name": "Sacavém E Prior Velho",
+      "name_uk": "Sacavém E Prior Velho",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11541531
+      }
+    },
+    {
+      "slug": "saldanha",
+      "name": "Saldanha",
+      "name_uk": "Салданья",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 4202511
+      }
+    },
+    {
+      "slug": "sandim-olival-lever-e-crestuma",
+      "name": "Sandim, Olival, Lever E Crestuma",
+      "name_uk": "Sandim, Olival, Lever E Crestuma",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648925
+      }
+    },
+    {
+      "slug": "santa-iria-de-azoia-sao-joao-da-talha-e-bobadela",
+      "name": "Santa Iria De Azoia, São João Da Talha E Bobadela",
+      "name_uk": "Santa Iria De Azoia, São João Da Talha E Bobadela",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11541532
+      }
+    },
+    {
+      "slug": "santa-marinha-e-sao-pedro-da-afurada",
+      "name": "Santa Marinha E São Pedro Da Afurada",
+      "name_uk": "Santa Marinha E São Pedro Da Afurada",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648926
+      }
+    },
+    {
+      "slug": "santo-antonio",
+      "name": "Santo António",
+      "name_uk": "Santo António",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540546
+      }
+    },
+    {
+      "slug": "santo-tirso-couto-(santa-cristina-e-sao-miguel)-e-burgaes",
+      "name": "Santo Tirso, Couto (Santa Cristina E São Miguel) E Burgães",
+      "name_uk": "Santo Tirso, Couto (Santa Cristina E São Miguel) E Burgães",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13645861
+      }
+    },
+    {
+      "slug": "seixal-arrentela-e-aldeia-de-paio-pires",
+      "name": "Seixal, Arrentela E Aldeia De Paio Pires",
+      "name_uk": "Seixal, Arrentela E Aldeia De Paio Pires",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 15738887
+      }
+    },
+    {
+      "slug": "silvares",
+      "name": "Silvares",
+      "name_uk": "Silvares",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 3153988
+      }
+    },
+    {
+      "slug": "sao-clemente",
+      "name": "São Clemente",
+      "name_uk": "São Clemente",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 8396808
+      }
+    },
+    {
+      "slug": "sao-domingos-de-benfica",
+      "name": "São Domingos de Benfica",
+      "name_uk": "São Domingos de Benfica",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540519
+      }
+    },
+    {
+      "slug": "sao-domingos-de-rana",
+      "name": "São Domingos de Rana",
+      "name_uk": "São Domingos de Rana",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11539462
+      }
+    },
+    {
+      "slug": "sao-mamede-de-infesta-e-senhora-da-hora",
+      "name": "São Mamede De Infesta E Senhora Da Hora",
+      "name_uk": "São Mamede De Infesta E Senhora Da Hora",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13639694
+      }
+    },
+    {
+      "slug": "sao-vicente",
+      "name": "São Vicente",
+      "name_uk": "São Vicente",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 11540547
+      }
+    },
+    {
+      "slug": "vila-do-bispo-e-raposeira",
+      "name": "Vila Do Bispo E Raposeira",
+      "name_uk": "Vila Do Bispo E Raposeira",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 8403974
+      }
+    },
+    {
+      "slug": "vila-nova-de-famalicao-e-calendario",
+      "name": "Vila Nova De Famalicão E Calendário",
+      "name_uk": "Vila Nova De Famalicão E Calendário",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 3158076
+      }
+    },
+    {
+      "slug": "vilar-de-andorinho",
+      "name": "Vilar de Andorinho",
+      "name_uk": "Vilar de Andorinho",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 13648919
+      }
+    },
+    {
+      "slug": "águas-livres",
+      "name": "Águas Livres",
+      "name_uk": "Águas Livres",
+      "region": null,
+      "priority": false,
+      "refs": {
+        "olx_pt": 51381255
       }
     }
   ]

@@ -24,6 +24,7 @@ log = logging.getLogger(__name__)
 class City:
     slug: str            # "kyiv"
     name: str            # "Київ"
+    name_uk: str | None 
     region: str | None   # "Київська область"
     olx_id: int | None   # city_id у OLX
     workua_id: int | None
@@ -98,11 +99,12 @@ def _load_cities(country: str) -> list[City]:
             city = City(
                 slug=slug,
                 name=name,
+                name_uk=item.get("name_uk"),
                 region=item.get("region") or item.get("state"),
                 olx_id=olx_id,
                 workua_id=workua_id,
                 priority=is_priority,
-            )
+)
 
             if is_priority:
                 priority_cities.append(city)
@@ -169,16 +171,21 @@ def search_cities(
 
     for c in cities:
         name_norm = _normalize(c.name)
+        name_uk_norm = _normalize(c.name_uk or "")
         region_norm = _normalize(c.region or "")
 
         score = 0
 
-        if name_norm == q:
+        # Точний збіг (латиниця АБО укр)
+        if name_norm == q or name_uk_norm == q:
             score = 1000
-        elif name_norm.startswith(q):
+        # Початок назви (латиниця АБО укр)
+        elif name_norm.startswith(q) or name_uk_norm.startswith(q):
             score = 500
-        elif any(word.startswith(q) for word in name_norm.split()):
+        # Слово в назві (латиниця АБО укр)
+        elif any(word.startswith(q) for word in name_norm.split() + name_uk_norm.split()):
             score = 300
+        # Регіон
         elif region_norm and region_norm.startswith(q):
             score = 200
         else:
