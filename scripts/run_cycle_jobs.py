@@ -45,7 +45,7 @@ def _query_from_profession_key(profession_key: str, country: str) -> str:
 
     # sub_key вигляду "agro_tractor" → cat_key="agro", sub_key="agro_tractor"
     cat_key, _, _ = profession_key.partition("_")
-    sub = get_subcategory(cat_key, profession_key)
+    sub = get_subcategory(cat_key, profession_key, country=country)
     if not sub or not sub.keywords:
         return ""
     return sub.keywords[0]

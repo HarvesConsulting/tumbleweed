@@ -73,7 +73,7 @@ def _profession_label(profession_key: str, country: str) -> str:
     if profession_key.startswith("custom:"):
         return profession_key[len("custom:"):].strip()
     cat_key, _, _ = profession_key.partition("_")
-    sub = get_subcategory(cat_key, profession_key)
+    sub = get_subcategory(cat_key, profession_key, country=country)
     return sub.label if sub else profession_key
 
 

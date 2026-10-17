@@ -2,152 +2,133 @@
   "categories": [
     {
       "key": "it",
-      "label": "💻 IT / Programowanie",
+      "label": "💻 IT / Програмування",
       "subcategories": [
-        {
-          "key": "it_programista",
-          "label": "Programista",
-          "keywords": ["programista", "developer", "python", "java", "programowanie"]
-        },
-        {
-          "key": "it_tester",
-          "label": "Tester / QA",
-          "keywords": ["tester", "qa", "testowanie"]
-        },
-        {
-          "key": "it_devops",
-          "label": "DevOps / Sysadmin",
-          "keywords": ["devops", "sysadmin", "administrator"]
-        }
+        {"key": "it_backend", "label": "Backend (Python/Java/Node)", "keywords": ["programista backend", "backend developer", "python developer", "java developer", "node.js developer", "programista python", "programista java"]},
+        {"key": "it_frontend", "label": "Frontend (JS/React/Vue)", "keywords": ["frontend developer", "programista frontend", "javascript developer", "react developer", "vue developer"]},
+        {"key": "it_fullstack", "label": "Fullstack", "keywords": ["fullstack developer", "full stack developer", "programista fullstack"]},
+        {"key": "it_qa", "label": "QA / Тестування", "keywords": ["tester oprogramowania", "qa engineer", "tester manualny", "tester automatyczny", "testowanie"]},
+        {"key": "it_devops", "label": "DevOps / Cloud", "keywords": ["devops engineer", "sre", "kubernetes", "azure", "aws", "administrator systemów"]},
+        {"key": "it_mobile", "label": "Mobile (iOS/Android)", "keywords": ["android developer", "ios developer", "programista android", "programista ios", "flutter developer", "react native developer"]},
+        {"key": "it_data", "label": "Data Science / ML", "keywords": ["data scientist", "data engineer", "machine learning", "analityk danych", "data analyst"]},
+        {"key": "it_designer", "label": "UI/UX дизайнер", "keywords": ["ui designer", "ux designer", "grafik", "projektant graficzny", "web designer"]}
       ]
     },
     {
       "key": "bud",
-      "label": "🏗 Budownictwo",
+      "label": "🏗 Будівництво",
       "subcategories": [
-        {
-          "key": "bud_budowlaniec",
-          "label": "Budowlaniec",
-          "keywords": ["budowlaniec", "budowa", "murarz"]
-        },
-        {
-          "key": "bud_elektryk",
-          "label": "Elektryk",
-          "keywords": ["elektryk", "elektryka"]
-        },
-        {
-          "key": "bud_hydraulik",
-          "label": "Hydraulik",
-          "keywords": ["hydraulik", "wodno-kanalizacyjne"]
-        }
+        {"key": "bud_mason", "label": "Муляр / Каменщик", "keywords": ["murarz", "mason", "pracownik budowlany"]},
+        {"key": "bud_concrete", "label": "Бетонник / Арматурник", "keywords": ["betoniarz", "zbrojarz", "betoniarze"]},
+        {"key": "bud_welder", "label": "Зварювальник", "keywords": ["spawacz", "welder", "spawacz mig", "spawacz tig"]},
+        {"key": "bud_painter", "label": "Маляр / Штукатур", "keywords": ["malarz", "szpachlarz", "malarz pokojowy", "tynkarz"]},
+        {"key": "bud_tiler", "label": "Плиточник", "keywords": ["glazurnik", "glazura", "płytkarz"]},
+        {"key": "bud_carpenter", "label": "Столяр / Тесляр", "keywords": ["stolarz", "cieśla", "ciesielstwo", "meblarz"]},
+        {"key": "bud_roofer", "label": "Покрівельник", "keywords": ["dekarz", "roofer", "dachy"]},
+        {"key": "bud_laborer", "label": "Різноробочий", "keywords": ["pomocnik budowlany", "robotnik", "pracownik ogólnobudowlany", "helper"]},
+        {"key": "bud_electrician", "label": "Електрик", "keywords": ["elektryk", "elektryk budowlany", "electrician"]},
+        {"key": "bud_plumber", "label": "Сантехнік", "keywords": ["hydraulik", "instalator wodno-kanalizacyjny", "plumber"]}
       ]
     },
     {
       "key": "driver",
-      "label": "🚗 Kierowca / Kurier",
+      "label": "🚗 Водій / Кур'єр",
       "subcategories": [
-        {
-          "key": "driver_kierowca",
-          "label": "Kierowca",
-          "keywords": ["kierowca", "kierowca ce", "kierowca c"]
-        },
-        {
-          "key": "driver_kurier",
-          "label": "Kurier / Dostawca",
-          "keywords": ["kurier", "dostawca", "dostawa"]
-        }
-      ]
-    },
-    {
-      "key": "food",
-      "label": "🍳 Kuchnia / Restauracja",
-      "subcategories": [
-        {
-          "key": "food_kucharz",
-          "label": "Kucharz",
-          "keywords": ["kucharz", "kuchnia", "szef kuchni"]
-        },
-        {
-          "key": "food_kelner",
-          "label": "Kelner / Barman",
-          "keywords": ["kelner", "barman", "kelnerka"]
-        },
-        {
-          "key": "food_pomoc",
-          "label": "Pomoc kuchenna",
-          "keywords": ["pomoc kuchenna", "zmywak"]
-        }
-      ]
-    },
-    {
-      "key": "sales",
-      "label": "🛒 Sprzedaż / Obsługa",
-      "subcategories": [
-        {
-          "key": "sales_sprzedawca",
-          "label": "Sprzedawca / Kasjer",
-          "keywords": ["sprzedawca", "kasjer", "obsługa klienta"]
-        }
+        {"key": "driver_b", "label": "Водій категорії B", "keywords": ["kierowca kat. b", "kierowca b", "prawo jazdy kat. b", "kierowca samochodu osobowego"]},
+        {"key": "driver_c", "label": "Водій категорії C", "keywords": ["kierowca kat. c", "kierowca c", "prawo jazdy kat. c", "kierowca ciężarówki"]},
+        {"key": "driver_e", "label": "Водій категорії E (фура)", "keywords": ["kierowca kat. e", "kierowca ce", "kierowca tira", "kierowca ciężarówki", "truck driver"]},
+        {"key": "driver_courier", "label": "Кур'єр", "keywords": ["kurier", "courier", "dostawca", "kurier rowerowy"]},
+        {"key": "driver_taxi", "label": "Таксист", "keywords": ["kierowca taxi", "taxi", "uber", "bolt", "kierowca uber"]},
+        {"key": "driver_delivery", "label": "Водій доставки", "keywords": ["kierowca dostawczy", "delivery driver", "kierowca kurier", "glovo", "bolt food"]},
+        {"key": "driver_forklift", "label": "Водій навантажувача", "keywords": ["operator wózka widłowego", "wózek widłowy", "forklift operator"]}
       ]
     },
     {
       "key": "factory",
-      "label": "🏭 Produkcja / Magazyn",
+      "label": "🏭 Виробництво",
       "subcategories": [
-        {
-          "key": "factory_magazynier",
-          "label": "Magazynier",
-          "keywords": ["magazynier", "magazyn", "pakowacz"]
-        },
-        {
-          "key": "factory_operator",
-          "label": "Operator produkcji",
-          "keywords": ["operator", "produkcja", "pracownik produkcji"]
-        }
+        {"key": "factory_line", "label": "Оператор лінії", "keywords": ["operator produkcji", "operator linii produkcyjnej", "pracownik produkcji", "production line operator"]},
+        {"key": "factory_assembler", "label": "Складальник", "keywords": ["monter", "składacz", "assembler", "monter mebli"]},
+        {"key": "factory_packer", "label": "Пакувальник", "keywords": ["pakowacz", "packer", "pakowanie"]},
+        {"key": "factory_warehouse", "label": "Склад / Комплектувальник", "keywords": ["magazynier", "kompletator", "warehouse worker", "pracownik magazynu"]},
+        {"key": "factory_loader", "label": "Вантажник", "keywords": ["ładowacz", "loader", "pracownik magazynu", "rozbieracz"]},
+        {"key": "factory_machine", "label": "Оператор верстатів", "keywords": ["operator cnc", "tokarz", "frezer", "machine operator"]},
+        {"key": "factory_welder", "label": "Зварювальник", "keywords": ["spawacz", "welder", "spawanie mig mag"]},
+        {"key": "factory_quality", "label": "Контроль якості (QC)", "keywords": ["kontrola jakości", "qc", "quality control", "kontroler jakości"]},
+        {"key": "factory_textile", "label": "Швейне виробництво", "keywords": ["szwaczka", "krawiec", "szycie", "tailor", "seamstress"]}
       ]
     },
     {
       "key": "clean",
-      "label": "🧹 Sprzątanie",
+      "label": "🧹 Прибирання",
       "subcategories": [
-        {
-          "key": "clean_sprzatanie",
-          "label": "Sprzątanie",
-          "keywords": ["sprzątanie", "sprzątaczka", "utrzymanie czystości"]
-        }
-      ]
-    },
-    {
-      "key": "care",
-      "label": "👶 Opieka",
-      "subcategories": [
-        {
-          "key": "care_opiekun",
-          "label": "Opiekun / Niania",
-          "keywords": ["opiekun", "niania", "opiekunka", "opieka"]
-        }
-      ]
-    },
-    {
-      "key": "agro",
-      "label": "🌾 Rolnictwo",
-      "subcategories": [
-        {
-          "key": "agro_rolnik",
-          "label": "Rolnik / Ogrodnik",
-          "keywords": ["rolnik", "ogrodnik", "rolnictwo"]
-        }
+        {"key": "clean_house", "label": "Прибирання будинків", "keywords": ["sprzątanie domów", "gosposia", "pomoc domowa", "house cleaning"]},
+        {"key": "clean_office", "label": "Прибирання офісів", "keywords": ["sprzątanie biur", "sprzątaczka biurowa", "office cleaning"]},
+        {"key": "clean_hotel", "label": "Покоївка / Готель", "keywords": ["pokojowa", "housekeeping", "sprzątanie hoteli", "hotel"]},
+        {"key": "clean_industrial", "label": "Промислове прибирання", "keywords": ["sprzątanie przemysłowe", "utrzymanie czystości", "industrial cleaning"]},
+        {"key": "clean_windows", "label": "Миття вікон", "keywords": ["mycie okien", "myjnia okien", "window cleaning"]}
       ]
     },
     {
       "key": "med",
-      "label": "🏥 Medycyna",
+      "label": "🏥 Медицина",
       "subcategories": [
-        {
-          "key": "med_pielegniarka",
-          "label": "Pielęgniarka",
-          "keywords": ["pielęgniarka", "pielęgniarz"]
-        }
+        {"key": "med_doctor", "label": "Лікар", "keywords": ["lekarz", "doktor", "lekarz rodzinny", "doctor"]},
+        {"key": "med_nurse", "label": "Медсестра / Медбрат", "keywords": ["pielęgniarka", "pielęgniarz", "nurse"]},
+        {"key": "med_caregiver", "label": "Доглядальник / Санітар", "keywords": ["opiekun", "opiekunka", "opiekun medyczny", "sanitariusz", "caregiver"]},
+        {"key": "med_dentist", "label": "Стоматолог", "keywords": ["dentysta", "stomatolog", "asystentka stomatologiczna", "dentist"]},
+        {"key": "med_pharmacy", "label": "Фармацевт / Аптека", "keywords": ["farmaceuta", "apteka", "technik farmacji"]},
+        {"key": "med_physio", "label": "Фізіотерапевт / Реабілітація", "keywords": ["fizjoterapeuta", "rehabilitacja", "fizjoterapia"]}
+      ]
+    },
+    {
+      "key": "edu",
+      "label": "🎓 Освіта",
+      "subcategories": [
+        {"key": "edu_teacher", "label": "Вчитель школи", "keywords": ["nauczyciel", "nauczycielka", "pedagog", "school teacher"]},
+        {"key": "edu_kindergarten", "label": "Вихователь садочка", "keywords": ["wychowawca przedszkola", "przedszkolanka", "opiekun w żłobku"]},
+        {"key": "edu_tutor", "label": "Репетитор", "keywords": ["korepetytor", "tutor", "nauczanie indywidualne"]},
+        {"key": "edu_nanny", "label": "Няня", "keywords": ["niania", "opiekunka do dziecka", "babysitter", "nanny"]},
+        {"key": "edu_language", "label": "Викладач мов", "keywords": ["nauczyciel języka", "lektor", "lektor angielskiego", "english teacher"]}
+      ]
+    },
+    {
+      "key": "food",
+      "label": "🍳 Ресторан",
+      "subcategories": [
+        {"key": "food_cook", "label": "Кухар / Повар", "keywords": ["kucharz", "kucharka", "cook", "chef", "kucharz pomocnik"]},
+        {"key": "food_sous", "label": "Су-шеф / Шеф", "keywords": ["sous chef", "szef kuchni", "head chef", "chef de partie"]},
+        {"key": "food_waiter", "label": "Офіціант", "keywords": ["kelner", "kelnerka", "waiter", "waitress"]},
+        {"key": "food_bartender", "label": "Бармен", "keywords": ["barman", "barmanka", "bartender"]},
+        {"key": "food_barista", "label": "Бариста", "keywords": ["barista", "baristka"]},
+        {"key": "food_baker", "label": "Пекар / Кондитер", "keywords": ["piekarz", "cukiernik", "baker", "pastry chef"]},
+        {"key": "food_dishwash", "label": "Посудомийник", "keywords": ["zmywak", "pomoc kuchenna", "dishwasher"]},
+        {"key": "food_fast", "label": "Фаст-фуд", "keywords": ["fast food", "pracownik fast food", "kfc", "mcdonald", "pizza hut"]}
+      ]
+    },
+    {
+      "key": "sales",
+      "label": "🛒 Продажі",
+      "subcategories": [
+        {"key": "sales_consultant", "label": "Продавець-консультант", "keywords": ["sprzedawca", "kasjer", "sprzedawca konsultant", "sales consultant"]},
+        {"key": "sales_manager", "label": "Менеджер з продажу", "keywords": ["przedstawiciel handlowy", "sales manager", "specjalista ds. sprzedaży", "kierownik sprzedaży"]},
+        {"key": "sales_cashier", "label": "Касир", "keywords": ["kasjer", "kasjerka", "cashier"]},
+        {"key": "sales_merchandiser", "label": "Мерчендайзер", "keywords": ["merchandiser", "merchandising"]},
+        {"key": "sales_call", "label": "Оператор кол-центру", "keywords": ["konsultant call center", "telemarketer", "call center"]},
+        {"key": "sales_online", "label": "Продажі онлайн", "keywords": ["e-commerce", "specjalista e-commerce", "online sales"]}
+      ]
+    },
+    {
+      "key": "agro",
+      "label": "🌾 Сільське господарство",
+      "subcategories": [
+        {"key": "agro_tractor", "label": "Тракторист", "keywords": ["traktorzysta", "operator traktora", "tractor driver"]},
+        {"key": "agro_agronom", "label": "Агроном", "keywords": ["agronom", "agronomist"]},
+        {"key": "agro_fermer", "label": "Фермер", "keywords": ["rolnik", "farmer", "gospodarstwo rolne"]},
+        {"key": "agro_animal", "label": "Тваринник", "keywords": ["pracownik hodowli", "opiekun zwierząt", "oborowy", "chów zwierząt"]},
+        {"key": "agro_gardener", "label": "Садівник / Городник", "keywords": ["ogrodnik", "pracownik ogrodu", "garden"]},
+        {"key": "agro_greenhouse", "label": "Теплиця", "keywords": ["szklarnia", "pracownik szklarni", "greenhouse"]},
+        {"key": "agro_field", "label": "Рільник / Полевод", "keywords": ["pracownik polowy", "żniwa", "zbiór owoców", "field worker"]}
       ]
     }
   ]

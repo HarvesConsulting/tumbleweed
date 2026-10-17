@@ -181,7 +181,9 @@ def _handle_category(
     ctx,
 ) -> None:
     """Вибір сфери → запитати пошук підкатегорії."""
-    cat_label = get_category_label(cat_key)
+    data = states.get_user_data(chat_id)
+    country = data.get("country", "ua")
+    cat_label = get_category_label(cat_key, country=country)
 
     states.update_user_data(
         chat_id,
@@ -584,7 +586,8 @@ def _handle_action(
     elif action == "search_again":
         data = states.get_user_data(chat_id)
         category = data.get("category", "")
-        cat_label = get_category_label(category) if category else ""
+        country = data.get("country", "ua")
+        cat_label = get_category_label(category, country=country) if category else ""
         states.set_state(chat_id, states.STATE_WAITING_SUBCATEGORY_QUERY)
         if message_id:
             ctx.notifier.edit_message(
@@ -659,7 +662,8 @@ def handle_subcategory_text(chat_id: str, text: str, ctx) -> None:
     """Обробка введення слова для пошуку підкатегорій."""
     data = states.get_user_data(chat_id)
     category = data.get("category", "")
-    cat_label = get_category_label(category) if category else ""
+    country = data.get("country", "ua")
+    cat_label = get_category_label(category, country=country) if category else ""
 
     if len(text) < MIN_QUERY_LEN:
         ctx.notifier.send_message(
@@ -668,7 +672,7 @@ def handle_subcategory_text(chat_id: str, text: str, ctx) -> None:
         )
         return
 
-    results = search_subcategories(category, text, limit=8)
+    results = search_subcategories(category, text, limit=8, country=country)
     states.update_user_data(chat_id, last_results=results)
 
     if not results:

@@ -4,11 +4,14 @@
   користувач обрав сферу (agro) → вводить слово «трак» → отримує 8 результатів.
 
 Логіка оцінки (score):
-  - 100 — label містить запит (наприклад, «Тракторист» містить «трак»)
-  - 80  — keyword починається з запиту (наприклад, «трактор» для «трак»)
-  - 60  — keyword містить запит (наприклад, «tractor driver» містить «трак»)
-  - 40  — частковий збіг (усі символи запиту є в ключі)
+  - 100 — label містить запит
+  - 90  — keyword починається з запиту
+  - 80  — якесь слово в label починається з запиту
+  - 70  — keyword містить запит як підрядок (мін. 4 символи)
   - 0   — немає збігу
+
+Підтримка країн: ua, pl, ro. Кожна країна має свій
+professions_{country}.json з власними ключами підкатегорій.
 """
 from __future__ import annotations
 
@@ -16,7 +19,6 @@ import json
 import logging
 from dataclasses import dataclass
 from functools import lru_cache
-from pathlib import Path
 
 from tumbleweed.config import DATA_DIR
 
@@ -32,10 +34,14 @@ class Subcategory:
     category_label: str
 
 
-@lru_cache(maxsize=1)
-def _load_all_subcategories() -> dict[str, list[Subcategory]]:
-    """Повертає мапу: category_key → [Subcategory, ...]."""
-    path = DATA_DIR / "jobs" / "professions_ua.json"
+@lru_cache(maxsize=3)
+def _load_all_subcategories(country: str = "ua") -> dict[str, list[Subcategory]]:
+    """Повертає мапу: category_key → [Subcategory, ...] для країни."""
+    path = DATA_DIR / "jobs" / f"professions_{country}.json"
+    if not path.exists():
+        log.warning("Не знайдено %s", path)
+        return {}
+
     raw = json.loads(path.read_text(encoding="utf-8"))
 
     result: dict[str, list[Subcategory]] = {}
@@ -53,20 +59,24 @@ def _load_all_subcategories() -> dict[str, list[Subcategory]]:
             ))
         result[cat_key] = subs
 
-    log.info("Завантажено %d сфер, %d підкатегорій",
-             len(result), sum(len(v) for v in result.values()))
+    log.info("Завантажено %d сфер, %d підкатегорій (%s)",
+             len(result), sum(len(v) for v in result.values()), country)
     return result
 
 
-def get_category_label(category_key: str) -> str:
-    """Повертає людську назву сфери (наприклад, «🌾 Сільське господарство»)."""
-    subs = _load_all_subcategories().get(category_key, [])
+def get_category_label(category_key: str, country: str = "ua") -> str:
+    """Повертає людську назву сфери."""
+    subs = _load_all_subcategories(country).get(category_key, [])
     return subs[0].category_label if subs else category_key
 
 
-def get_subcategory(category_key: str, sub_key: str) -> Subcategory | None:
+def get_subcategory(
+    category_key: str,
+    sub_key: str,
+    country: str = "ua",
+) -> Subcategory | None:
     """Знайти підкатегорію за ключем у межах сфери."""
-    for s in _load_all_subcategories().get(category_key, []):
+    for s in _load_all_subcategories(country).get(category_key, []):
         if s.key == sub_key:
             return s
     return None
@@ -76,15 +86,7 @@ MIN_QUERY_LEN = 3
 
 
 def _score(sub: Subcategory, query: str) -> int:
-    """Обчислити релевантність підкатегорії для запиту.
-
-    Правила:
-      - label містить запит → 100
-      - keyword починається з запиту → 90
-      - якесь слово в label починається з запиту → 80
-      - keyword містить запит як підрядок → 70 (мінімум 4 символи)
-      - немає збігу → 0
-    """
+    """Обчислити релевантність підкатегорії для запиту."""
     q = query.lower().strip()
     if len(q) < MIN_QUERY_LEN:
         return 0
@@ -100,7 +102,7 @@ def _score(sub: Subcategory, query: str) -> int:
         if kw.startswith(q):
             return 90
 
-    # 3. Якесь слово в label починається з запиту (по префіксу)
+    # 3. Якесь слово в label починається з запиту
     for word in label_lower.replace("/", " ").replace("(", " ").replace(")", " ").split():
         if word.startswith(q):
             return 80
@@ -118,23 +120,14 @@ def search_subcategories(
     category_key: str,
     query: str,
     limit: int = 8,
+    country: str = "ua",
 ) -> list[Subcategory]:
-    """Знайти підкатегорії в межах сфери за запитом.
-
-    Args:
-        category_key: ключ сфери (наприклад, "agro")
-        query: слово користувача (наприклад, "трак", мін. 3 символи)
-        limit: максимум результатів (8 за замовчуванням)
-
-    Returns:
-        Список підкатегорій, відсортований за релевантністю (спадання).
-        Порожній, якщо запит коротший за 3 символи.
-    """
+    """Знайти підкатегорії в межах сфери за запитом."""
     q = (query or "").strip()
     if len(q) < MIN_QUERY_LEN:
         return []
 
-    subs = _load_all_subcategories().get(category_key, [])
+    subs = _load_all_subcategories(country).get(category_key, [])
     if not subs:
         return []
 
@@ -143,6 +136,7 @@ def search_subcategories(
     scored.sort(key=lambda x: (-x[1], x[0].label))
     return [s for s, _ in scored[:limit]]
 
-def all_subcategories(category_key: str) -> list[Subcategory]:
-    """Повертає всі підкатегорії сфери (для випадку «Будь-яка» не потрібен)."""
-    return list(_load_all_subcategories().get(category_key, []))
+
+def all_subcategories(category_key: str, country: str = "ua") -> list[Subcategory]:
+    """Повертає всі підкатегорії сфери."""
+    return list(_load_all_subcategories(country).get(category_key, []))

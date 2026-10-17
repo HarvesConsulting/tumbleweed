@@ -63,3 +63,9 @@ refactor_deps.txt
 
 # Refactor backup (local only)
 refactor_backup/
+
+# Translation cache (regenerated)
+data/jobs/translations_pl_uk.json
+
+# Temporary dev scripts
+scripts/dev_*.py

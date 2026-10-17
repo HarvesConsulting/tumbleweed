@@ -79,8 +79,30 @@ class TelegramClient:
         job_type = v.get("job_type") or ""
         link = v.get("link") or ""
         vacancy_id = v.get("id", "")
+        country = v.get("country") or "ua"
 
-        lines = [f"💼 *{title}*", ""]
+        # ── Переклад для PL ─────────────────────────
+        title_display = title
+        title_original = None
+
+        if country == "pl" and title:
+            try:
+                from tumbleweed.services.translate import translate_pl_to_uk
+                title_uk = translate_pl_to_uk(title)
+                if title_uk and title_uk != title:
+                    title_display = title_uk
+                    title_original = title   # покажемо оригінал маленьким
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning(
+                    "send_vacancy: translate failed for %r: %s", title[:40], e
+                )
+
+        lines = [f"💼 *{title_display}*"]
+        if title_original:
+            lines.append(f"🇵🇱 _{title_original}_")
+        lines.append("")
+
         if company:
             lines.append(f"🏢 {company}")
         if salary:
