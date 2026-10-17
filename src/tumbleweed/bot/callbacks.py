@@ -356,7 +356,7 @@ def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
     else:
         ctx.notifier.send_message(chat_id, text)
 
-    # 3. Запускаємо фоновий парсинг
+    # 3. Запускаємо фоновий парсинг (daemon-thread)
     threading.Thread(
         target=_run_aggregation_for_sub,
         args=(chat_id, country, city_slug, profession_key, sub.id, ctx),
@@ -721,12 +721,15 @@ def _run_aggregation_for_sub(
         sub = get_subcategory(cat_key, profession_key, country=country)
         query = sub.keywords[0] if sub and sub.keywords else ""
 
-    # 2. Запускаємо парсинг
+    # 2. Запускаємо парсинг (з новим event loop для цього потоку)
     try:
         parsers = get_parsers(country)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
         for parser in parsers:
             try:
-                vacancies = asyncio.run(parser.fetch(
+                vacancies = loop.run_until_complete(parser.fetch(
                     city_slug=city_slug or None,
                     query=query,
                     limit=40,
@@ -735,6 +738,7 @@ def _run_aggregation_for_sub(
                     save_and_mark(ctx.client, v)
             except Exception as e:
                 log.warning("Background parser %s failed: %s", parser.source_key, e)
+        loop.close()
     except Exception as e:
         log.exception("Background aggregation failed: %s", e)
         ctx.notifier.send_message(chat_id, "⚠️ Помилка парсингу.")
@@ -745,7 +749,7 @@ def _run_aggregation_for_sub(
         recent = list_recent_vacancies(
             ctx.client, country=country,
             city_slugs=[city_slug] if city_slug else [],
-            since_hours=24,
+            since_hours=1,  # тільки ті, що ми щойно спарсили
             limit=500,
         )
     except Exception as e:
@@ -783,9 +787,6 @@ def _run_aggregation_for_sub(
         ctx.notifier.send_message(
             chat_id,
             "😔 *На жаль, зараз на сайтах немає вакансій за твоїм запитом.*\n\n"
-            "🔔 Я повідомлю, як тільки з'являться — просто чекай.\n\n"
-            "💡 Поки що можеш:\n"
-            "  • Обрати іншу професію\n"
-            "  • Обрати «Будь-яку» в цій сфері\n"
-            "  • Обрати інше місто",
+            "🔍 Спробуйте змінити формат написання професії (наприклад, іншою мовою).\n\n"
+            "🔔 Я повідомлю, як тільки з'являться — просто чекай.",
         )
