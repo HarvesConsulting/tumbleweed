@@ -72,14 +72,21 @@ def handle_update(update_dict: dict[str, Any], ctx: BotContext) -> None:
         # Немає тексту (фото, стікер, тощо) — ігноруємо
         return
 
-    # 2a. Reply-кнопка — найвищий пріоритет (перебиває FSM)
+        # 2a. Reply-кнопка — найвищий пріоритет (перебиває FSM)
     if handlers.is_reply_button(text):
         states.clear_state(chat_id)
         states.clear_user_data(chat_id)
         handlers.handle_reply_button(chat_id, text, ctx)
         return
 
-    # 2b. FSM: чи користувач у стані очікування тексту?
+    # 2b. Команда — ПЕРЕД FSM (щоб /start працював з будь-якого стану)
+    if text.startswith("/"):
+        states.clear_state(chat_id)
+        states.clear_user_data(chat_id)
+        handlers.handle_command(chat_id, text, ctx)
+        return
+
+    # 2c. FSM: чи користувач у стані очікування тексту?
     state = states.get_state(chat_id)
     if state is not None:
         if state == states.STATE_WAITING_CITY_QUERY:
@@ -91,12 +98,6 @@ def handle_update(update_dict: dict[str, Any], ctx: BotContext) -> None:
         if state == states.STATE_WAITING_FEEDBACK:
             handlers.handle_feedback(chat_id, text, ctx)
             return
-        # Інші стани — просто ігноруємо текст (чекаємо кліку по кнопці)
-
-    # 2c. Команда
-    if text.startswith("/"):
-        handlers.handle_command(chat_id, text, ctx)
-        return
 
     # 2d. Невідомий текст → головне меню
     handlers.send_main_menu(chat_id, ctx)
