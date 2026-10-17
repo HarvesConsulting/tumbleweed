@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import logging
 import time
+from pathlib import Path
 from functools import lru_cache
 
 from tumbleweed.config import DATA_DIR
@@ -20,8 +21,7 @@ _MAX_RETRIES = 2
 _last_request_ts: float = 0.0
 
 
-def _cache_path(source: str, target: str) -> "Path":
-    from pathlib import Path
+def _cache_path(source: str, target: str) -> Path:
     return DATA_DIR / "jobs" / f"translations_{source}_{target}.json"
 
 
