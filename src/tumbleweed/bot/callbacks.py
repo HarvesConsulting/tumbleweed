@@ -299,13 +299,11 @@ def _handle_experience(
 
 
 def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
-    """Створює підписку + запускає фоновий парсинг."""
-    import threading
+    """Створює підписку."""
     from tumbleweed.db.queries_jobs import list_subscriptions
     from .handlers import _profession_label, _city_label
 
     data = states.get_user_data(chat_id)
-
     country = data.get("country") or "ua"
     cities = data.get("cities") or []
     city_slug = cities[0] if cities else ""
@@ -313,7 +311,6 @@ def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
     job_types = data.get("job_types") or []
     experience = data.get("experience") or "all"
 
-    # 1. Створюємо підписку
     try:
         sub = add_subscription(
             ctx.client, chat_id=chat_id, country=country,
@@ -333,7 +330,6 @@ def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
         states.clear_user_data(chat_id)
         return
 
-    # 2. Швидке підтвердження
     city_name = _city_label(country, city_slug)
     prof_label = _profession_label(profession_key, country)
 
@@ -349,21 +345,14 @@ def _finalize(chat_id: str, message_id: int | None, ctx) -> None:
         exp_labels = {"no": "Без досвіду", "1-3": "1-3 роки", "3+": "3+ роки"}
         text += f"🎓 {exp_labels.get(experience, experience)}\n"
 
-    text += "\n🔍 *Шукаю вакансії...* (це займе ~30 секунд)"
+    text += "\n🔔 *Я перевіряю нові вакансії кожні 30 хвилин.*\n\n"
+    text += "📬 Перші результати надійдуть протягом 30 хв."
 
     if message_id:
         ctx.notifier.edit_message(chat_id, message_id, text)
     else:
         ctx.notifier.send_message(chat_id, text)
 
-    # 3. Запускаємо фоновий парсинг (daemon-thread)
-    threading.Thread(
-        target=_run_aggregation_for_sub,
-        args=(chat_id, country, city_slug, profession_key, sub.id, ctx),
-        daemon=True,
-    ).start()
-
-    # 4. Список підписок
     try:
         all_subs = list_subscriptions(ctx.client, chat_id, only_enabled=False)
         ctx.notifier.send_message(

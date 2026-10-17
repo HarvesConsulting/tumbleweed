@@ -15,6 +15,16 @@ from tumbleweed.services.matcher import (
 
 
 # ─────────────────────────────────────────────────────────
+# Хелпер: розпаковує tuple (bool, score) → bool
+# ─────────────────────────────────────────────────────────
+
+def _matches(title: str, professions: list[str], country: str = "ua") -> bool:
+    """Хелпер: розпаковує tuple і повертає bool."""
+    ok, _ = _title_matches_professions(title, professions, country)
+    return ok
+
+
+# ─────────────────────────────────────────────────────────
 # Фікстура: підсовуємо фейковий JSON, щоб не залежати від data/
 # ─────────────────────────────────────────────────────────
 
@@ -101,63 +111,57 @@ class TestLoadSubcategories:
 
 class TestTitleMatches:
     def test_no_professions_returns_true(self):
-        assert _title_matches_professions("anything", [], "ua") is True
+        assert _matches("anything", [], "ua") is True
 
     def test_empty_title_returns_false(self):
-        assert _title_matches_professions("", ["it_backend"], "ua") is False
-        assert _title_matches_professions("   ", ["it_backend"], "ua") is False
+        assert _matches("", ["it_backend"], "ua") is False
+        assert _matches("   ", ["it_backend"], "ua") is False
 
     def test_simple_match(self):
-        assert _title_matches_professions("Python Developer", ["it_backend"], "ua") is True
+        assert _matches("Python Developer", ["it_backend"], "ua") is True
 
     def test_case_insensitive(self):
-        assert _title_matches_professions("PYTHON DEVELOPER", ["it_backend"], "ua") is True
+        assert _matches("PYTHON DEVELOPER", ["it_backend"], "ua") is True
 
     def test_ukrainian_match(self):
-        assert _title_matches_professions("Водій категорії B", ["driver_b"], "ua") is True
+        assert _matches("Водій категорії B", ["driver_b"], "ua") is True
 
     def test_no_match(self):
-        assert _title_matches_professions("Python Developer", ["driver_b"], "ua") is False
+        assert _matches("Python Developer", ["driver_b"], "ua") is False
 
     def test_multiple_professions_any_match(self):
-        assert _title_matches_professions(
-            "Python Developer", ["driver_b", "it_backend"], "ua"
-        ) is True
+        assert _matches("Python Developer", ["driver_b", "it_backend"], "ua") is True
 
     def test_unknown_profession_skipped(self):
         # ключ якого немає в JSON — пропускаємо без помилки
-        assert _title_matches_professions("Python", ["unknown_key"], "ua") is False
+        assert _matches("Python", ["unknown_key"], "ua") is False
 
     def test_custom_profession(self):
-        assert _title_matches_professions(
-            "Слюсар-механік", ["custom:слюсар"], "ua"
-        ) is True
+        assert _matches("Слюсар-механік", ["custom:слюсар"], "ua") is True
 
     def test_custom_profession_no_match(self):
-        assert _title_matches_professions(
-            "Python Developer", ["custom:слюсар"], "ua"
-        ) is False
+        assert _matches("Python Developer", ["custom:слюсар"], "ua") is False
 
     # ── Кейси, які ламали старий матчер (підрядок) ──
 
     def test_qa_not_in_qatar(self):
         # "qa" не має матчитись у "qatar"
-        assert _title_matches_professions("Qatar Airways", ["it_qa"], "ua") is False
+        assert _matches("Qatar Airways", ["it_qa"], "ua") is False
 
     def test_qa_in_qa_engineer(self):
-        assert _title_matches_professions("QA Engineer", ["it_qa"], "ua") is True
+        assert _matches("QA Engineer", ["it_qa"], "ua") is True
 
     def test_java_not_in_javascript(self):
         # "java" не має матчитись у "javascript"
-        assert _title_matches_professions("JavaScript Developer", ["it_backend"], "ua") is False
+        assert _matches("JavaScript Developer", ["it_backend"], "ua") is False
 
     def test_agronom_matches_agronomiya(self):
         # префікс-матч для довгих термінів
-        assert _title_matches_professions("Агрономія", ["agro_agronom"], "ua") is True
+        assert _matches("Агрономія", ["agro_agronom"], "ua") is True
 
     def test_vodiy_not_in_vodiyske(self):
         # "водій" (5) не має матчити "водійське" (префікс-порог 6)
-        assert _title_matches_professions("Водійське посвідчення", ["driver_b"], "ua") is False
+        assert _matches("Водійське посвідчення", ["driver_b"], "ua") is False
 
 
 # ─────────────────────────────────────────────────────────

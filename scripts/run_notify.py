@@ -19,7 +19,7 @@ from tumbleweed.db.queries_jobs import (
     mark_sent,
     update_last_parsed_at,
 )
-from tumbleweed.services.matcher import find_matches_for_all_subscriptions
+from tumbleweed.services.matcher import find_vacancies_for_subscription
 from tumbleweed.services.telegram_client import TelegramClient
 
 
@@ -46,25 +46,47 @@ def main() -> None:
         return
 
     # Фіксуємо момент старту циклу.
-    # Усі вакансії, знайдені в цьому циклі, мають saved_at <= cycle_start_ts.
-    # Після успішної відправки для кожної підписки ставимо last_parsed_at = cycle_start_ts,
-    # щоб наступний цикл шукав ТІЛЬКИ новіші.
     cycle_start_ts = _now_iso()
-
-    results = find_matches_for_all_subscriptions(client, subs)
-    print(f"Підписок з матчами: {len(results)}\n")
 
     total_sent = 0
     total_failed = 0
+    no_vacancies = 0
 
-    for sub, vacancies in results:
+    # Проходимо ВСІ підписки (а не тільки ті, що мають матчі)
+    for sub in subs:
+        try:
+            vacancies = find_vacancies_for_subscription(client, sub)
+        except Exception as e:
+            log.exception("Матчинг для sub %s: %s", sub.id, e)
+            continue
+
+        # Якщо це перший парсинг і 0 вакансій — сказати "немає"
+        if not vacancies and not sub.baseline_done:
+            try:
+                notifier.send_message(
+                    sub.chat_id,
+                    "😔 *На жаль, зараз на сайтах немає вакансій за твоїм запитом.*\n\n"
+                    "🔍 Спробуйте змінити формат написання професії (наприклад, іншою мовою).\n\n"
+                    "🔔 Я повідомлю, як тільки з'являться — просто чекай.",
+                )
+                mark_baseline_done(client, sub.id, cycle_start_ts)
+                no_vacancies += 1
+                print(f"    ℹ️  sub {sub.id}: baseline без вакансій")
+            except Exception as e:
+                log.warning("send_message (no vacancies): %s", e)
+            continue
+
+        # Якщо вакансій немає, але baseline вже зроблено — просто пропускаємо
+        # (нічого не змінилось, не спамимо користувача)
+        if not vacancies and sub.baseline_done:
+            continue
+
+        # Якщо є вакансії — надсилаємо
         print(f"→ chat_id={sub.chat_id}  "
               f"[{sub.city_slug} / {sub.profession_key or 'будь-яка'}]  "
               f"({len(vacancies)} вакансій)")
 
         sent_in_sub = 0
-        failed_in_sub = 0
-
         for v in vacancies:
             ok = notifier.send_vacancy(sub.chat_id, v)
             if ok:
@@ -73,12 +95,10 @@ def main() -> None:
                 total_sent += 1
                 print(f"    ✅ {v.get('title', '')[:60]}")
             else:
-                failed_in_sub += 1
                 total_failed += 1
                 print(f"    ❌ {v.get('title', '')[:60]}")
 
         # Оновлюємо стан підписки ТІЛЬКИ після хоча б однієї успішної відправки.
-        # Якщо всі впали — не оновлюємо, щоб наступний цикл спробував знову.
         if sent_in_sub > 0:
             if not sub.baseline_done:
                 mark_baseline_done(client, sub.id, cycle_start_ts)
@@ -90,6 +110,7 @@ def main() -> None:
     print(f"\n{'=' * 60}")
     print(f"✅ Надіслано: {total_sent}")
     print(f"❌ Помилок:  {total_failed}")
+    print(f"😔 Без вакансій: {no_vacancies}")
 
 
 if __name__ == "__main__":
