@@ -1,4 +1,4 @@
-"""Переклад назв вакансій (PL → UA) з кешем.
+"""Переклад назв вакансій (PL/RO → UA) з кешем.
 
 Основний: MyMemoryTranslator (безкоштовно, 5000 слів/день).
 Fallback: GoogleTranslator (якщо MyMemory не відповідає).
@@ -14,34 +14,39 @@ from tumbleweed.config import DATA_DIR
 
 log = logging.getLogger(__name__)
 
-CACHE_PATH = DATA_DIR / "jobs" / "translations_pl_uk.json"
-
-_MIN_INTERVAL_SEC = 0.5   # пауза між запитами (MyMemory не любить спам)
+_MIN_INTERVAL_SEC = 0.5
 _MAX_RETRIES = 2
 
 _last_request_ts: float = 0.0
 
 
-@lru_cache(maxsize=1)
-def _load_cache() -> dict[str, str]:
-    if not CACHE_PATH.exists():
+def _cache_path(source: str, target: str) -> "Path":
+    from pathlib import Path
+    return DATA_DIR / "jobs" / f"translations_{source}_{target}.json"
+
+
+@lru_cache(maxsize=4)
+def _load_cache(source: str, target: str) -> dict[str, str]:
+    path = _cache_path(source, target)
+    if not path.exists():
         return {}
     try:
-        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8"))
     except Exception as e:
-        log.warning("translate: cache load failed: %s", e)
+        log.warning("translate: cache load failed (%s→%s): %s", source, target, e)
         return {}
 
 
-def _save_cache(cache: dict[str, str]) -> None:
+def _save_cache(cache: dict[str, str], source: str, target: str) -> None:
+    path = _cache_path(source, target)
     try:
-        CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        CACHE_PATH.write_text(
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
             json.dumps(cache, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
     except Exception as e:
-        log.warning("translate: cache save failed: %s", e)
+        log.warning("translate: cache save failed (%s→%s): %s", source, target, e)
 
 
 def _throttle() -> None:
@@ -53,43 +58,48 @@ def _throttle() -> None:
     _last_request_ts = time.time()
 
 
-def _translate_with_mymemory(text: str) -> str | None:
-    """Спроба через MyMemory (безкоштовно, 5000 слів/день)."""
+def _translate_with_mymemory(text: str, source: str, target: str) -> str | None:
+    """MyMemory (безкоштовно, 5000 слів/день)."""
     try:
         from deep_translator import MyMemoryTranslator
-        translator = MyMemoryTranslator(source="pl-PL", target="uk-UA")
+        
+        # MyMemory потребує повних кодів
+        LANG_CODES = {
+            "pl": "pl-PL",
+            "ro": "ro-RO",
+            "uk": "uk-UA",
+            "en": "en-GB",
+            "ru": "ru-RU",
+        }
+        src = LANG_CODES.get(source, f"{source}-{source.upper()}")
+        tgt = LANG_CODES.get(target, f"{target}-{target.upper()}")
+        
+        translator = MyMemoryTranslator(source=src, target=tgt)
         _throttle()
         result = translator.translate(text)
         if result and result.strip() and result.strip() != text:
             return result.strip()
     except Exception as e:
-        log.warning("MyMemory(%r): %s", text[:40], e)
+        log.warning("MyMemory(%s→%s, %r): %s", source, target, text[:40], e)
     return None
 
 
-def _translate_with_google(text: str) -> str | None:
-    """Спроба через Google (може бути 429)."""
+def _translate_with_google(text: str, source: str, target: str) -> str | None:
+    """Google Translate (може бути 429)."""
     try:
         from deep_translator import GoogleTranslator
-        translator = GoogleTranslator(source="pl", target="uk")
+        translator = GoogleTranslator(source=source, target=target)
         _throttle()
         result = translator.translate(text)
         if result and result.strip():
             return result.strip()
     except Exception as e:
-        log.warning("Google(%r): %s", text[:40], e)
+        log.warning("Google(%s→%s, %r): %s", source, target, text[:40], e)
     return None
 
 
-def translate_pl_to_uk(text: str) -> str:
-    """Перекласти PL → UA.
-
-    Порядок:
-      1. Кеш (миттєво)
-      2. MyMemory (основний)
-      3. Google (fallback)
-      4. Оригінал (якщо все впало)
-    """
+def _translate(text: str, source: str, target: str = "uk") -> str:
+    """Універсальний переклад."""
     if not text or not text.strip():
         return text
 
@@ -98,21 +108,21 @@ def translate_pl_to_uk(text: str) -> str:
         return text
 
     # 1. Кеш
-    cache = _load_cache()
+    cache = _load_cache(source, target)
     if text in cache:
         return cache[text]
 
     # 2. MyMemory
-    result = _translate_with_mymemory(text)
+    result = _translate_with_mymemory(text, source, target)
 
-    # 3. Google (якщо MyMemory не спрацював)
+    # 3. Google (fallback)
     if not result:
-        result = _translate_with_google(text)
+        result = _translate_with_google(text, source, target)
 
-    # 4. Зберегти в кеш
+    # 4. Зберегти
     if result and result != text:
         cache[text] = result
-        _save_cache(cache)
+        _save_cache(cache, source, target)
         _load_cache.cache_clear()
         return result
 
@@ -120,12 +130,22 @@ def translate_pl_to_uk(text: str) -> str:
     return text
 
 
-def translate_batch(texts: list[str]) -> list[str]:
-    """Перекласти пакет текстів (послідовно, з паузами)."""
+def translate_pl_to_uk(text: str) -> str:
+    """PL → UA."""
+    return _translate(text, source="pl", target="uk")
+
+
+def translate_ro_to_uk(text: str) -> str:
+    """RO → UA."""
+    return _translate(text, source="ro", target="uk")
+
+
+def translate_batch(texts: list[str], source: str = "pl") -> list[str]:
+    """Перекласти пакет текстів."""
     if not texts:
         return []
 
-    cache = _load_cache()
+    cache = _load_cache(source, "uk")
     results: list[str] = []
 
     for t in texts:
@@ -136,6 +156,6 @@ def translate_batch(texts: list[str]) -> list[str]:
         if t in cache:
             results.append(cache[t])
         else:
-            results.append(translate_pl_to_uk(t))
+            results.append(_translate(t, source=source))
 
     return results

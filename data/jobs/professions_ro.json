@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "key": "driver",
+      "label": "🚗 Водій / Кур'єр",
+      "subcategories": [
+        {"key": "driver_b", "label": "Водій кат. B", "keywords": ["sofer categoria b", "sofer b", "sofer autoturism"]},
+        {"key": "driver_c", "label": "Водій кат. C", "keywords": ["sofer categoria c", "sofer c", "sofer camion"]},
+        {"key": "driver_e", "label": "Водій кат. E (фура)", "keywords": ["sofer categoria e", "sofer ce", "sofer tir", "truck driver"]},
+        {"key": "driver_courier", "label": "Кур'єр", "keywords": ["curier", "livrator", "courier"]}
+      ]
+    },
+    {
+      "key": "factory",
+      "label": "🏭 Виробництво",
+      "subcategories": [
+        {"key": "factory_line", "label": "Оператор лінії", "keywords": ["operator productie", "operator linie", "muncitor productie"]},
+        {"key": "factory_assembler", "label": "Складальник", "keywords": ["montator", "asamblor", "assembler"]},
+        {"key": "factory_packer", "label": "Пакувальник", "keywords": ["ambalator", "packer", "ambalare"]},
+        {"key": "factory_warehouse", "label": "Склад / Комплектувальник", "keywords": ["depozit", "magazioner", "gestionar depozit"]},
+        {"key": "factory_loader", "label": "Вантажник", "keywords": ["incarcator", "loader", "muncitor depozit"]}
+      ]
+    },
+    {
+      "key": "bud",
+      "label": "🏗 Будівництво",
+      "subcategories": [
+        {"key": "bud_mason", "label": "Муляр", "keywords": ["zidar", "mason", "constructor"]},
+        {"key": "bud_welder", "label": "Зварювальник", "keywords": ["sudor", "welder", "sudura"]},
+        {"key": "bud_painter", "label": "Маляр", "keywords": ["zugrav", "vopsitor", "painter"]},
+        {"key": "bud_laborer", "label": "Різноробочий", "keywords": ["muncitor necalificat", "ajutor", "helper"]}
+      ]
+    },
+    {
+      "key": "agro",
+      "label": "🌾 Сільське господарство",
+      "subcategories": [
+        {"key": "agro_tractor", "label": "Тракторист", "keywords": ["tractorist", "operator tractor", "tractor"]},
+        {"key": "agro_agronom", "label": "Агроном", "keywords": ["agronom", "agronomist"]},
+        {"key": "agro_fermer", "label": "Фермер", "keywords": ["fermier", "farmer", "ferma"]},
+        {"key": "agro_gardener", "label": "Садівник", "keywords": ["gradinar", "livada", "garden"]}
+      ]
+    },
+    {
+      "key": "med",
+      "label": "🏥 Медицина",
+      "subcategories": [
+        {"key": "med_nurse", "label": "Медсестра", "keywords": ["asistent medical", "nurse", "infirmier"]},
+        {"key": "med_caregiver", "label": "Доглядальник", "keywords": ["ingrijitor", "caregiver", "asistent"]},
+        {"key": "med_doctor", "label": "Лікар", "keywords": ["medic", "doctor", "medic specialist"]}
+      ]
+    },
+    {
+      "key": "clean",
+      "label": "🧹 Прибирання",
+      "subcategories": [
+        {"key": "clean_house", "label": "Прибирання будинків", "keywords": ["menaj", "curatenie", "house cleaning"]},
+        {"key": "clean_office", "label": "Прибирання офісів", "keywords": ["curatenie birouri", "office cleaning"]}
+      ]
+    }
+  ]
+}

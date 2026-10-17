@@ -81,26 +81,35 @@ class TelegramClient:
         vacancy_id = v.get("id", "")
         country = v.get("country") or "ua"
 
-        # ── Переклад для PL ─────────────────────────
+        # ── Переклад для PL / RO ─────────────────────
         title_display = title
         title_original = None
 
-        if country == "pl" and title:
+        if country in ("pl", "ro") and title:
             try:
-                from tumbleweed.services.translate import translate_pl_to_uk
-                title_uk = translate_pl_to_uk(title)
+                if country == "pl":
+                    from tumbleweed.services.translate import translate_pl_to_uk
+                    title_uk = translate_pl_to_uk(title)
+                else:
+                    from tumbleweed.services.translate import translate_ro_to_uk
+                    title_uk = translate_ro_to_uk(title)
+
                 if title_uk and title_uk != title:
                     title_display = title_uk
-                    title_original = title   # покажемо оригінал маленьким
+                    title_original = title
             except Exception as e:
-                import logging
-                logging.getLogger(__name__).warning(
-                    "send_vacancy: translate failed for %r: %s", title[:40], e
+                log.warning(
+                    "send_vacancy: translate failed for %r: %s",
+                    title[:40], e,
                 )
+
+        # Прапор країни
+        FLAGS = {"ua": "🇺🇦", "pl": "🇵🇱", "ro": "🇷🇴"}
+        flag = FLAGS.get(country, "")
 
         lines = [f"💼 *{title_display}*"]
         if title_original:
-            lines.append(f"🇵🇱 _{title_original}_")
+            lines.append(f"{flag} _{title_original}_")
         lines.append("")
 
         if company:

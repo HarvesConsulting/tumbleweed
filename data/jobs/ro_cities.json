@@ -1,0 +1,290 @@
+{
+  "sibiu": {
+    "id": 33555,
+    "name": "Sibiu"
+  },
+  "craiova": {
+    "id": 81351,
+    "name": "Craiova"
+  },
+  "iasi": {
+    "id": 39939,
+    "name": "Iasi"
+  },
+  "oltenita": {
+    "id": 62647,
+    "name": "Oltenita"
+  },
+  "bucuresti": {
+    "id": 1,
+    "name": "Bucuresti"
+  },
+  "constanta": {
+    "id": 74335,
+    "name": "Constanta"
+  },
+  "pitesti": {
+    "id": 60321,
+    "name": "Pitesti"
+  },
+  "ramnicu-valcea": {
+    "id": 89649,
+    "name": "Ramnicu Valcea"
+  },
+  "cluj-napoca": {
+    "id": 52953,
+    "name": "Cluj-Napoca"
+  },
+  "targu-mures": {
+    "id": 30987,
+    "name": "Targu-Mures"
+  },
+  "focsani": {
+    "id": 79885,
+    "name": "Focsani"
+  },
+  "oarja": {
+    "id": 60309,
+    "name": "Oarja"
+  },
+  "otopeni": {
+    "id": 24645,
+    "name": "Otopeni"
+  },
+  "brasov": {
+    "id": 26711,
+    "name": "Brasov"
+  },
+  "targoviste": {
+    "id": 63351,
+    "name": "Targoviste"
+  },
+  "timisoara": {
+    "id": 97487,
+    "name": "Timisoara"
+  },
+  "moinesti": {
+    "id": 36671,
+    "name": "Moinesti"
+  },
+  "rasnov": {
+    "id": 28417,
+    "name": "Rasnov"
+  },
+  "jilava": {
+    "id": 24615,
+    "name": "Jilava"
+  },
+  "orastie": {
+    "id": 96095,
+    "name": "Orastie"
+  },
+  "baia-mare": {
+    "id": 55935,
+    "name": "Baia Mare"
+  },
+  "tomesti": {
+    "id": 42765,
+    "name": "Tomesti"
+  },
+  "oradea": {
+    "id": 49313,
+    "name": "Oradea"
+  },
+  "urlati": {
+    "id": 69161,
+    "name": "Urlati"
+  },
+  "bacau": {
+    "id": 34959,
+    "name": "Bacau"
+  },
+  "arad": {
+    "id": 90749,
+    "name": "Arad"
+  },
+  "piatra-neamt": {
+    "id": 43323,
+    "name": "Piatra Neamt"
+  },
+  "adjud": {
+    "id": 79685,
+    "name": "Adjud"
+  },
+  "ploiesti": {
+    "id": 66613,
+    "name": "Ploiesti"
+  },
+  "hunedoara": {
+    "id": 95443,
+    "name": "Hunedoara"
+  },
+  "vladimirescu": {
+    "id": 93037,
+    "name": "Vladimirescu"
+  },
+  "pantelimon": {
+    "id": 24647,
+    "name": "Pantelimon"
+  },
+  "popesti-leordeni": {
+    "id": 24663,
+    "name": "Popesti-Leordeni"
+  },
+  "jichisu-de-jos": {
+    "id": 54953,
+    "name": "Jichisu de Jos"
+  },
+  "sighetu-marmatiei": {
+    "id": 57071,
+    "name": "Sighetu Marmatiei"
+  },
+  "ilisesti": {
+    "id": 45399,
+    "name": "Ilisesti"
+  },
+  "buzau": {
+    "id": 72473,
+    "name": "Buzau"
+  },
+  "chiajna": {
+    "id": 24521,
+    "name": "Chiajna"
+  },
+  "alba-iulia": {
+    "id": 24723,
+    "name": "Alba Iulia"
+  },
+  "calarasi": {
+    "id": 61821,
+    "name": "Calarasi"
+  },
+  "snagov": {
+    "id": 24669,
+    "name": "Snagov"
+  },
+  "crevedia": {
+    "id": 62971,
+    "name": "Crevedia"
+  },
+  "ilfov": {
+    "id": 101129,
+    "name": "Ilfov"
+  },
+  "targu-jiu": {
+    "id": 85169,
+    "name": "Targu Jiu"
+  },
+  "letea-veche": {
+    "id": 36589,
+    "name": "Letea Veche"
+  },
+  "cumpana": {
+    "id": 76513,
+    "name": "Cumpana"
+  },
+  "satu-mare": {
+    "id": 58409,
+    "name": "Satu Mare"
+  },
+  "bors": {
+    "id": 48875,
+    "name": "Bors"
+  },
+  "bragadiru": {
+    "id": 24497,
+    "name": "Bragadiru"
+  },
+  "maneciu-ungureni": {
+    "id": 66573,
+    "name": "Maneciu-Ungureni"
+  },
+  "galati": {
+    "id": 76959,
+    "name": "Galati"
+  },
+  "suceava": {
+    "id": 45653,
+    "name": "Suceava"
+  },
+  "lehliu": {
+    "id": 62593,
+    "name": "Lehliu"
+  },
+  "bolintin-deal": {
+    "id": 64121,
+    "name": "Bolintin-Deal"
+  },
+  "slobozia": {
+    "id": 65709,
+    "name": "Slobozia"
+  },
+  "drobeta-turnu-severin": {
+    "id": 85981,
+    "name": "Drobeta-Turnu Severin"
+  },
+  "corunca": {
+    "id": 30321,
+    "name": "Corunca"
+  },
+  "curtea-de-arges": {
+    "id": 60035,
+    "name": "Curtea de Arges"
+  },
+  "botosani": {
+    "id": 37653,
+    "name": "Botosani"
+  },
+  "giurgiu": {
+    "id": 64249,
+    "name": "Giurgiu"
+  },
+  "tecuci": {
+    "id": 78659,
+    "name": "Tecuci"
+  },
+  "geamana": {
+    "id": 59739,
+    "name": "Geamana"
+  },
+  "tunari": {
+    "id": 24683,
+    "name": "Tunari"
+  },
+  "deva": {
+    "id": 94695,
+    "name": "Deva"
+  },
+  "camin": {
+    "id": 58141,
+    "name": "Camin"
+  },
+  "gura-humorului": {
+    "id": 45363,
+    "name": "Gura Humorului"
+  },
+  "ramnicu-sarat": {
+    "id": 73953,
+    "name": "Ramnicu Sarat"
+  },
+  "slatina": {
+    "id": 88057,
+    "name": "Slatina"
+  },
+  "zalau": {
+    "id": 57769,
+    "name": "Zalau"
+  },
+  "bistrita": {
+    "id": 51539,
+    "name": "Bistrita"
+  },
+  "braila": {
+    "id": 69963,
+    "name": "Braila"
+  },
+  "resita": {
+    "id": 93513,
+    "name": "Resita"
+  }
+}

@@ -43,6 +43,23 @@ def _load_pl_cities() -> dict[str, int]:
 _PL_CITIES = _load_pl_cities()
 
 
+def _load_ro_cities() -> dict[str, int]:
+    """Завантажити city_ids для Румунії з data/jobs/ro_cities.json."""
+    path = DATA_DIR / "jobs" / "ro_cities.json"
+    if not path.exists():
+        print(f"⚠️ ro_cities.json не знайдено: {path}")
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        return {slug: info["id"] for slug, info in raw.items() if "id" in info}
+    except Exception as e:
+        print(f"⚠️ Помилка завантаження ro_cities.json: {e}")
+        return {}
+
+
+_RO_CITIES = _load_ro_cities()
+
+
 @dataclass(frozen=True)
 class OlxCountryConfig:
     country: str
@@ -86,9 +103,7 @@ OLX_COUNTRIES: dict[str, OlxCountryConfig] = {
         country="ro",
         domain="olx.ro",
         category_ids=[4],
-        city_ids={
-            "bucuresti": 1,
-        },
+        city_ids=_RO_CITIES,    
     ),
 }
 
